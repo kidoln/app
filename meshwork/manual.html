@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="MeshWork 操作手册：系统设置、私有知识库、共享空间完整使用指南。">
+    <title>MeshWork 操作手册</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+    <link rel="stylesheet" href="manual-book.css">
+  </head>
+  <body>
+    <header class="manual-book-header">
+      <a class="manual-book-brand" href="index.html">
+        <span>∞</span>
+        <strong>MeshWork</strong>
+      </a>
+      <nav class="manual-book-nav">
+        <span>操作手册</span>
+      </nav>
+      <div class="language-switch">
+        <span class="lang-button is-active">中文</span>
+        <a href="manual-en.html" class="lang-button">EN</a>
+      </div>
+      <a class="manual-book-home" href="index.html">返回首页</a>
+    </header>
+
+    <div class="manual-book-layout">
+      <aside class="manual-book-sidebar">
+        <nav class="manual-book-toc">
+          <div class="toc-section">
+            <span class="toc-part">第一部分</span>
+            <a href="manual-book-01.html" class="toc-title">系统设置与初始配置</a>
+            <ul class="toc-list">
+              <li><a href="manual-book-01.html#1-1">1.1 首次启动</a></li>
+              <li><a href="manual-book-01.html#1-2">1.2 工作台管理</a></li>
+              <li><a href="manual-book-01.html#1-3">1.3 应用设置</a></li>
+              <li><a href="manual-book-01.html#1-4">1.4 Git 基础配置</a></li>
+              <li><a href="manual-book-01.html#1-5">1.5 GitHub 账号与仓库配置</a></li>
+            </ul>
+          </div>
+
+          <div class="toc-section">
+            <span class="toc-part">第二部分</span>
+            <a href="manual-book-02.html" class="toc-title">私有知识库</a>
+            <ul class="toc-list">
+              <li><a href="manual-book-02.html#2-1">2.1 私有知识库概述</a></li>
+              <li><a href="manual-book-02.html#2-2">2.2 文档编辑</a></li>
+              <li><a href="manual-book-02.html#2-3">2.3 右侧边栏 AI 辅助</a></li>
+              <li><a href="manual-book-02.html#2-4">2.4 文档组织</a></li>
+              <li><a href="manual-book-02.html#2-5">2.5 私有知识库的 Git 共享</a></li>
+            </ul>
+          </div>
+
+          <div class="toc-section">
+            <span class="toc-part">第三部分</span>
+            <a href="manual-book-03.html" class="toc-title">共享空间</a>
+            <ul class="toc-list">
+              <li><a href="manual-book-03.html#3-1">3.1 共享空间概述</a></li>
+              <li><a href="manual-book-03.html#3-2">3.2 创建共享空间</a></li>
+              <li><a href="manual-book-03.html#3-3">3.3 加入共享空间</a></li>
+              <li><a href="manual-book-03.html#3-4">3.4 分享共享空间</a></li>
+              <li><a href="manual-book-03.html#3-5">3.5 公共知识库协作</a></li>
+              <li><a href="manual-book-03.html#3-6">3.6 讨论区使用</a></li>
+              <li><a href="manual-book-03.html#3-7">3.7 共享空间的 Git 配置</a></li>
+              <li><a href="manual-book-03.html#3-8">3.8 小团队合作场景示例</a></li>
+            </ul>
+          </div>
+
+          <div class="toc-section">
+            <span class="toc-part">附录</span>
+            <a href="manual-book-appendix.html" class="toc-title">附录</a>
+            <ul class="toc-list">
+              <li><a href="manual-book-appendix.html#a">A. 常见问题</a></li>
+              <li><a href="manual-book-appendix.html#b">B. 快捷键参考</a></li>
+              <li><a href="manual-book-appendix.html#c">C. 术语表</a></li>
+            </ul>
+          </div>
+        </nav>
+      </aside>
+
+      <main class="manual-book-main">
+        <section class="manual-book-intro">
+          <h1>MeshWork 操作手册</h1>
+          <p class="manual-book-subtitle">
+            MeshWork 是围绕笔记、讨论、AI 与 Git 共享构建的创作工作台。
+            本手册将帮助你系统性地了解 MeshWork 的使用方式。
+          </p>
+
+          <div class="manual-book-summary">
+            <h2>手册内容概览</h2>
+
+            <article class="summary-card">
+              <span class="summary-number">01</span>
+              <h3>系统设置与初始配置</h3>
+              <p>了解 MeshWork 的核心概念，完成首次启动配置，设置应用偏好，配置 Git 环境，并学习如何创建和管理 GitHub 仓库。</p>
+              <ul>
+                <li>工作台、私有知识库与共享空间的关系</li>
+                <li>智能体配置与文档助手设置</li>
+                <li>Git 身份信息与 SSH 密钥配置</li>
+                <li>GitHub 仓库创建、共享与认证</li>
+              </ul>
+              <a href="manual-book-01.html" class="summary-link">开始阅读 →</a>
+            </article>
+
+            <article class="summary-card">
+              <span class="summary-number">02</span>
+              <h3>私有知识库</h3>
+              <p>私有知识库是你个人的长期知识沉淀区。学习如何编辑文档、使用 AI 辅助、组织内容，以及可选的 Git 共享配置。</p>
+              <ul>
+                <li>文档编辑基础、Markdown 格式与 PlantUML 图表</li>
+                <li>右侧边栏 AI 助手的完整使用指南</li>
+                <li>@ 提及、# 引用、/ 命令详解</li>
+                <li>文档组织与搜索</li>
+              </ul>
+              <a href="manual-book-02.html" class="summary-link">开始阅读 →</a>
+            </article>
+
+            <article class="summary-card">
+              <span class="summary-number">03</span>
+              <h3>共享空间</h3>
+              <p>共享空间是团队协作的数据边界。了解如何创建和加入共享空间，使用公共知识库和讨论区，并通过 Git 实现团队共享。</p>
+              <ul>
+                <li>创建、加入、分享共享空间</li>
+                <li>公共知识库协作编辑</li>
+                <li>讨论区的话题管理与 AI 协作</li>
+                <li>小团队合作实战场景</li>
+              </ul>
+              <a href="manual-book-03.html" class="summary-link">开始阅读 →</a>
+            </article>
+          </div>
+
+          <div class="manual-book-concepts">
+            <h2>核心概念</h2>
+            <dl>
+              <dt>
+                <span class="concept-icon">∞</span>
+                工作台
+              </dt>
+              <dd>工作台是用户进入产品后看到的主使用环境，负责组合私有知识库和多个共享空间。它是一个产品和交互层概念，不是固定磁盘目录，也不是 Git 仓库。</dd>
+
+              <dt>
+                <span class="concept-icon">📁</span>
+                私有知识库
+              </dt>
+              <dd>属于当前用户自己的数据边界，存放个人长期知识、不应自动进入团队共享的内容。它独立存在，不从属于任何共享空间。</dd>
+
+              <dt>
+                <span class="concept-icon">👥</span>
+                共享空间
+              </dt>
+              <dd>团队或项目级的数据边界。每个共享空间包含公共知识库、讨论区、共享附件，并可选拥有自己的 Git 历史。</dd>
+
+              <dt>
+                <span class="concept-icon">💬</span>
+                讨论区
+              </dt>
+              <dd>共享空间内的异步讨论空间，支持话题管理、@ 提及、# 文档引用、/ 命令，以及 AI 智能体协作。</dd>
+
+              <dt>
+                <span class="concept-icon">🤖</span>
+                AI 智能体
+              </dt>
+              <dd>MeshWork 中的 AI 是参与者而非自动替代者。它可以提出建议，但不会未经确认直接修改你的文档。</dd>
+            </dl>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="manual-book-footer">
+      <span>MeshWork 操作手册</span>
+      <span>Local-first creative workspace</span>
+      <a href="privacy.html">隐私政策</a>
+    </footer>
+
+    <script>
+      // Check URL parameter for language and redirect if needed
+      (function() {
+        const params = new URLSearchParams(window.location.search);
+        const lang = params.get('lang');
+        if (lang === 'en') {
+          window.location.href = 'manual-en.html';
+        }
+      })();
+    </script>
+  </body>
+</html>
