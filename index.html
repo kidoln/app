@@ -1,65 +1,750 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>欢迎</title>
+    <title>Kido Studio</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>"
+    />
     <style>
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
+
+      :root {
+        --bg-primary: #0a0a0f;
+        --bg-secondary: #12121a;
+        --text-primary: #ffffff;
+        --text-secondary: #a0a0b0;
+        --meshwork-accent: #00d4ff;
+        --meshwork-glow: rgba(0, 212, 255, 0.3);
+        --remotedock-accent: #ff6b35;
+        --remotedock-glow: rgba(255, 107, 53, 0.3);
+      }
+
       body {
-        font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          "Helvetica Neue", Arial, sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
         min-height: 100vh;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        overflow-x: hidden;
       }
-      .container {
+
+      /* 流光背景动画 */
+      .aurora-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+
+      .aurora-layer {
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        top: -50%;
+        left: -50%;
+        background: radial-gradient(
+          ellipse at 30% 30%,
+          var(--meshwork-glow) 0%,
+          transparent 40%
+        );
+        animation: aurora-float 20s ease-in-out infinite;
+      }
+
+      .aurora-layer:nth-child(2) {
+        background: radial-gradient(
+          ellipse at 70% 70%,
+          var(--remotedock-glow) 0%,
+          transparent 40%
+        );
+        animation: aurora-float 25s ease-in-out infinite reverse;
+      }
+
+      .aurora-layer:nth-child(3) {
+        background: radial-gradient(
+          ellipse at 50% 50%,
+          rgba(138, 43, 226, 0.2) 0%,
+          transparent 50%
+        );
+        animation: aurora-float 30s ease-in-out infinite;
+        animation-delay: -10s;
+      }
+
+      @keyframes aurora-float {
+        0%,
+        100% {
+          transform: translate(0, 0) rotate(0deg) scale(1);
+        }
+        33% {
+          transform: translate(50px, -50px) rotate(120deg) scale(1.1);
+        }
+        66% {
+          transform: translate(-30px, 30px) rotate(240deg) scale(0.9);
+        }
+      }
+
+      /* 流光线条 */
+      .stream-lines {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .stream-line {
+        position: absolute;
+        width: 2px;
+        height: 100%;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(0, 212, 255, 0.5) 50%,
+          transparent
+        );
+        animation: stream-flow 8s ease-in-out infinite;
+      }
+
+      .stream-line:nth-child(2) {
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(255, 107, 53, 0.5) 50%,
+          transparent
+        );
+        animation-delay: -2s;
+      }
+
+      .stream-line:nth-child(3) {
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(138, 43, 226, 0.5) 50%,
+          transparent
+        );
+        animation-delay: -4s;
+      }
+
+      @keyframes stream-flow {
+        0%,
+        100% {
+          opacity: 0;
+          transform: translateX(-100%);
+        }
+        50% {
+          opacity: 0.6;
+          transform: translateX(100vw);
+        }
+      }
+
+      /* 粒子效果 */
+      .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .particle {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        animation: particle-rise 12s infinite;
+      }
+
+      .particle.cyan {
+        background: var(--meshwork-accent);
+        box-shadow:
+          0 0 6px var(--meshwork-accent),
+          0 0 12px var(--meshwork-accent);
+      }
+
+      .particle.orange {
+        background: var(--remotedock-accent);
+        box-shadow:
+          0 0 6px var(--remotedock-accent),
+          0 0 12px var(--remotedock-accent);
+      }
+
+      .particle.purple {
+        background: #8a2be2;
+        box-shadow:
+          0 0 6px #8a2be2,
+          0 0 12px #8a2be2;
+      }
+
+      @keyframes particle-rise {
+        0% {
+          opacity: 0;
+          transform: translateY(100vh) scale(0);
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-10vh) scale(1);
+        }
+      }
+
+      /* 光晕效果 */
+      .glow-orbs {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .glow-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(60px);
+        animation: orb-pulse 4s ease-in-out infinite;
+      }
+
+      .glow-orb.blue {
+        background: var(--meshwork-accent);
+        opacity: 0.15;
+      }
+
+      .glow-orb.orange {
+        background: var(--remotedock-accent);
+        opacity: 0.15;
+      }
+
+      @keyframes orb-pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.15;
+        }
+        50% {
+          transform: scale(1.2);
+          opacity: 0.25;
+        }
+      }
+
+      /* 语言切换导航栏 */
+      .lang-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        justify-content: flex-end;
+        padding: 20px 32px;
+        pointer-events: none;
+      }
+
+      .lang-switch {
+        display: flex;
+        gap: 8px;
+        pointer-events: auto;
+        background: rgba(18, 18, 26, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 24px;
+        padding: 4px;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+
+      .lang-btn {
+        padding: 8px 20px;
+        border: none;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        background: transparent;
+        color: var(--text-secondary);
+      }
+
+      .lang-btn.active {
+        background: var(--meshwork-accent);
+        color: var(--bg-primary);
+        box-shadow: 0 4px 15px var(--meshwork-glow);
+      }
+
+      .lang-btn:not(.active):hover {
+        color: var(--text-primary);
+      }
+
+      /* 主容器 */
+      .main-container {
+        position: relative;
+        z-index: 2;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 24px;
+      }
+
+      /* 首页样式 */
+      .home-page {
         text-align: center;
-        background: white;
-        padding: 3rem;
-        border-radius: 1rem;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        max-width: 500px;
+        max-width: 1200px;
+        width: 100%;
       }
-      h1 {
-        color: #333;
-        margin-bottom: 1rem;
-        font-size: 2rem;
+
+      .home-title {
+        font-size: clamp(36px, 6vw, 64px);
+        font-weight: 800;
+        margin-bottom: 16px;
+        background: linear-gradient(135deg, #fff 0%, #a0a0b0 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: title-appear 1s ease-out;
       }
-      p {
-        color: #666;
-        line-height: 1.6;
-        margin-bottom: 1.5rem;
+
+      .home-subtitle {
+        font-size: clamp(16px, 2vw, 20px);
+        color: var(--text-secondary);
+        margin-bottom: 60px;
+        animation: title-appear 1s ease-out 0.2s backwards;
       }
-      .btn {
-        display: inline-block;
-        padding: 0.75rem 2rem;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
+
+      @keyframes title-appear {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* 应用卡片网格 */
+      .apps-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 32px;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      /* 应用卡片 */
+      .app-card {
+        position: relative;
+        background: rgba(18, 18, 26, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 24px;
+        padding: 48px 32px;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        overflow: hidden;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        animation: card-appear 0.8s ease-out backwards;
         text-decoration: none;
-        border-radius: 0.5rem;
-        transition:
-          transform 0.2s,
-          box-shadow 0.2s;
+        display: block;
       }
-      .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+
+      .app-card:nth-child(1) {
+        animation-delay: 0.3s;
+      }
+
+      .app-card:nth-child(2) {
+        animation-delay: 0.5s;
+      }
+
+      @keyframes card-appear {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .app-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+          circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+          rgba(255, 255, 255, 0.05),
+          transparent 50%
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .app-card:hover::before {
+        opacity: 1;
+      }
+
+      .app-card.meshwork {
+        --card-accent: var(--meshwork-accent);
+        --card-glow: var(--meshwork-glow);
+      }
+
+      .app-card.remotedock {
+        --card-accent: var(--remotedock-accent);
+        --card-glow: var(--remotedock-glow);
+      }
+
+      .app-card::after {
+        content: "";
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(135deg, var(--card-accent), transparent);
+        border-radius: 24px;
+        opacity: 0;
+        z-index: -1;
+        transition: opacity 0.3s;
+      }
+
+      .app-card:hover::after {
+        opacity: 0.5;
+        filter: blur(10px);
+      }
+
+      .app-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--card-accent);
+        box-shadow: 0 20px 40px var(--card-glow);
+      }
+
+      .app-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 24px;
+        background: var(--card-accent);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        box-shadow: 0 10px 30px var(--card-glow);
+        transition: all 0.4s ease;
+        overflow: hidden;
+      }
+
+      .app-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 8px;
+      }
+
+      .app-card:hover .app-icon {
+        transform: scale(1.1) rotate(-5deg);
+        box-shadow: 0 15px 40px var(--card-glow);
+      }
+
+      .app-icon::after {
+        content: "";
+        position: absolute;
+        top: -4px;
+        left: -4px;
+        right: -4px;
+        bottom: -4px;
+        background: var(--card-accent);
+        border-radius: 24px;
+        opacity: 0;
+        filter: blur(15px);
+        z-index: -1;
+        transition: opacity 0.4s;
+      }
+
+      .app-card:hover .app-icon::after {
+        opacity: 0.5;
+      }
+
+      .app-name {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        background: var(--card-accent);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .app-desc {
+        color: var(--text-secondary);
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 24px;
+      }
+
+      .app-tag {
+        display: inline-block;
+        padding: 6px 16px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        font-size: 13px;
+        color: var(--card-accent);
+      }
+
+      /* 响应式 */
+      @media (max-width: 768px) {
+        .apps-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .app-card {
+          padding: 36px 24px;
+        }
+
+        .lang-nav {
+          padding: 16px 20px;
+        }
+      }
+
+      /* 语言控制显示 */
+      [data-lang="zh"] {
+        display: none;
+      }
+
+      body.lang-zh [data-lang="zh"] {
+        display: inline;
+      }
+
+      body.lang-zh [data-lang="en"] {
+        display: none;
+      }
+
+      body.lang-en [data-lang="en"] {
+        display: inline;
       }
     </style>
   </head>
-  <body>
-    <div class="container">
-      <h1>👋 欢迎</h1>
-      <p>这是一个简单的示例页面。项目已成功初始化并推送到 GitHub。</p>
-      <a href="https://github.com/kidoln/app" class="btn">查看 GitHub 仓库</a>
+  <body class="lang-en">
+    <div class="aurora-background">
+      <div class="aurora-layer"></div>
+      <div class="aurora-layer"></div>
+      <div class="aurora-layer"></div>
     </div>
+
+    <div class="stream-lines">
+      <div class="stream-line" style="left: 20%"></div>
+      <div class="stream-line" style="left: 50%"></div>
+      <div class="stream-line" style="left: 80%"></div>
+    </div>
+
+    <div class="particles" id="particles"></div>
+
+    <div class="glow-orbs" id="glowOrbs"></div>
+
+    <!-- 语言切换 -->
+    <nav class="lang-nav">
+      <div class="lang-switch">
+        <button class="lang-btn active" id="btn-en" data-lang-btn="en">
+          EN
+        </button>
+        <button class="lang-btn" id="btn-zh" data-lang-btn="zh">中文</button>
+      </div>
+    </nav>
+
+    <div class="main-container">
+      <!-- 首页 -->
+      <div class="home-page">
+        <h1 class="home-title">
+          <span data-lang="en">Kido Studio</span>
+          <span data-lang="zh">Kido Studio</span>
+        </h1>
+        <p class="home-subtitle">
+          <span data-lang="en">Carefully crafted macOS & iOS applications</span>
+          <span data-lang="zh">精心打造的 macOS & iOS 应用</span>
+        </p>
+
+        <div class="apps-grid">
+          <!-- MeshWork 卡片 -->
+          <a href="meshwork/index.html" class="app-card meshwork">
+            <div class="app-icon">
+              <img src="meshwork/images/favicon.png" alt="MeshWork" />
+            </div>
+            <h2 class="app-name">MeshWork</h2>
+            <p class="app-desc">
+              <span data-lang="en"
+                >Local-first creative workspace where notes, discussions, AI,
+                and Git-native sharing become one thinking system.</span
+              >
+              <span data-lang="zh"
+                >本地优先的创意工作空间，笔记、讨论、AI 与 Git
+                原生分享的融合思考系统。</span
+              >
+            </p>
+            <span class="app-tag">
+              <span data-lang="en">Knowledge Management</span>
+              <span data-lang="zh">知识管理</span>
+            </span>
+          </a>
+
+          <!-- Remote Dock 卡片 -->
+          <a href="remotedock/index.html" class="app-card remotedock">
+            <div class="app-icon">
+              <img src="remotedock/images/favicon.png" alt="Remote Dock" />
+            </div>
+            <h2 class="app-name">Remote Dock</h2>
+            <p class="app-desc">
+              <span data-lang="en"
+                >Your perfect workflow companion — powerful clipboard management
+                and remote app control from your iPhone.</span
+              >
+              <span data-lang="zh"
+                >让 iPhone 成为 Mac
+                的完美工作流伴侣，强大的剪贴板管理和应用远程控制。</span
+              >
+            </p>
+            <span class="app-tag">
+              <span data-lang="en">Productivity Tool</span>
+              <span data-lang="zh">效率工具</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // 创建粒子效果
+      function createParticles() {
+        const container = document.getElementById("particles");
+        const colors = ["cyan", "orange", "purple"];
+        const particleCount = 50;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement("div");
+          const color = colors[Math.floor(Math.random() * colors.length)];
+          particle.className = `particle ${color}`;
+          particle.style.left = Math.random() * 100 + "%";
+          particle.style.animationDelay = Math.random() * 12 + "s";
+          particle.style.animationDuration = 8 + Math.random() * 8 + "s";
+          container.appendChild(particle);
+        }
+      }
+
+      // 创建光晕效果
+      function createGlowOrbs() {
+        const container = document.getElementById("glowOrbs");
+        const configs = [
+          { class: "blue", size: 300, top: "10%", left: "20%" },
+          { class: "orange", size: 250, top: "60%", right: "15%" },
+          { class: "blue", size: 200, bottom: "20%", left: "40%" },
+          { class: "orange", size: 280, top: "30%", right: "30%" },
+        ];
+
+        configs.forEach((config) => {
+          const orb = document.createElement("div");
+          orb.className = `glow-orb ${config.class}`;
+          orb.style.width = config.size + "px";
+          orb.style.height = config.size + "px";
+          orb.style.top = config.top || "auto";
+          orb.style.left = config.left || "auto";
+          orb.style.right = config.right || "auto";
+          orb.style.bottom = config.bottom || "auto";
+          orb.style.animationDelay = Math.random() * 4 + "s";
+          container.appendChild(orb);
+        });
+      }
+
+      // 语言切换
+      const translations = {
+        en: {
+          title: "Kido Studio",
+          lang: "en",
+        },
+        zh: {
+          title: "Kido Studio",
+          lang: "zh-CN",
+        },
+      };
+
+      function switchLanguage(lang) {
+        const body = document.body;
+        const btnEn = document.getElementById("btn-en");
+        const btnZh = document.getElementById("btn-zh");
+
+        // 移除所有语言类
+        body.classList.remove("lang-en", "lang-zh");
+
+        // 添加新语言类
+        body.classList.add(`lang-${lang}`);
+
+        // 更新按钮状态
+        if (lang === "en") {
+          btnEn.classList.add("active");
+          btnZh.classList.remove("active");
+          document.documentElement.lang = "en";
+          document.title = translations.en.title;
+        } else {
+          btnZh.classList.add("active");
+          btnEn.classList.remove("active");
+          document.documentElement.lang = "zh-CN";
+          document.title = translations.zh.title;
+        }
+      }
+
+      // 初始化
+      document.addEventListener("DOMContentLoaded", () => {
+        createParticles();
+        createGlowOrbs();
+
+        // 卡片鼠标移动效果
+        document.querySelectorAll(".app-card").forEach((card) => {
+          card.addEventListener("mousemove", (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            card.style.setProperty("--mouse-x", x + "%");
+            card.style.setProperty("--mouse-y", y + "%");
+          });
+        });
+
+        // 语言切换按钮
+        document.getElementById("btn-en").addEventListener("click", () => {
+          switchLanguage("en");
+        });
+
+        document.getElementById("btn-zh").addEventListener("click", () => {
+          switchLanguage("zh");
+        });
+
+        // 根据浏览器语言自动选择
+        const userLang = navigator.language || navigator.userLanguage;
+        if (userLang.startsWith("zh")) {
+          switchLanguage("zh");
+        } else {
+          switchLanguage("en");
+        }
+      });
+    </script>
   </body>
 </html>
