@@ -4,6 +4,7 @@ const content = {
     metaDescription:
       "MeshWork 是一个本地优先的创作工作台，让笔记、讨论、AI 参与和 Git 原生共享形成同一个思考系统。",
     nav: {
+      studio: "Kido Studio",
       principles: "核心理念",
       highlights: "功能亮点",
       flow: "工作流",
@@ -206,9 +207,11 @@ const content = {
       title: "未来发展规划",
       body: "我们计划开发 Obsidian 插件版本，让 Windows 和 Linux 用户也能使用 MeshWork。但 Apple 原生应用将始终提供最完整、最流畅的体验——深度融合系统特性、更优的性能和更自然的交互。",
       pluginTitle: "Obsidian 插件",
-      pluginBody: "为 Windows 和 Linux 用户提供完整的 MeshWork 核心功能，包括 AI 讨论参与、知识库检索和 Git 同步。",
+      pluginBody:
+        "为 Windows 和 Linux 用户提供完整的 MeshWork 核心功能，包括 AI 讨论参与、知识库检索和 Git 同步。",
       nativeTitle: "Apple 原生优先",
-      nativeBody: "macOS、iPadOS 和 iOS 版本将始终优先获得新功能，并保持最佳的系统集成和用户体验。",
+      nativeBody:
+        "macOS、iPadOS 和 iOS 版本将始终优先获得新功能，并保持最佳的系统集成和用户体验。",
     },
     pricing: {
       kicker: "Pricing Plans",
@@ -263,6 +266,7 @@ const content = {
     metaDescription:
       "MeshWork is a local-first creative workspace where notes, discussions, AI participation, and Git-native sharing become one thinking system.",
     nav: {
+      studio: "Kido Studio",
       principles: "Principles",
       highlights: "Highlights",
       flow: "Workflow",
@@ -348,8 +352,10 @@ const content = {
       commands: {
         title: "Smart conversation commands",
         body: "Use @ to mention agents or members, # to reference knowledge files, and / to trigger custom commands. Connect conversation with knowledge seamlessly.",
-        atExample: "@agent or @member — Mention someone to join the conversation",
-        hashExample: "#filename — Reference document content from the knowledge base",
+        atExample:
+          "@agent or @member — Mention someone to join the conversation",
+        hashExample:
+          "#filename — Reference document content from the knowledge base",
         slashExample: "/command — Execute predefined custom commands",
       },
       shell: {
@@ -468,9 +474,11 @@ const content = {
       title: "What's coming next",
       body: "We plan to develop an Obsidian plugin to bring MeshWork to Windows and Linux users. However, the native Apple app will always deliver the most complete and fluid experience—with deeper system integration, better performance, and more natural interactions.",
       pluginTitle: "Obsidian Plugin",
-      pluginBody: "Brings core MeshWork features to Windows and Linux users, including AI discussion participation, knowledge base retrieval, and Git sync.",
+      pluginBody:
+        "Brings core MeshWork features to Windows and Linux users, including AI discussion participation, knowledge base retrieval, and Git sync.",
       nativeTitle: "Apple-First",
-      nativeBody: "macOS, iPadOS, and iOS versions will always receive new features first and maintain the best system integration and user experience.",
+      nativeBody:
+        "macOS, iPadOS, and iOS versions will always receive new features first and maintain the best system integration and user experience.",
     },
     pricing: {
       kicker: "Pricing Plans",
@@ -595,10 +603,16 @@ function setLanguage(language, options = {}) {
     const currentHref = link.getAttribute("href");
     if (normalized === "en") {
       // Change to English version
-      link.setAttribute("href", currentHref.replace("manual.html", "manual-en.html"));
+      link.setAttribute(
+        "href",
+        currentHref.replace("manual.html", "manual-en.html"),
+      );
     } else {
       // Change to Chinese version
-      link.setAttribute("href", currentHref.replace("manual-en.html", "manual.html"));
+      link.setAttribute(
+        "href",
+        currentHref.replace("manual-en.html", "manual.html"),
+      );
     }
   });
 
@@ -606,12 +620,16 @@ function setLanguage(language, options = {}) {
   const toolsGrid = document.querySelector(".highlight-tools-grid");
   if (toolsGrid) {
     const tools = dictionary.highlights.knowledgeTools.tools;
-    toolsGrid.innerHTML = tools.map(tool => `
+    toolsGrid.innerHTML = tools
+      .map(
+        (tool) => `
       <div class="highlight-tool-item">
         <code>${tool.name}</code>
         <span>${tool.desc}</span>
       </div>
-    `).join("");
+    `,
+      )
+      .join("");
   }
 }
 
