@@ -1,0 +1,2762 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="google-site-verification"
+      content="QZxeuwJWSPwxLWcCJvSuetemQ0yajgNSKByyAlC5Rmk"
+    />
+    <title>Remote Dock - 让 iPhone 成为 Mac 的完美工作流伴侣</title>
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg-primary: #1a1a24;
+        --bg-secondary: #222230;
+        --bg-card: #2a2a38;
+        --text-primary: #ffffff;
+        --text-secondary: #b0b0c0;
+        --accent-orange: #ff6b35;
+        --accent-gold: #f7b733;
+        --accent-warm: #ff8c42;
+        --gradient-accent: linear-gradient(
+          135deg,
+          #ff6b35 0%,
+          #f7b733 50%,
+          #ff8c42 100%
+        );
+        --gradient-glow: radial-gradient(
+          ellipse at center,
+          rgba(255, 107, 53, 0.25) 0%,
+          transparent 70%
+        );
+        --border-color: rgba(255, 107, 53, 0.3);
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+          "Hiragino Sans GB", sans-serif;
+        line-height: 1.6;
+        color: var(--text-primary);
+        background: var(--bg-primary);
+        overflow-x: hidden;
+      }
+
+      /* 提示框样式 */
+      .toast-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        pointer-events: none;
+      }
+
+      .toast {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 24px 32px;
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.5),
+          0 0 100px rgba(255, 107, 53, 0.2);
+        text-align: center;
+        min-width: 300px;
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(0.9);
+        transition: all 0.3s ease;
+        pointer-events: none;
+      }
+
+      .toast.show {
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1);
+        pointer-events: auto;
+      }
+
+      .toast-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+      }
+
+      .toast-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        background: var(--gradient-accent);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .toast-message {
+        color: var(--text-secondary);
+        font-size: 15px;
+        margin-bottom: 20px;
+      }
+
+      .toast-close {
+        background: var(--gradient-accent);
+        color: var(--bg-primary);
+        border: none;
+        border-radius: 8px;
+        padding: 10px 24px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .toast-close:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(255, 107, 53, 0.4);
+      }
+
+      .toast-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 999;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s;
+      }
+
+      .toast-overlay.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      /* 流光背景动画 */
+      .bg-animation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+
+      .bg-animation::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          ellipse at 30% 20%,
+          rgba(255, 107, 53, 0.15) 0%,
+          transparent 50%
+        );
+        animation: float 20s ease-in-out infinite;
+      }
+
+      .bg-animation::after {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          ellipse at 70% 80%,
+          rgba(247, 183, 51, 0.12) 0%,
+          transparent 50%
+        );
+        animation: float 25s ease-in-out infinite reverse;
+      }
+
+      /* 额外的流光层 */
+      .bg-animation-extra {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+
+      .bg-animation-extra::before {
+        content: "";
+        position: absolute;
+        top: -30%;
+        left: 20%;
+        width: 60%;
+        height: 60%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 140, 66, 0.1) 0%,
+          transparent 60%
+        );
+        animation: float-diagonal 30s ease-in-out infinite;
+      }
+
+      .bg-animation-extra::after {
+        content: "";
+        position: absolute;
+        bottom: -20%;
+        right: 10%;
+        width: 50%;
+        height: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(247, 183, 51, 0.08) 0%,
+          transparent 60%
+        );
+        animation: float-diagonal 35s ease-in-out infinite reverse;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        33% {
+          transform: translate(30px, -30px) rotate(5deg);
+        }
+        66% {
+          transform: translate(-20px, 20px) rotate(-5deg);
+        }
+      }
+
+      @keyframes float-diagonal {
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        25% {
+          transform: translate(40px, -40px) scale(1.1);
+        }
+        50% {
+          transform: translate(-20px, 20px) scale(0.9);
+        }
+        75% {
+          transform: translate(30px, 30px) scale(1.05);
+        }
+      }
+
+      /* 流光线条效果 */
+      .light-beams {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+      }
+
+      .light-beam {
+        position: absolute;
+        width: 2px;
+        height: 100%;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(255, 107, 53, 0.3) 50%,
+          transparent
+        );
+        animation: beam-sweep 8s ease-in-out infinite;
+      }
+
+      @keyframes beam-sweep {
+        0%,
+        100% {
+          opacity: 0;
+          transform: translateX(-100%) rotate(15deg);
+        }
+        50% {
+          opacity: 0.5;
+          transform: translateX(100vw) rotate(15deg);
+        }
+      }
+
+      /* 粒子效果 */
+      .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .particle {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        background: var(--accent-orange);
+        border-radius: 50%;
+        opacity: 0;
+        animation: particle-float 15s infinite;
+        box-shadow:
+          0 0 6px var(--accent-orange),
+          0 0 12px var(--accent-gold);
+      }
+
+      .particle.gold {
+        background: var(--accent-gold);
+        box-shadow:
+          0 0 6px var(--accent-gold),
+          0 0 12px var(--accent-orange);
+      }
+
+      @keyframes particle-float {
+        0% {
+          opacity: 0;
+          transform: translateY(100vh) scale(0);
+        }
+        10% {
+          opacity: 0.8;
+        }
+        90% {
+          opacity: 0.8;
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-10vh) scale(1);
+        }
+      }
+
+      /* 光斑效果 */
+      .light-spots {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .light-spot {
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 107, 53, 0.15) 0%,
+          rgba(247, 183, 51, 0.05) 50%,
+          transparent 70%
+        );
+        animation: spot-pulse 4s ease-in-out infinite;
+      }
+
+      @keyframes spot-pulse {
+        0%,
+        100% {
+          opacity: 0.3;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.7;
+          transform: scale(1.2);
+        }
+      }
+
+      /* 主容器 */
+      .main-container {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* 导航栏 */
+      .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: rgba(26, 26, 36, 0.85);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 107, 53, 0.15);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .nav-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 16px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 24px;
+        font-weight: 700;
+        background: var(--gradient-accent);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.3));
+      }
+
+      .nav-logo img {
+        width: 32px;
+        height: 32px;
+        -webkit-text-fill-color: initial;
+        filter: drop-shadow(0 0 8px rgba(255, 107, 53, 0.4));
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        align-items: center;
+      }
+
+      .nav-link {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 15px;
+        transition: color 0.3s;
+      }
+
+      .nav-link:hover {
+        color: var(--text-primary);
+      }
+
+      .language-switch {
+        display: flex;
+        gap: 8px;
+      }
+
+      .lang-btn {
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s;
+        border: 1px solid var(--border-color);
+      }
+
+      .lang-btn.active {
+        background: var(--gradient-accent);
+        color: var(--bg-primary);
+        border-color: transparent;
+      }
+
+      .lang-btn:not(.active) {
+        background: transparent;
+        color: var(--text-secondary);
+      }
+
+      .lang-btn:not(.active):hover {
+        color: var(--text-primary);
+        border-color: var(--accent-orange);
+      }
+
+      /* Hero 区域 */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 120px 24px 80px;
+        position: relative;
+      }
+
+      .hero-glow {
+        position: absolute;
+        width: 700px;
+        height: 700px;
+        background: var(--gradient-glow);
+        border-radius: 50%;
+        filter: blur(100px);
+        animation: pulse-glow 4s ease-in-out infinite;
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .hero-glow::before {
+        content: "";
+        position: absolute;
+        top: 20%;
+        left: 20%;
+        width: 60%;
+        height: 60%;
+        background: radial-gradient(
+          circle,
+          rgba(247, 183, 51, 0.3) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        animation: inner-glow 3s ease-in-out infinite;
+        pointer-events: none;
+      }
+
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          opacity: 0.7;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.15);
+        }
+      }
+
+      @keyframes inner-glow {
+        0%,
+        100% {
+          opacity: 0.5;
+          transform: scale(0.8);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.2);
+        }
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 20px;
+        background: rgba(255, 107, 53, 0.15);
+        border: 1px solid var(--border-color);
+        border-radius: 30px;
+        font-size: 14px;
+        color: var(--accent-orange);
+        margin-bottom: 32px;
+        animation:
+          fade-in-up 0.8s ease-out,
+          badge-glow 2s ease-in-out infinite 0.8s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-badge::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        animation: badge-shine 3s infinite;
+      }
+
+      @keyframes badge-shine {
+        0% {
+          left: -100%;
+        }
+        50%,
+        100% {
+          left: 100%;
+        }
+      }
+
+      @keyframes badge-glow {
+        0%,
+        100% {
+          box-shadow: 0 0 20px rgba(255, 107, 53, 0.2);
+        }
+        50% {
+          box-shadow: 0 0 30px rgba(255, 107, 53, 0.4);
+        }
+      }
+
+      @keyframes fade-in-up {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .hero h1 {
+        font-size: clamp(48px, 8vw, 80px);
+        font-weight: 800;
+        margin-bottom: 24px;
+        background: var(--gradient-accent);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: fade-in-up 0.8s ease-out 0.2s backwards;
+        filter: drop-shadow(0 0 30px rgba(255, 107, 53, 0.3));
+        position: relative;
+      }
+
+      .hero h1::after {
+        content: "Remote Dock";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: var(--gradient-accent);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: blur(20px);
+        opacity: 0.4;
+        z-index: -1;
+        animation: title-glow 3s ease-in-out infinite;
+      }
+
+      @keyframes title-glow {
+        0%,
+        100% {
+          opacity: 0.3;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.5;
+          transform: scale(1.02);
+        }
+      }
+
+      .hero-tagline {
+        font-size: clamp(16px, 2.5vw, 22px);
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto 40px;
+        line-height: 1.8;
+        animation: fade-in-up 0.8s ease-out 0.4s backwards;
+        text-align: left;
+      }
+
+      .hero-tagline .feature-highlight {
+        display: flex;
+        align-items: center;
+        margin: 12px 0;
+        padding: 10px 20px;
+        background: rgba(255, 107, 53, 0.05);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 107, 53, 0.1);
+        transition: all 0.3s;
+      }
+
+      .hero-tagline .feature-highlight:hover {
+        background: rgba(255, 107, 53, 0.1);
+        border-color: rgba(255, 107, 53, 0.2);
+        transform: translateX(4px);
+      }
+
+      .hero-tagline .feature-highlight::before {
+        content: "✦";
+        color: var(--accent-orange);
+        margin-right: 12px;
+        font-size: 18px;
+        flex-shrink: 0;
+      }
+
+      .hero-buttons {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 60px;
+        animation: fade-in-up 0.8s ease-out 0.6s backwards;
+        position: relative;
+        z-index: 10;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 32px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s;
+        pointer-events: none;
+      }
+
+      .btn:hover::before {
+        left: 100%;
+      }
+
+      .btn-primary {
+        background: var(--gradient-accent);
+        color: var(--bg-primary);
+        box-shadow:
+          0 4px 20px rgba(255, 107, 53, 0.4),
+          0 0 40px rgba(255, 107, 53, 0.2);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn-primary::after {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+          45deg,
+          transparent 30%,
+          rgba(255, 255, 255, 0.3) 50%,
+          transparent 70%
+        );
+        transform: rotate(45deg) translateX(-100%);
+        transition: transform 0.6s;
+        pointer-events: none;
+      }
+
+      .btn-primary:hover::after {
+        transform: rotate(45deg) translateX(100%);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow:
+          0 8px 30px rgba(255, 107, 53, 0.5),
+          0 0 60px rgba(255, 107, 53, 0.3);
+      }
+
+      .btn-secondary {
+        background: rgba(255, 107, 53, 0.1);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(255, 107, 53, 0.2);
+        border-color: var(--accent-orange);
+      }
+
+      .hero-poster {
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow:
+          0 20px 60px rgba(255, 107, 53, 0.3),
+          0 0 100px rgba(255, 107, 53, 0.1);
+        animation:
+          fade-in-up 1s ease-out 0.8s backwards,
+          poster-float 6s ease-in-out infinite 1.8s;
+        position: relative;
+        border: 1px solid rgba(255, 107, 53, 0.2);
+      }
+
+      .hero-poster::before {
+        content: "";
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--gradient-accent);
+        border-radius: 24px;
+        opacity: 0;
+        z-index: -1;
+        animation: poster-glow 3s ease-in-out infinite 1.8s;
+      }
+
+      .hero-poster::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 107, 53, 0.15) 0%,
+          transparent 50%
+        );
+        pointer-events: none;
+      }
+
+      @keyframes poster-float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      @keyframes poster-glow {
+        0%,
+        100% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+
+      .hero-poster img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      /* 内容区域 */
+      .content {
+        display: none;
+      }
+
+      .content.active {
+        display: block;
+      }
+
+      /* Section */
+      .section {
+        padding: 100px 0;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .section-badge {
+        display: inline-block;
+        padding: 6px 16px;
+        background: rgba(255, 107, 53, 0.15);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        font-size: 13px;
+        color: var(--accent-orange);
+        margin-bottom: 16px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 4px 20px rgba(255, 107, 53, 0.2);
+      }
+
+      .section-title {
+        font-size: clamp(32px, 5vw, 48px);
+        font-weight: 700;
+        margin-bottom: 16px;
+        position: relative;
+        display: block;
+      }
+
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60%;
+        height: 3px;
+        background: var(--gradient-accent);
+        border-radius: 2px;
+      }
+
+      .section-desc {
+        font-size: 18px;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* 功能卡片 */
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+      }
+
+      .feature-card {
+        background: var(--bg-card);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 32px;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--gradient-accent);
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .feature-card::after {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle at center,
+          rgba(255, 107, 53, 0.1) 0%,
+          transparent 70%
+        );
+        opacity: 0;
+        transition: opacity 0.4s;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--border-color);
+        box-shadow: 0 20px 40px rgba(255, 107, 53, 0.15);
+      }
+
+      .feature-card:hover::before {
+        opacity: 1;
+      }
+
+      .feature-card:hover::after {
+        opacity: 1;
+      }
+
+      .feature-icon {
+        width: 56px;
+        height: 56px;
+        background: var(--gradient-accent);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        margin-bottom: 20px;
+        box-shadow:
+          0 8px 24px rgba(255, 107, 53, 0.3),
+          0 0 40px rgba(255, 107, 53, 0.2);
+        animation: icon-float 3s ease-in-out infinite;
+        position: relative;
+      }
+
+      .feature-icon::after {
+        content: "";
+        position: absolute;
+        top: -4px;
+        left: -4px;
+        right: -4px;
+        bottom: -4px;
+        background: var(--gradient-accent);
+        border-radius: 18px;
+        opacity: 0;
+        z-index: -1;
+        filter: blur(8px);
+        animation: icon-glow 3s ease-in-out infinite;
+      }
+
+      @keyframes icon-float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-4px);
+        }
+      }
+
+      @keyframes icon-glow {
+        0%,
+        100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 0.6;
+        }
+      }
+
+      .feature-title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .feature-desc {
+        color: var(--text-secondary);
+        line-height: 1.7;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* 独特功能 */
+      .unique-box {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 107, 53, 0.1) 0%,
+          rgba(247, 183, 51, 0.08) 100%
+        );
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        padding: 48px;
+        box-shadow: 0 10px 40px rgba(255, 107, 53, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .unique-box::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(255, 107, 53, 0.1) 0%,
+          transparent 70%
+        );
+        animation: rotate-gradient 20s linear infinite;
+      }
+
+      @keyframes rotate-gradient {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .unique-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 32px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .unique-item {
+        display: flex;
+        gap: 16px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .unique-icon {
+        width: 48px;
+        height: 48px;
+        background: var(--gradient-accent);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        flex-shrink: 0;
+        box-shadow: 0 4px 16px rgba(255, 107, 53, 0.3);
+      }
+
+      .unique-content h4 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+
+      .unique-content p {
+        color: var(--text-secondary);
+        font-size: 15px;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* 快速开始 */
+      .steps-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 24px;
+      }
+
+      .step-card {
+        background: var(--bg-card);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 32px 24px;
+        text-align: center;
+        position: relative;
+        transition: all 0.3s;
+        overflow: hidden;
+      }
+
+      .step-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+          circle at center,
+          rgba(255, 107, 53, 0.1) 0%,
+          transparent 70%
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .step-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--border-color);
+      }
+
+      .step-card:hover::before {
+        opacity: 1;
+      }
+
+      .step-number {
+        width: 48px;
+        height: 48px;
+        background: var(--gradient-accent);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0 auto 20px;
+        color: var(--bg-primary);
+        box-shadow: 0 4px 20px rgba(255, 107, 53, 0.4);
+        position: relative;
+        z-index: 1;
+      }
+
+      .step-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .step-desc {
+        color: var(--text-secondary);
+        font-size: 15px;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* 系统要求 */
+      .requirements-box {
+        background: var(--bg-card);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 40px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 32px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      .req-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .req-icon {
+        width: 56px;
+        height: 56px;
+        background: rgba(255, 107, 53, 0.15);
+        border: 1px solid rgba(255, 107, 53, 0.3);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        flex-shrink: 0;
+        box-shadow: 0 4px 16px rgba(255, 107, 53, 0.2);
+      }
+
+      .req-text strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .req-text span {
+        color: var(--text-secondary);
+      }
+
+      /* FAQ */
+      .faq-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 20px;
+      }
+
+      .faq-item {
+        background: var(--bg-card);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 24px;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .faq-item::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: var(--gradient-accent);
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .faq-item:hover {
+        border-color: var(--border-color);
+        transform: translateX(4px);
+      }
+
+      .faq-item:hover::before {
+        opacity: 1;
+      }
+
+      .faq-question {
+        font-size: 17px;
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+
+      .faq-answer {
+        color: var(--text-secondary);
+        font-size: 15px;
+        line-height: 1.7;
+      }
+
+      /* 下载指南 */
+      .download-section {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 107, 53, 0.15) 0%,
+          rgba(247, 183, 51, 0.1) 100%
+        );
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        padding: 48px;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(255, 107, 53, 0.15);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .download-section::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(255, 107, 53, 0.1) 0%,
+          transparent 70%
+        );
+        animation: rotate-gradient 30s linear infinite;
+      }
+
+      .download-section h3 {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .download-section > p {
+        color: var(--text-secondary);
+        margin-bottom: 32px;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        z-index: 1;
+      }
+
+      .download-buttons {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 32px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .install-note {
+        background: rgba(255, 140, 66, 0.15);
+        border: 1px solid rgba(255, 140, 66, 0.4);
+        border-radius: 16px;
+        padding: 24px;
+        text-align: left;
+        max-width: 600px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+      }
+
+      .install-note h4 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: var(--accent-orange);
+      }
+
+      .install-note p {
+        color: var(--text-secondary);
+        margin-bottom: 16px;
+      }
+
+      .install-note ol {
+        margin-left: 24px;
+        color: var(--text-secondary);
+      }
+
+      .install-note li {
+        margin-bottom: 8px;
+        line-height: 1.6;
+      }
+
+      /* 截图画廊 */
+      .screenshot-gallery {
+        position: relative;
+        margin: 40px 0;
+      }
+
+      .gallery-scroll-container {
+        display: flex;
+        gap: 24px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding: 20px 4px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent-orange) var(--bg-secondary);
+        align-items: center;
+      }
+
+      .gallery-scroll-container::-webkit-scrollbar {
+        height: 8px;
+      }
+
+      .gallery-scroll-container::-webkit-scrollbar-track {
+        background: var(--bg-secondary);
+        border-radius: 4px;
+      }
+
+      .gallery-scroll-container::-webkit-scrollbar-thumb {
+        background: var(--gradient-accent);
+        border-radius: 4px;
+      }
+
+      .screenshot-item {
+        flex: 0 0 auto;
+        scroll-snap-align: center;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 107, 53, 0.2);
+        transition: all 0.3s ease;
+        position: relative;
+        background: transparent;
+      }
+
+      .screenshot-item:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 48px rgba(255, 107, 53, 0.25);
+        border-color: rgba(255, 107, 53, 0.4);
+      }
+
+      .screenshot-item img {
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: none;
+      }
+
+      .screenshot-item.mac-screenshot {
+        background: transparent;
+        border-radius: 12px;
+        padding: 0;
+        border: none;
+      }
+
+      .screenshot-item.mac-screenshot img {
+        max-height: 400px;
+        width: auto;
+        border-radius: 10px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      }
+
+      .screenshot-item.ios-screenshot {
+        border-radius: 28px;
+      }
+
+      .screenshot-item.ios-screenshot img {
+        max-height: 500px;
+        width: auto;
+        border-radius: 28px;
+      }
+
+      .screenshot-item.ios-screenshot.landscape {
+        flex: 0 0 auto;
+      }
+
+      .screenshot-item.ios-screenshot.landscape img {
+        max-height: 250px;
+        max-width: 450px;
+        border-radius: 20px;
+      }
+
+      .gallery-nav {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .gallery-nav-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        font-size: 18px;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .gallery-nav-btn:hover {
+        background: var(--gradient-accent);
+        border-color: transparent;
+        transform: scale(1.1);
+      }
+
+      /* 语言控制显示 */
+      .screenshot-item {
+        display: none;
+      }
+
+      body.lang-zh .screenshot-item[data-lang="zh"] {
+        display: block;
+      }
+
+      body.lang-en .screenshot-item[data-lang="en"] {
+        display: block;
+      }
+
+      /* Footer */
+      .footer {
+        padding: 60px 0 40px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        margin-top: 100px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(255, 107, 53, 0.03)
+        );
+      }
+
+      .footer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 32px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .footer-link {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 15px;
+        transition: color 0.3s;
+      }
+
+      .footer-link:hover {
+        color: var(--accent-orange);
+      }
+
+      .contact-box {
+        background: var(--gradient-accent);
+        border-radius: 20px;
+        padding: 32px 48px;
+        text-align: center;
+        margin-top: 40px;
+        box-shadow: 0 20px 60px rgba(255, 107, 53, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .contact-box::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.1) 0%,
+          transparent 70%
+        );
+        animation: contact-shine 4s ease-in-out infinite;
+      }
+
+      @keyframes contact-shine {
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        50% {
+          transform: translate(20px, -20px) scale(1.1);
+        }
+      }
+
+      .contact-box p {
+        margin-bottom: 8px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .contact-box a {
+        color: var(--bg-primary);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .contact-box a:hover {
+        text-decoration: underline;
+      }
+
+      /* 响应式 */
+      @media (max-width: 768px) {
+        .nav-content {
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .nav-links {
+          gap: 16px;
+        }
+
+        .hero {
+          padding: 100px 20px 60px;
+        }
+
+        .hero-buttons {
+          flex-direction: column;
+          width: 100%;
+          max-width: 300px;
+        }
+
+        .btn {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .section {
+          padding: 60px 0;
+        }
+
+        .features-grid,
+        .unique-grid,
+        .steps-container,
+        .requirements-box,
+        .faq-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .unique-box {
+          padding: 32px 24px;
+        }
+
+        .download-section {
+          padding: 32px 24px;
+        }
+
+        .screenshot-item.mac-screenshot img {
+          max-height: 250px;
+        }
+
+        .screenshot-item.ios-screenshot img {
+          max-height: 350px;
+        }
+
+        .gallery-scroll-container {
+          gap: 16px;
+          padding: 16px 4px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-animation"></div>
+    <div class="bg-animation-extra"></div>
+    <div class="light-beams" id="lightBeams"></div>
+    <div class="particles" id="particles"></div>
+    <div class="light-spots" id="lightSpots"></div>
+
+    <nav class="nav">
+      <div class="nav-content">
+        <div class="nav-logo">
+          <img src="images/favicon.png" alt="Remote Dock Logo" />
+          <span>Remote Dock</span>
+        </div>
+        <div class="nav-links">
+          <a href="../" class="nav-link">Kido Studio</a>
+          <a href="#features" class="nav-link">功能</a>
+          <a href="#download" class="nav-link">下载</a>
+          <a href="#faq" class="nav-link">FAQ</a>
+          <div class="language-switch">
+            <a href="#chinese" class="lang-btn active" id="btn-cn">中文</a>
+            <a href="#english" class="lang-btn" id="btn-en">EN</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 中文版本 -->
+    <div id="chinese" class="content active">
+      <section class="hero">
+        <div class="hero-glow"></div>
+        <div class="main-container">
+          <div class="hero-badge">🚀 全新体验</div>
+          <h1>Remote Dock</h1>
+          <p class="hero-tagline">
+            <span class="feature-highlight"
+              >强大的剪贴板管理，最近复制内容、搜索、一键粘贴</span
+            >
+            <span class="feature-highlight"
+              >从 iPhone 上便捷访问 Mac 应用，快速切换应用</span
+            >
+          </p>
+          <div class="hero-buttons">
+            <a
+              href="javascript:void(0)"
+              class="btn btn-primary"
+              onclick="showMacStoreNotice('cn')"
+            >
+              <span>⬇️</span> 下载 Mac 版本
+            </a>
+            <a
+              href="javascript:void(0)"
+              class="btn btn-secondary"
+              id="iosBtn-cn"
+              onclick="showComingSoon('cn')"
+            >
+              <span>📱</span> iOS 版本
+            </a>
+          </div>
+          <div class="hero-poster">
+            <img src="poster_cn.png" alt="Remote Dock" loading="lazy" />
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">核心功能</div>
+            <h2 class="section-title">强大功能，简单体验</h2>
+            <p class="section-desc">
+              精心设计的每一个功能，让你的工作流程更加高效
+            </p>
+          </div>
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon">📱</div>
+              <h3 class="feature-title">手机是你的桌面伴侣</h3>
+              <p class="feature-desc">
+                通过手机无缝访问桌面端应用，快速切换应用，减少在多个应用间寻找的烦恼
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🔄</div>
+              <h3 class="feature-title">灵活配置，实时更新</h3>
+              <p class="feature-desc">
+                在桌面端配置常用应用、隐藏敏感应用，手机端可实时查看桌面端应用状态
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">📋</div>
+              <h3 class="feature-title">强大的剪贴板管理</h3>
+              <p class="feature-desc">
+                桌面端是一个强大的剪贴板管理应用，可独立使用。配合手机端，则实现剪贴板跨设备预览与访问
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">界面展示</div>
+            <h2 class="section-title">桌面端界面</h2>
+            <p class="section-desc">简洁高效的设计，让你的工作流程更加顺畅</p>
+          </div>
+          <div class="screenshot-gallery">
+            <div class="gallery-scroll-container" id="macGallery-cn">
+              <div class="screenshot-item mac-screenshot" data-lang="zh">
+                <img
+                  src="images/mac/zh/Xnip2026-05-09_11-01-56.jpg"
+                  alt="Mac界面1"
+                  loading="lazy"
+                />
+              </div>
+              <div class="screenshot-item mac-screenshot" data-lang="zh">
+                <img
+                  src="images/mac/zh/Xnip2026-05-09_11-02-09.jpg"
+                  alt="Mac界面2"
+                  loading="lazy"
+                />
+              </div>
+              <div class="screenshot-item mac-screenshot" data-lang="zh">
+                <img
+                  src="images/mac/zh/Xnip2026-05-09_11-02-20.jpg"
+                  alt="Mac界面3"
+                  loading="lazy"
+                />
+              </div>
+              <div class="screenshot-item mac-screenshot" data-lang="zh">
+                <img
+                  src="images/mac/zh/Xnip2026-05-09_11-02-30.jpg"
+                  alt="Mac界面4"
+                  loading="lazy"
+                />
+              </div>
+              <div class="screenshot-item mac-screenshot" data-lang="zh">
+                <img
+                  src="images/mac/zh/Xnip2026-05-09_11-02-40.jpg"
+                  alt="Mac界面5"
+                  loading="lazy"
+                />
+              </div>
+              <div class="screenshot-item mac-screenshot" data-lang="zh">
+                <img
+                  src="images/mac/zh/Xnip2026-05-09_11-02-50.jpg"
+                  alt="Mac界面6"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">移动端</div>
+            <h2 class="section-title">手机端界面</h2>
+            <p class="section-desc">随时随地访问 Mac 应用，尽在指尖</p>
+          </div>
+          <div class="screenshot-gallery">
+            <div class="gallery-scroll-container" id="iosGallery-cn">
+              <div class="screenshot-item ios-screenshot" data-lang="zh">
+                <img
+                  src="images/ios/zh/Simulator Screenshot - iPhone 17 Pro - 2026-05-09 at 11.00.30.png"
+                  alt="iOS界面1"
+                  loading="lazy"
+                />
+              </div>
+              <div class="screenshot-item ios-screenshot" data-lang="zh">
+                <img
+                  src="images/ios/zh/Simulator Screenshot - iPhone 17 Pro - 2026-05-09 at 10.59.50.png"
+                  alt="iOS界面2"
+                  loading="lazy"
+                />
+              </div>
+              <div class="screenshot-item ios-screenshot" data-lang="zh">
+                <img
+                  src="images/ios/zh/Simulator Screenshot - iPhone 17 Pro - 2026-05-09 at 10.59.55.png"
+                  alt="iOS界面3"
+                  loading="lazy"
+                />
+              </div>
+              <div class="screenshot-item ios-screenshot" data-lang="zh">
+                <img
+                  src="images/ios/zh/Simulator Screenshot - iPhone 17 Pro - 2026-05-09 at 11.00.00.png"
+                  alt="iOS界面4"
+                  loading="lazy"
+                />
+              </div>
+              <div class="screenshot-item ios-screenshot" data-lang="zh">
+                <img
+                  src="images/ios/zh/Simulator Screenshot - iPhone 17 Pro - 2026-05-09 at 11.00.06.png"
+                  alt="iOS界面5"
+                  loading="lazy"
+                />
+              </div>
+              <div
+                class="screenshot-item ios-screenshot landscape"
+                data-lang="zh"
+              >
+                <img
+                  src="images/ios/zh/Simulator Screenshot - iPhone 17 Pro - 2026-05-09 at 11.00.16.png"
+                  alt="iOS界面6"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">独特优势</div>
+            <h2 class="section-title">为什么选择 Remote Dock</h2>
+          </div>
+          <div class="unique-box">
+            <div class="unique-grid">
+              <div class="unique-item">
+                <div class="unique-icon">✨</div>
+                <div class="unique-content">
+                  <h4>剪贴板支持富文本</h4>
+                  <p>复制时完整保留文本格式、样式和链接</p>
+                </div>
+              </div>
+              <div class="unique-item">
+                <div class="unique-icon">🔍</div>
+                <div class="unique-content">
+                  <h4>最近复制内容拼音搜索</h4>
+                  <p>支持使用拼音搜索最近复制的内容</p>
+                </div>
+              </div>
+              <div class="unique-item">
+                <div class="unique-icon">🔗</div>
+                <div class="unique-content">
+                  <h4>多选剪贴板内容快速拼接</h4>
+                  <p>按住 Shift 键连续选择多条剪贴板内容，一键合并发送</p>
+                </div>
+              </div>
+              <div class="unique-item">
+                <div class="unique-icon">📏</div>
+                <div class="unique-content">
+                  <h4>剪贴浮窗可调整</h4>
+                  <p>可通过键盘 zoom in/out 调整浮窗中文字大小</p>
+                </div>
+              </div>
+              <div class="unique-item">
+                <div class="unique-icon">🎯</div>
+                <div class="unique-content">
+                  <h4>应用管理高可定制化</h4>
+                  <p>当前应用列表可配置隐藏不需要展示的应用</p>
+                </div>
+              </div>
+              <div class="unique-item">
+                <div class="unique-icon">📱</div>
+                <div class="unique-content">
+                  <h4>横屏双栏显示</h4>
+                  <p>横屏双栏显示，最大限度利用手机屏幕空间</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">快速开始</div>
+            <h2 class="section-title">简单四步，即刻开始</h2>
+          </div>
+          <div class="steps-container">
+            <div class="step-card">
+              <div class="step-number">1</div>
+              <h3 class="step-title">启动 Mac 应用</h3>
+              <p class="step-desc">在 Mac 上打开 Remote Dock</p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">2</div>
+              <h3 class="step-title">查看配对码</h3>
+              <p class="step-desc">菜单栏显示 4 位配对码</p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">3</div>
+              <h3 class="step-title">打开 iPhone 应用</h3>
+              <p class="step-desc">输入配对码完成连接</p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">4</div>
+              <h3 class="step-title">开始使用</h3>
+              <p class="step-desc">用 iPhone 访问 Mac 应用</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">系统要求</div>
+            <h2 class="section-title">兼容性</h2>
+          </div>
+          <div class="requirements-box">
+            <div class="req-item">
+              <div class="req-icon">🍎</div>
+              <div class="req-text">
+                <strong>Mac</strong>
+                <span>macOS 15.0 及更高版本</span>
+              </div>
+            </div>
+            <div class="req-item">
+              <div class="req-icon">📱</div>
+              <div class="req-text">
+                <strong>iPhone</strong>
+                <span>iOS 17.0 及更高版本</span>
+              </div>
+            </div>
+            <div class="req-item">
+              <div class="req-icon">🔗</div>
+              <div class="req-text">
+                <strong>网络</strong>
+                <span>同一 Wi-Fi 或 Apple 近距连接</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="download">
+        <div class="main-container">
+          <div class="download-section">
+            <h3>📥 下载 Mac 版本</h3>
+            <p>Mac 版本不在 Mac App Store 分发，请从 GitHub 下载最新版本</p>
+            <div class="download-buttons">
+              <a
+                href="javascript:void(0)"
+                class="btn btn-primary"
+                onclick="showMacStoreNotice('cn')"
+              >
+                直接下载 ZIP
+              </a>
+              <a
+                href="https://github.com/kidoln/remotedock/releases/"
+                class="btn btn-secondary"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                查看 Releases
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="faq">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">FAQ</div>
+            <h2 class="section-title">常见问题</h2>
+          </div>
+          <div class="faq-grid">
+            <div class="faq-item">
+              <h4 class="faq-question">Remote Dock 是免费的吗？</h4>
+              <p class="faq-answer">
+                <strong>Mac 版本：</strong>完全免费<br /><strong
+                  >iOS 版本：</strong
+                >基础功能免费，高级功能需一次性购买
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4 class="faq-question">需要互联网连接吗？</h4>
+              <p class="faq-answer">
+                不需要。只需本地网络或 Apple 近距连接即可使用。
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4 class="faq-question">数据安全吗？</h4>
+              <p class="faq-answer">
+                完全安全。所有数据仅在本地设备间传输，不上传云端。
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4 class="faq-question">点击应用图标后没有立即响应？</h4>
+              <p class="faq-answer">
+                这通常是由于本地网络干扰造成的。请稍等片刻，或尝试重启应用。如果问题持续，请确保两台设备在同一网络下。
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4 class="faq-question">当前功能有哪些局限？</h4>
+              <p class="faq-answer">
+                当桌面使用多个空间（Space）时，应用启动可能无法完全符合预期。这是由于苹果提供的
+                API 限制所致。
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4 class="faq-question">我需要更新应用吗？</h4>
+              <p class="faq-answer">
+                强烈建议您随时更新到最新版本。新版本不仅带来新功能，还能修复已知问题，提升使用体验。请定期关注本站主页获取最新动态。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="main-container">
+          <div class="footer-content">
+            <div class="footer-links">
+              <a href="privacy-policy.html" class="footer-link">隐私政策</a>
+              <a href="https://github.com/kidoln/remotedock" class="footer-link"
+                >GitHub 仓库</a
+              >
+            </div>
+            <div class="contact-box">
+              <p>需要帮助？联系我们：</p>
+              <p>
+                <a href="mailto:kido.ln@gmail.com">kido.ln@gmail.com</a> •
+                <a href="https://github.com/kidoln/remotedock">GitHub</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- 英文版本 -->
+    <div id="english" class="content">
+      <section class="hero">
+        <div class="hero-glow"></div>
+        <div class="main-container">
+          <div class="hero-badge">🚀 New Experience</div>
+          <h1>Remote Dock</h1>
+          <p class="hero-tagline">
+            <span class="feature-highlight"
+              >Powerful clipboard manager with copy history and search</span
+            >
+            <span class="feature-highlight"
+              >Access Mac apps from your iPhone, switch apps instantly</span
+            >
+          </p>
+          <div class="hero-buttons">
+            <a
+              href="javascript:void(0)"
+              class="btn btn-primary"
+              onclick="showMacStoreNotice('en')"
+            >
+              <span>⬇️</span> Download for Mac
+            </a>
+            <a
+              href="javascript:void(0)"
+              class="btn btn-secondary"
+              id="iosBtn-en"
+              onclick="showComingSoon('en')"
+            >
+              <span>📱</span> iOS Version
+            </a>
+          </div>
+          <div class="hero-poster">
+            <img src="poster_en.png" alt="Remote Dock" loading="lazy" />
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">Features</div>
+            <h2 class="section-title">Powerful Features, Simple Experience</h2>
+            <p class="section-desc">
+              Every feature carefully designed to make your workflow more
+              efficient
+            </p>
+          </div>
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon">📱</div>
+              <h3 class="feature-title">Your iPhone as Desktop Companion</h3>
+              <p class="feature-desc">
+                Seamlessly access desktop apps and switch between them from your
+                phone, eliminating the hassle of searching through multiple apps
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🔄</div>
+              <h3 class="feature-title">
+                Flexible Configuration, Real-time Updates
+              </h3>
+              <p class="feature-desc">
+                Configure favorite apps and hide sensitive apps on desktop, view
+                real-time desktop app status on your phone
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">📋</div>
+              <h3 class="feature-title">Powerful Clipboard Management</h3>
+              <p class="feature-desc">
+                A powerful clipboard manager for desktop that works standalone.
+                Pair with the mobile app for cross-device clipboard preview and
+                access
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">Interface</div>
+            <h2 class="section-title">Desktop Interface</h2>
+            <p class="section-desc">
+              Clean and efficient design for a smoother workflow
+            </p>
+          </div>
+          <div class="screenshot-gallery">
+            <div class="gallery-scroll-container" id="macGallery-en">
+              <div class="screenshot-item mac-screenshot" data-lang="en">
+                <img
+                  src="images/mac/en/Xnip2026-05-09_09-35-52.jpg"
+                  alt="Mac interface 1"
+                  loading="lazy"
+                />
+              </div>
+              <div class="screenshot-item mac-screenshot" data-lang="en">
+                <img
+                  src="images/mac/en/Xnip2026-05-09_09-36-28.jpg"
+                  alt="Mac interface 2"
+                  loading="lazy"
+                />
+              </div>
+              <div class="screenshot-item mac-screenshot" data-lang="en">
+                <img
+                  src="images/mac/en/Xnip2026-05-09_09-36-38.jpg"
+                  alt="Mac interface 3"
+                  loading="lazy"
+                />
+              </div>
+              <div class="screenshot-item mac-screenshot" data-lang="en">
+                <img
+                  src="images/mac/en/Xnip2026-05-09_09-36-48.jpg"
+                  alt="Mac interface 4"
+                  loading="lazy"
+                />
+              </div>
+              <div class="screenshot-item mac-screenshot" data-lang="en">
+                <img
+                  src="images/mac/en/Xnip2026-05-09_09-36-55.jpg"
+                  alt="Mac interface 5"
+                  loading="lazy"
+                />
+              </div>
+              <div class="screenshot-item mac-screenshot" data-lang="en">
+                <img
+                  src="images/mac/en/Xnip2026-05-09_09-37-01.jpg"
+                  alt="Mac interface 6"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">Mobile</div>
+            <h2 class="section-title">iPhone Interface</h2>
+            <p class="section-desc">Access your Mac apps anytime, anywhere</p>
+          </div>
+          <div class="screenshot-gallery">
+            <div class="gallery-scroll-container" id="iosGallery-en">
+              <div class="screenshot-item ios-screenshot" data-lang="en">
+                <img
+                  src="images/ios/en/Simulator Screenshot - iPhone 17 Pro - 2026-05-09 at 09.32.38.png"
+                  alt="iOS interface 1"
+                  loading="lazy"
+                />
+              </div>
+              <div class="screenshot-item ios-screenshot" data-lang="en">
+                <img
+                  src="images/ios/en/Simulator Screenshot - iPhone 17 Pro - 2026-05-09 at 09.30.33.png"
+                  alt="iOS interface 2"
+                  loading="lazy"
+                />
+              </div>
+              <div class="screenshot-item ios-screenshot" data-lang="en">
+                <img
+                  src="images/ios/en/Simulator Screenshot - iPhone 17 Pro - 2026-05-09 at 09.30.52.png"
+                  alt="iOS interface 3"
+                  loading="lazy"
+                />
+              </div>
+              <div class="screenshot-item ios-screenshot" data-lang="en">
+                <img
+                  src="images/ios/en/Simulator Screenshot - iPhone 17 Pro - 2026-05-09 at 09.31.11.png"
+                  alt="iOS interface 4"
+                  loading="lazy"
+                />
+              </div>
+              <div class="screenshot-item ios-screenshot" data-lang="en">
+                <img
+                  src="images/ios/en/Simulator Screenshot - iPhone 17 Pro - 2026-05-09 at 09.31.18.png"
+                  alt="iOS interface 5"
+                  loading="lazy"
+                />
+              </div>
+              <div
+                class="screenshot-item ios-screenshot landscape"
+                data-lang="en"
+              >
+                <img
+                  src="images/ios/en/Simulator Screenshot - iPhone 17 Pro - 2026-05-09 at 09.31.32.png"
+                  alt="iOS interface 6"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">Why Remote Dock</div>
+            <h2 class="section-title">Why Choose Remote Dock</h2>
+          </div>
+          <div class="unique-box">
+            <div class="unique-grid">
+              <div class="unique-item">
+                <div class="unique-icon">✨</div>
+                <div class="unique-content">
+                  <h4>Rich Text Clipboard Support</h4>
+                  <p>
+                    Preserve text formatting, styles, and links when copying
+                  </p>
+                </div>
+              </div>
+              <div class="unique-item">
+                <div class="unique-icon">🔍</div>
+                <div class="unique-content">
+                  <h4>Copy History Pinyin Search</h4>
+                  <p>Search recently copied items using Chinese Pinyin</p>
+                </div>
+              </div>
+              <div class="unique-item">
+                <div class="unique-icon">🔗</div>
+                <div class="unique-content">
+                  <h4>Multi-Select Clipboard Merge</h4>
+                  <p>
+                    Hold Shift to select multiple clipboard items, merge them
+                    with one keystroke
+                  </p>
+                </div>
+              </div>
+              <div class="unique-item">
+                <div class="unique-icon">📏</div>
+                <div class="unique-content">
+                  <h4>Adjustable Floating Window</h4>
+                  <p>
+                    Adjust text size in the floating window using keyboard zoom
+                    in/out
+                  </p>
+                </div>
+              </div>
+              <div class="unique-item">
+                <div class="unique-icon">🎯</div>
+                <div class="unique-content">
+                  <h4>Highly Customizable App Management</h4>
+                  <p>
+                    Configure to hide unwanted apps from the current app list
+                  </p>
+                </div>
+              </div>
+              <div class="unique-item">
+                <div class="unique-icon">📱</div>
+                <div class="unique-content">
+                  <h4>Landscape Dual-Column Layout</h4>
+                  <p>
+                    Dual-column display in landscape mode maximizes phone screen
+                    space
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">Quick Start</div>
+            <h2 class="section-title">Get Started in 4 Steps</h2>
+          </div>
+          <div class="steps-container">
+            <div class="step-card">
+              <div class="step-number">1</div>
+              <h3 class="step-title">Launch Mac App</h3>
+              <p class="step-desc">Open Remote Dock on your Mac</p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">2</div>
+              <h3 class="step-title">View Pairing Code</h3>
+              <p class="step-desc">4-digit code shown in menu bar</p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">3</div>
+              <h3 class="step-title">Open iPhone App</h3>
+              <p class="step-desc">Enter the pairing code to connect</p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">4</div>
+              <h3 class="step-title">Start Using</h3>
+              <p class="step-desc">Use iPhone to access your Mac apps</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">Requirements</div>
+            <h2 class="section-title">Compatibility</h2>
+          </div>
+          <div class="requirements-box">
+            <div class="req-item">
+              <div class="req-icon">🍎</div>
+              <div class="req-text">
+                <strong>Mac</strong>
+                <span>macOS 15.0 or later</span>
+              </div>
+            </div>
+            <div class="req-item">
+              <div class="req-icon">📱</div>
+              <div class="req-text">
+                <strong>iPhone</strong>
+                <span>iOS 17.0 or later</span>
+              </div>
+            </div>
+            <div class="req-item">
+              <div class="req-icon">🔗</div>
+              <div class="req-text">
+                <strong>Network</strong>
+                <span>Same Wi-Fi or Apple Peer-to-Peer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="download">
+        <div class="main-container">
+          <div class="download-section">
+            <h3>📥 Download Mac Version</h3>
+            <p>
+              The Mac version is not distributed on the Mac App Store. Please
+              download from GitHub
+            </p>
+            <div class="download-buttons">
+              <a
+                href="javascript:void(0)"
+                class="btn btn-primary"
+                onclick="showMacStoreNotice('en')"
+              >
+                Download ZIP
+              </a>
+              <a
+                href="https://github.com/kidoln/remotedock/releases/"
+                class="btn btn-secondary"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View Releases
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="faq">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">FAQ</div>
+            <h2 class="section-title">Frequently Asked Questions</h2>
+          </div>
+          <div class="faq-grid">
+            <div class="faq-item">
+              <h4 class="faq-question">Is Remote Dock free?</h4>
+              <p class="faq-answer">
+                <strong>Mac version:</strong> Completely free<br /><strong
+                  >iOS version:</strong
+                >
+                Basic features free, one-time purchase for advanced features
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4 class="faq-question">Need internet connection?</h4>
+              <p class="faq-answer">
+                No. Just local network or Apple Peer-to-Peer connection.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4 class="faq-question">Is my data secure?</h4>
+              <p class="faq-answer">
+                Completely secure. All data is transferred locally between
+                devices, never uploaded to the cloud.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4 class="faq-question">
+                App doesn't respond immediately when tapping icon?
+              </h4>
+              <p class="faq-answer">
+                This is usually caused by local network interference. Please
+                wait a moment or try restarting the app. If the issue persists,
+                ensure both devices are on the same network.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4 class="faq-question">What are the current limitations?</h4>
+              <p class="faq-answer">
+                When using multiple desktop Spaces, app launching may not always
+                work as expected. This is due to limitations in Apple's provided
+                APIs.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4 class="faq-question">Should I update the app?</h4>
+              <p class="faq-answer">
+                We strongly recommend keeping your app updated to the latest
+                version. New versions bring new features and fix known issues,
+                improving your overall experience. Please check this website
+                regularly for the latest updates.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="main-container">
+          <div class="footer-content">
+            <div class="footer-links">
+              <a href="privacy-policy.html" class="footer-link"
+                >Privacy Policy</a
+              >
+              <a href="https://github.com/kidoln/remotedock" class="footer-link"
+                >GitHub Repository</a
+              >
+            </div>
+            <div class="contact-box">
+              <p>Need help? Contact us:</p>
+              <p>
+                <a href="mailto:kido.ln@gmail.com">kido.ln@gmail.com</a> •
+                <a href="https://github.com/kidoln/remotedock">GitHub</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      // 创建粒子效果
+      function createParticles() {
+        const container = document.getElementById("particles");
+        const particleCount = 40;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement("div");
+          const isGold = Math.random() > 0.5;
+          particle.className = isGold ? "particle gold" : "particle";
+          particle.style.left = Math.random() * 100 + "%";
+          particle.style.animationDelay = Math.random() * 15 + "s";
+          particle.style.animationDuration = 10 + Math.random() * 10 + "s";
+          container.appendChild(particle);
+        }
+      }
+
+      // 创建光束效果
+      function createLightBeams() {
+        const container = document.getElementById("lightBeams");
+        const beamCount = 5;
+
+        for (let i = 0; i < beamCount; i++) {
+          const beam = document.createElement("div");
+          beam.className = "light-beam";
+          beam.style.left = i * 20 + "%";
+          beam.style.animationDelay = i * 1.5 + "s";
+          beam.style.animationDuration = 6 + Math.random() * 4 + "s";
+          container.appendChild(beam);
+        }
+      }
+
+      // 创建光斑效果
+      function createLightSpots() {
+        const container = document.getElementById("lightSpots");
+        const spotCount = 8;
+
+        for (let i = 0; i < spotCount; i++) {
+          const spot = document.createElement("div");
+          spot.className = "light-spot";
+          const size = 100 + Math.random() * 200;
+          spot.style.width = size + "px";
+          spot.style.height = size + "px";
+          spot.style.left = Math.random() * 100 + "%";
+          spot.style.top = Math.random() * 100 + "%";
+          spot.style.animationDelay = Math.random() * 4 + "s";
+          spot.style.animationDuration = 3 + Math.random() * 3 + "s";
+          container.appendChild(spot);
+        }
+      }
+
+      // 提示框功能
+      function showComingSoon(lang) {
+        const overlay = document.getElementById("toastOverlay");
+        const toast = document.getElementById("toast");
+        const title = document.getElementById("toastTitle");
+        const message = document.getElementById("toastMessage");
+
+        if (lang === "cn") {
+          title.textContent = "即将上线";
+          message.textContent = "iOS 版本正在审核中，敬请期待！";
+        } else {
+          title.textContent = "Coming Soon";
+          message.textContent =
+            "iOS version is currently under review. Stay tuned!";
+        }
+
+        overlay.classList.add("show");
+        toast.classList.add("show");
+
+        // 点击遮罩层关闭
+        overlay.onclick = hideToast;
+      }
+
+      function showMacStoreNotice(lang) {
+        const overlay = document.getElementById("toastOverlay");
+        const toast = document.getElementById("toast");
+        const title = document.getElementById("toastTitle");
+        const message = document.getElementById("toastMessage");
+
+        if (lang === "cn") {
+          title.textContent = "上架中";
+          message.textContent = "Mac 版本正在上架审核中，敬请期待！";
+        } else {
+          title.textContent = "Coming Soon";
+          message.textContent =
+            "Mac version is currently under review. Stay tuned!";
+        }
+
+        overlay.classList.add("show");
+        toast.classList.add("show");
+
+        // 点击遮罩层关闭
+        overlay.onclick = hideToast;
+      }
+
+      function hideToast() {
+        const overlay = document.getElementById("toastOverlay");
+        const toast = document.getElementById("toast");
+
+        overlay.classList.remove("show");
+        toast.classList.remove("show");
+      }
+
+      // 语言切换
+      document.addEventListener("DOMContentLoaded", function () {
+        createParticles();
+        createLightBeams();
+        createLightSpots();
+
+        const btnCn = document.getElementById("btn-cn");
+        const btnEn = document.getElementById("btn-en");
+        const contentCn = document.getElementById("chinese");
+        const contentEn = document.getElementById("english");
+
+        function switchToChinese() {
+          contentCn.classList.add("active");
+          contentEn.classList.remove("active");
+          btnCn.classList.add("active");
+          btnEn.classList.remove("active");
+          window.location.hash = "chinese";
+          document.documentElement.lang = "zh-CN";
+          document.body.classList.remove("lang-en");
+          document.body.classList.add("lang-zh");
+          document.title = "Remote Dock - 让 iPhone 成为 Mac 的完美工作流伴侣";
+        }
+
+        function switchToEnglish() {
+          contentEn.classList.add("active");
+          contentCn.classList.remove("active");
+          btnEn.classList.add("active");
+          btnCn.classList.remove("active");
+          window.location.hash = "english";
+          document.documentElement.lang = "en";
+          document.body.classList.remove("lang-zh");
+          document.body.classList.add("lang-en");
+          document.title =
+            "Remote Dock - Your Mac Workflow Companion, From Your iPhone";
+        }
+
+        btnCn.addEventListener("click", function (e) {
+          e.preventDefault();
+          switchToChinese();
+        });
+
+        btnEn.addEventListener("click", function (e) {
+          e.preventDefault();
+          switchToEnglish();
+        });
+
+        // 根据浏览器语言自动切换
+        const userLang = navigator.language || navigator.userLanguage;
+        const hash = window.location.hash;
+
+        if (hash === "#english") {
+          switchToEnglish();
+        } else if (hash === "#chinese") {
+          switchToChinese();
+        } else if (userLang.startsWith("zh")) {
+          switchToChinese();
+        } else {
+          switchToEnglish();
+        }
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            const href = this.getAttribute("href");
+            if (href !== "#chinese" && href !== "#english") {
+              e.preventDefault();
+              const target = document.querySelector(href);
+              if (target) {
+                target.scrollIntoView({ behavior: "smooth" });
+              }
+            }
+          });
+        });
+
+        // 导航栏滚动效果
+        let lastScroll = 0;
+        const nav = document.querySelector(".nav");
+
+        window.addEventListener("scroll", () => {
+          const currentScroll = window.pageYOffset;
+
+          if (currentScroll > 100) {
+            nav.style.background = "rgba(26, 26, 36, 0.95)";
+            nav.style.boxShadow = "0 4px 30px rgba(0, 0, 0, 0.4)";
+          } else {
+            nav.style.background = "rgba(26, 26, 36, 0.85)";
+            nav.style.boxShadow = "0 4px 30px rgba(0, 0, 0, 0.3)";
+          }
+
+          lastScroll = currentScroll;
+        });
+
+        // 交叉观察器 - 滚动动画
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: "0px 0px -50px 0px",
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = "1";
+              entry.target.style.transform = "translateY(0)";
+            }
+          });
+        }, observerOptions);
+
+        document
+          .querySelectorAll(".feature-card, .step-card, .faq-item")
+          .forEach((el) => {
+            el.style.opacity = "0";
+            el.style.transform = "translateY(20px)";
+            el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+            observer.observe(el);
+          });
+      });
+    </script>
+
+    <!-- 提示框 -->
+    <div class="toast-overlay" id="toastOverlay"></div>
+    <div class="toast-container">
+      <div class="toast" id="toast">
+        <div class="toast-icon">🚀</div>
+        <div class="toast-title" id="toastTitle">即将上线</div>
+        <div class="toast-message" id="toastMessage">
+          iOS 版本正在审核中，敬请期待！
+        </div>
+        <button class="toast-close" onclick="hideToast()">我知道了</button>
+      </div>
+    </div>
+  </body>
+</html>
