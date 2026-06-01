@@ -73,10 +73,11 @@ const content = {
       },
       rendering: {
         title: "PlantUML、Mermaid 与公式渲染",
-        body: "渲染层支持 PlantUML、Mermaid、Graphviz 等图形表达，也支持数学公式，让时序图、架构图、流程图、关系图和推导内容都能直接进入文档。",
+        body: "渲染层支持 PlantUML、Mermaid、Graphviz 等图形表达，也支持数学公式，让时序图、架构图、流程图、关系图和推导内容都能直接进入文档。三种图表样式在深色模式下会通过 SVG 反转匹配算法自动适配，保持线条、填充和文字清晰可读。",
         tagOne: "PlantUML",
         tagTwo: "Mermaid",
         tagThree: "Graphviz",
+        tagFour: "深色图表匹配",
       },
       links: {
         title: "WikiLink 文件引用",
@@ -336,10 +337,11 @@ const content = {
       },
       rendering: {
         title: "PlantUML, Mermaid, and formula rendering",
-        body: "The rendering layer supports visual formats such as PlantUML, Mermaid, and Graphviz, plus mathematical formulas, so sequence diagrams, architecture diagrams, flows, relationships, and derivations can live directly inside documents.",
+        body: "The rendering layer supports visual formats such as PlantUML, Mermaid, and Graphviz, plus mathematical formulas, so sequence diagrams, architecture diagrams, flows, relationships, and derivations can live directly inside documents. All three diagram styles use SVG inversion matching in dark mode to keep lines, fills, and labels readable.",
         tagOne: "PlantUML",
         tagTwo: "Mermaid",
         tagThree: "Graphviz",
+        tagFour: "Dark diagram matching",
       },
       links: {
         title: "WikiLink file references",
