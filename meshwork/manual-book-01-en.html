@@ -58,7 +58,7 @@
       <main class="manual-book-main">
         <article class="manual-book-content">
           <h1>System Setup & Configuration</h1>
-          <p class="subtitle">Understand MeshWork's core concepts, complete initial app configuration, and prepare for using private libraries and shared spaces.</p>
+          <p class="subtitle">Complete first-launch setup, understand the main interface, and prepare to use private libraries and shared spaces.</p>
 
           <nav class="manual-book-toc-mini">
             <strong>Chapter Contents</strong>
@@ -71,213 +71,14 @@
                   <li><a href="#1-3-2">Document Settings</a></li>
                   <li><a href="#1-3-3">Discussion Settings</a></li>
                   <li><a href="#1-3-4">Network Proxy Settings</a></li>
-                  <li><a href="#1-3-5">AI Settings</a></li>
-                  <li><a href="#1-3-6">Git Settings</a></li>
+                  <li><a href="#1-3-5">Git Settings</a></li>
+                  <li><a href="#1-3-6">AI Settings</a></li>
                 </ol>
               </a></li>
             </ol>
           </nav>
 
           <h2 id="1-1">1.1 First Launch</h2>
-
-          <h3>Core Concepts</h3>
-
-          <p>When you first open MeshWork, you need to understand three core concepts of the product:</p>
-
-          <ul>
-            <li><strong>Workspace</strong>: The main usage environment users see when entering MeshWork. It's a product and interaction layer concept, not a fixed disk directory or Git repository. The workspace is responsible for combining one private library and multiple shared spaces.</li>
-            <li><strong>Private Library</strong>: The data boundary belonging to the current user. Suitable for storing personal long-term notes, research materials, writing drafts, inspiration fragments, and content that shouldn't automatically enter team sharing. It exists independently and doesn't belong to any shared space.</li>
-            <li><strong>Shared Space</strong>: A team or project-level data boundary. Each shared space contains a public library, discussion area, shared attachments, and can optionally have its own Git history.</li>
-          </ul>
-
-          <div class="info-block">
-            <strong>Design Principles</strong>
-            <p>MeshWork's design principle is not to first create a large online team space, but to first establish your own private library, then join shared spaces as needed, turning discussions into long-term knowledge together with your team and AI.</p>
-          </div>
-
-          <div class="product-philosophy-section">
-            <h3>Product Architecture and Knowledge Flow</h3>
-            <p>MeshWork adopts a "private-first, progressive sharing" design philosophy, where knowledge flows from personal creation to team collaboration, ultimately settling into reusable long-term knowledge.</p>
-
-            <div class="philosophy-diagram">
-              <svg width="840" height="540" viewBox="0 0 840 540" xmlns="http://www.w3.org/2000/svg">
-                <!-- Background -->
-                <defs>
-                  <!-- Gradients -->
-                  <linearGradient id="privateGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
-                  </linearGradient>
-                  <linearGradient id="sharedGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#0066cc;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#0099ff;stop-opacity:1" />
-                  </linearGradient>
-                  <linearGradient id="publicGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#51cf66;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#37b24d;stop-opacity:1" />
-                  </linearGradient>
-                  <linearGradient id="discussionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#ff922b;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#fd7e14;stop-opacity:1" />
-                  </linearGradient>
-                  <linearGradient id="aiGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#fa5252;stop-opacity:1" />
-                  </linearGradient>
-
-                  <!-- Arrow markers -->
-                  <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                    <polygon points="0 0, 10 3, 0 6" fill="#6e6e73" />
-                  </marker>
-                  <marker id="arrowheadWhite" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                    <polygon points="0 0, 10 3, 0 6" fill="white" />
-                  </marker>
-
-                  <!-- Drop shadow -->
-                  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.1" />
-                  </filter>
-                </defs>
-
-                <!-- Title -->
-                <text x="420" y="35" text-anchor="middle" font-size="20" font-weight="600" fill="#1d1d1f">MeshWork Product Architecture</text>
-
-                <!-- Workspace container -->
-                <rect x="30" y="60" width="780" height="440" rx="16" fill="none" stroke="#d2d2d7" stroke-width="2" stroke-dasharray="8,8" />
-                <text x="420" y="85" text-anchor="middle" font-size="14" font-weight="600" fill="#6e6e73">Workspace</text>
-
-                <!-- Private Library -->
-                <g filter="url(#shadow)">
-                  <rect x="60" y="110" width="240" height="320" rx="12" fill="url(#privateGradient)" />
-                  <text x="180" y="140" text-anchor="middle" font-size="16" font-weight="600" fill="white">Private Library</text>
-                  <text x="180" y="160" text-anchor="middle" font-size="13" fill="white" opacity="0.9">Private Knowledge Base</text>
-
-                  <!-- Private Library content icons - row 1 -->
-                  <g transform="translate(95, 185)">
-                    <rect width="40" height="40" rx="7" fill="white" opacity="0.2" />
-                    <text x="20" y="27" text-anchor="middle" font-size="19" fill="white">📝</text>
-                    <text x="20" y="60" text-anchor="middle" font-size="11" fill="white" opacity="0.9">Notes</text>
-                  </g>
-
-                  <g transform="translate(160, 185)">
-                    <rect width="40" height="40" rx="7" fill="white" opacity="0.2" />
-                    <text x="20" y="27" text-anchor="middle" font-size="19" fill="white">📚</text>
-                    <text x="20" y="60" text-anchor="middle" font-size="11" fill="white" opacity="0.9">Research</text>
-                  </g>
-
-                  <g transform="translate(225, 185)">
-                    <rect width="40" height="40" rx="7" fill="white" opacity="0.2" />
-                    <text x="20" y="27" text-anchor="middle" font-size="19" fill="white">📄</text>
-                    <text x="20" y="60" text-anchor="middle" font-size="11" fill="white" opacity="0.9">Drafts</text>
-                  </g>
-
-                  <!-- Private Library content icons - row 2 -->
-                  <g transform="translate(95, 260)">
-                    <rect width="40" height="40" rx="7" fill="white" opacity="0.2" />
-                    <text x="20" y="27" text-anchor="middle" font-size="19" fill="white">✨</text>
-                    <text x="20" y="60" text-anchor="middle" font-size="11" fill="white" opacity="0.9">Ideas</text>
-                  </g>
-
-                  <g transform="translate(160, 260)">
-                    <rect width="40" height="40" rx="7" fill="white" opacity="0.2" />
-                    <text x="20" y="27" text-anchor="middle" font-size="19" fill="white">🔒</text>
-                    <text x="20" y="60" text-anchor="middle" font-size="11" fill="white" opacity="0.9">Private</text>
-                  </g>
-
-                  <g transform="translate(225, 260)">
-                    <rect width="40" height="40" rx="7" fill="white" opacity="0.2" />
-                    <text x="20" y="27" text-anchor="middle" font-size="19" fill="white">📊</text>
-                    <text x="20" y="60" text-anchor="middle" font-size="11" fill="white" opacity="0.9">Planning</text>
-                  </g>
-
-                  <text x="180" y="365" text-anchor="middle" font-size="12" fill="white" opacity="0.8">Personal Creative Space</text>
-                  <text x="180" y="383" text-anchor="middle" font-size="11" fill="white" opacity="0.7">Completely local, sync anytime</text>
-
-                  <!-- AI inside Private Library -->
-                  <circle cx="275" cy="130" r="16" fill="url(#aiGradient)" />
-                  <text x="275" y="136" text-anchor="middle" font-size="14" fill="white">🤖</text>
-                </g>
-
-                <!-- Direct flow arrows to Shared Space -->
-                <g>
-                  <!-- Arrow to Public Library -->
-                  <path d="M 310 240 C 360 220, 400 230, 440 250" stroke="#6e6e73" stroke-width="2.5" fill="none" marker-end="url(#arrowhead)" />
-                  <text x="365" y="225" font-size="12" font-weight="500" fill="#6e6e73">Share Content</text>
-
-                  <!-- Arrow to Discussion Area -->
-                  <path d="M 310 270 C 360 290, 400 350, 440 360" stroke="#6e6e73" stroke-width="2.5" fill="none" marker-end="url(#arrowhead)" />
-                  <text x="365" y="335" font-size="12" font-weight="500" fill="#6e6e73">Discuss</text>
-                </g>
-
-                <!-- Shared Space -->
-                <g filter="url(#shadow)">
-                  <rect x="450" y="110" width="340" height="320" rx="12" fill="url(#sharedGradient)" />
-                  <text x="620" y="140" text-anchor="middle" font-size="16" font-weight="600" fill="white">Shared Space</text>
-                  <text x="620" y="160" text-anchor="middle" font-size="13" fill="white" opacity="0.9">Team Collaboration Space</text>
-
-                  <!-- Public Library within Shared Space -->
-                  <rect x="475" y="185" width="290" height="90" rx="8" fill="url(#publicGradient)" />
-                  <text x="620" y="212" text-anchor="middle" font-size="14" font-weight="600" fill="white">Public Library</text>
-                  <text x="620" y="230" text-anchor="middle" font-size="11" fill="white" opacity="0.9">Long-term Knowledge · Team Docs</text>
-                  <text x="620" y="250" text-anchor="middle" font-size="10" fill="white" opacity="0.85">Git Version Control · Permission Management</text>
-
-                  <!-- Discussion Area within Shared Space -->
-                  <rect x="475" y="295" width="290" height="90" rx="8" fill="url(#discussionGradient)" />
-                  <text x="620" y="322" text-anchor="middle" font-size="14" font-weight="600" fill="white">Discussion Area</text>
-                  <text x="620" y="340" text-anchor="middle" font-size="11" fill="white" opacity="0.9">Daily Communication · Topic Discussion</text>
-                  <text x="620" y="360" text-anchor="middle" font-size="10" fill="white" opacity="0.7">Quick Communication · Brainstorming</text>
-                </g>
-
-                <!-- Knowledge flow indicator within Shared Space -->
-                <g>
-                  <path d="M 620 295 L 620 280" stroke="white" stroke-width="2" fill="none" marker-end="url(#arrowheadWhite)" opacity="0.9" />
-                  <text x="635" y="290" font-size="11" fill="white" opacity="0.95">↓ Preserve</text>
-                </g>
-
-                <!-- AI in Shared Space areas -->
-                <g>
-                  <circle cx="745" cy="220" r="16" fill="url(#aiGradient)" />
-                  <text x="745" y="226" text-anchor="middle" font-size="14" fill="white">🤖</text>
-
-                  <circle cx="745" cy="330" r="16" fill="url(#aiGradient)" />
-                  <text x="745" y="336" text-anchor="middle" font-size="14" fill="white">🤖</text>
-                </g>
-
-                <!-- Team members -->
-                <g transform="translate(680, 400)">
-                  <circle cx="0" cy="0" r="14" fill="white" opacity="0.25" />
-                  <text x="0" y="6" text-anchor="middle" font-size="13" fill="white">👤</text>
-                  <circle cx="30" cy="0" r="14" fill="white" opacity="0.25" />
-                  <text x="30" y="6" text-anchor="middle" font-size="13" fill="white">👤</text>
-                  <circle cx="60" cy="0" r="14" fill="white" opacity="0.25" />
-                  <text x="60" y="6" text-anchor="middle" font-size="13" fill="white">👤</text>
-                  <text x="30" y="30" text-anchor="middle" font-size="11" fill="white" opacity="0.8">Team Members</text>
-                </g>
-
-                <!-- Legend -->
-                <g transform="translate(60, 460)">
-                  <rect width="18" height="18" rx="4" fill="url(#privateGradient)" />
-                  <text x="26" y="14" font-size="12" fill="#6e6e73">Private Space</text>
-
-                  <rect x="100" width="18" height="18" rx="4" fill="url(#sharedGradient)" />
-                  <text x="126" y="14" font-size="12" fill="#6e6e73">Team Space</text>
-
-                  <rect x="200" width="18" height="18" rx="4" fill="url(#publicGradient)" />
-                  <text x="226" y="14" font-size="12" fill="#6e6e73">Knowledge</text>
-
-                  <rect x="300" width="18" height="18" rx="4" fill="url(#discussionGradient)" />
-                  <text x="326" y="14" font-size="12" fill="#6e6e73">Discussion</text>
-
-                  <circle cx="410" cy="9" r="9" fill="url(#aiGradient)" />
-                  <text x="426" y="14" font-size="12" fill="#6e6e73">AI Assistant</text>
-                </g>
-              </svg>
-            </div>
-
-            <div class="philosophy-caption">
-              <p><strong>Knowledge Flow Path:</strong> Create and accumulate content in your private library, with AI providing intelligent assistance. When team collaboration is needed, you can directly share content to shared spaces: discuss in the discussion area, then valuable content further settles into the public library as long-term knowledge. AI provides assistance at every step, but won't automatically share your private content.</p>
-            </div>
-          </div>
 
           <h3>Launch Process</h3>
 
@@ -408,49 +209,7 @@
             <p>Proxy passwords are securely stored on your local device. Please ensure proxy servers are trustworthy to avoid leaking sensitive information through the proxy.</p>
           </div>
 
-          <h3 id="1-3-5">1.3.5 AI Settings</h3>
-
-          <p>Configure AI agent behavior in "Settings → AI". MeshWork supports multiple AI service providers and search services. You can add and configure them as needed.</p>
-
-          <h4>AI Service Providers</h4>
-
-          <p>MeshWork supports the following AI service providers. Click links to visit official sites and apply for API Keys:</p>
-
-          <table>
-            <thead>
-              <tr>
-                <th>Provider</th>
-                <th>Website</th>
-                <th>API Key Application</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>OpenAI</strong></td>
-                <td><a href="https://openai.com" target="_blank">https://openai.com</a></td>
-                <td><a href="https://platform.openai.com/api-keys" target="_blank">https://platform.openai.com/api-keys</a></td>
-              </tr>
-              <tr>
-                <td><strong>Anthropic Claude</strong></td>
-                <td><a href="https://www.anthropic.com" target="_blank">https://www.anthropic.com</a></td>
-                <td><a href="https://console.anthropic.com/settings/keys" target="_blank">https://console.anthropic.com/settings/keys</a></td>
-              </tr>
-            </tbody>
-          </table>
-
-          <p>Configuration Options:</p>
-
-          <ul>
-            <li><strong>Provider</strong>: Choose OpenAI or Anthropic Claude.</li>
-            <li><strong>API Key</strong>: Enter the API key obtained from the corresponding platform.</li>
-            <li><strong>Base URL</strong>: Defaults to official API address, can be customized if needed.</li>
-            <li><strong>Model</strong>: Choose the default model version. OpenAI defaults to <code>gpt-4o</code>, Anthropic defaults to <code>claude-3-5-sonnet-20241022</code>.</li>
-            <li><strong>Context Window Size</strong>: Set maximum context window (unit KB), default is 200KB, range is 32KB-2048KB.</li>
-            <li><strong>Proxy Settings</strong>: If proxy access is needed, select the corresponding proxy configuration.</li>
-            <li><strong>Set as Default</strong>: Mark as default provider, AI assistant will prioritize using it.</li>
-          </ul>
-
-          <h3 id="1-3-6">1.3.6 Git Settings</h3>
+          <h3 id="1-3-5">1.3.5 Git Settings</h3>
 
           <h4>Understanding MeshWork's Git Model</h4>
 
@@ -467,6 +226,95 @@
             <strong>Design Philosophy</strong>
             <p>MeshWork treats Git as a hidden, reliable foundation. You don't need to understand concepts like commit, branch, or merge in daily use. MeshWork automatically handles version history, change tracking, collaborative sharing, and recovery capabilities.</p>
           </div>
+
+          <h3 id="1-3-6">1.3.6 AI Settings</h3>
+
+          <p>Configure AI agent behavior in "Settings → AI". MeshWork supports multiple AI services and search services through compatible protocols. You can add and configure them as needed.</p>
+
+          <h4>AI Protocols and Compatible Providers</h4>
+
+          <p>MeshWork currently includes two AI protocol formats: OpenAI Compatible and Anthropic Compatible. In settings, "OpenAI" and "Anthropic" describe the request format and protocol type; they do not restrict you to those two companies. Any third-party service that exposes a compatible API can be configured with its API key, Base URL, and model name.</p>
+
+          <p>The following are common compatible provider examples. Model names, tool calling, streaming, thinking mode, and other capabilities vary by provider, so check the provider documentation when configuring them:</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Provider</th>
+                <th>Compatible Protocol</th>
+                <th>Docs / Platform</th>
+                <th>Common Base URL</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>OpenAI</strong></td>
+                <td>OpenAI Compatible</td>
+                <td><a href="https://platform.openai.com/docs" target="_blank">platform.openai.com/docs</a></td>
+                <td><code>https://api.openai.com/v1</code></td>
+              </tr>
+              <tr>
+                <td><strong>Anthropic Claude</strong></td>
+                <td>Anthropic Compatible</td>
+                <td><a href="https://docs.anthropic.com/" target="_blank">docs.anthropic.com</a></td>
+                <td><code>https://api.anthropic.com/v1</code></td>
+              </tr>
+              <tr>
+                <td><strong>OpenRouter</strong></td>
+                <td>OpenAI Compatible</td>
+                <td><a href="https://openrouter.ai/docs" target="_blank">openrouter.ai/docs</a></td>
+                <td><code>https://openrouter.ai/api/v1</code></td>
+              </tr>
+              <tr>
+                <td><strong>DeepSeek</strong></td>
+                <td>OpenAI Compatible / Anthropic Compatible</td>
+                <td><a href="https://api-docs.deepseek.com/" target="_blank">api-docs.deepseek.com</a></td>
+                <td><code>https://api.deepseek.com</code>; Anthropic format uses <code>https://api.deepseek.com/anthropic</code></td>
+              </tr>
+              <tr>
+                <td><strong>Alibaba Cloud Model Studio / DashScope</strong></td>
+                <td>OpenAI Compatible / Anthropic Compatible</td>
+                <td><a href="https://help.aliyun.com/zh/model-studio/" target="_blank">help.aliyun.com/zh/model-studio</a></td>
+                <td>Choose by region, for example <code>https://dashscope.aliyuncs.com/compatible-mode/v1</code></td>
+              </tr>
+              <tr>
+                <td><strong>Zhipu AI / BigModel</strong></td>
+                <td>OpenAI Compatible</td>
+                <td><a href="https://docs.bigmodel.cn/" target="_blank">docs.bigmodel.cn</a></td>
+                <td><code>https://open.bigmodel.cn/api/paas/v4</code></td>
+              </tr>
+              <tr>
+                <td><strong>Moonshot AI / Kimi</strong></td>
+                <td>OpenAI Compatible</td>
+                <td><a href="https://platform.kimi.ai/docs/api/overview" target="_blank">platform.kimi.ai/docs</a></td>
+                <td><code>https://api.moonshot.ai/v1</code></td>
+              </tr>
+              <tr>
+                <td><strong>SiliconFlow</strong></td>
+                <td>OpenAI Compatible</td>
+                <td><a href="https://docs.siliconflow.cn/" target="_blank">docs.siliconflow.cn</a></td>
+                <td><code>https://api.siliconflow.cn/v1</code></td>
+              </tr>
+              <tr>
+                <td><strong>Mistral AI</strong></td>
+                <td>OpenAI Compatible</td>
+                <td><a href="https://docs.mistral.ai/" target="_blank">docs.mistral.ai</a></td>
+                <td><code>https://api.mistral.ai/v1</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Configuration Options:</p>
+
+          <ul>
+            <li><strong>Provider / Protocol</strong>: Choose OpenAI Compatible or Anthropic Compatible based on the target service's API format.</li>
+            <li><strong>API Key</strong>: Enter the API key obtained from the corresponding platform.</li>
+            <li><strong>Base URL</strong>: Enter the provider's compatible API root. Usually do not include <code>/chat/completions</code> or a model-specific path.</li>
+            <li><strong>Model</strong>: Enter or choose the model name from the provider documentation. Default examples are <code>gpt-4o</code> and <code>claude-3-5-sonnet-20241022</code>; change this to the provider's model ID when using a third-party service.</li>
+            <li><strong>Context Window Size</strong>: Set maximum context window (unit KB), default is 200KB, range is 32KB-2048KB.</li>
+            <li><strong>Proxy Settings</strong>: If proxy access is needed, select the corresponding proxy configuration.</li>
+            <li><strong>Set as Default</strong>: Mark as default provider, AI assistant will prioritize using it.</li>
+          </ul>
 
           <nav class="manual-book-nav-buttons">
             <a href="manual-en.html" class="nav-button prev">

@@ -509,6 +509,20 @@ html[lang="en"] .manual-book-content .highlight-block::before {
   border-bottom: 1px solid var(--border-light);
 }
 
+.product-philosophy-section > h2,
+.product-philosophy-section > h3 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.product-philosophy-section > p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 0;
+}
+
 .philosophy-diagram {
   display: flex;
   justify-content: center;

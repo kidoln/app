@@ -99,7 +99,7 @@
 
           <ul>
             <li><strong>Public Library</strong>: Stores team-shared documents, knowledge, resources, and long-term settled content.</li>
-            <li><strong>Discussion Area</strong>: Place for asynchronous discussion around shared content, supporting topic tags, status management, and intelligent dialogue.</li>
+            <li><strong>Discussion Area</strong>: Place for asynchronous discussion around shared content, supporting topic status, participants, and intelligent dialogue.</li>
             <li><strong>Shared Attachments</strong>: Images, files, and other media resources shared by the team.</li>
             <li><strong>Git Configuration</strong>: Optional version control and remote collaboration features.</li>
           </ul>
@@ -524,7 +524,7 @@
               <ul>
                 <li>Click the "New Topic" button.</li>
                 <li>Enter a topic title that concisely and clearly describes the discussion theme.</li>
-                <li>Select topic tags (such as "Requirement Discussion", "Technical Proposal", "Issue Feedback", etc.).</li>
+                <li>Set a clear topic title and initial message so teammates understand the context.</li>
                 <li>Set topic status (such as "Open", "In Progress", "Resolved", etc.).</li>
                 <li>Write the topic's initial content, clearly explaining background, issues, and expected discussion direction.</li>
                 <li>Associate related documents (optional), linking the discussion to specific Public Library documents.</li>
@@ -533,7 +533,7 @@
             <li><strong>Manage topics</strong>:
               <ul>
                 <li>Update topic status to reflect current progress.</li>
-                <li>Adjust tags to help with categorization and retrieval.</li>
+                <li>Update the topic title or state when the discussion scope changes.</li>
                 <li>Edit topic titles and content to correct errors or supplement information.</li>
                 <li>Close resolved or no longer relevant topics.</li>
               </ul>
@@ -545,7 +545,7 @@
           <p>To participate in topic discussions in the Discussion Area:</p>
 
           <ol>
-            <li><strong>Browse topics</strong>: View all discussions in the topic list, filtering by status, tags, time, etc.</li>
+            <li><strong>Browse topics</strong>: View all discussions in the topic list and use status and timing to decide what needs attention.</li>
             <li><strong>Reply to topics</strong>:
               <ul>
                 <li>Click a topic to enter its detail page.</li>
@@ -813,7 +813,7 @@
           <p>When configuring Git for shared spaces, it's recommended to follow these best practices:</p>
 
           <ul>
-            <li><strong>Unified Git identity</strong>: Ensure team members use correct Git usernames and email addresses for identifying contributors.</li>
+            <li><strong>Clear sync rhythm</strong>: Sync before and after important edits to avoid long-running divergence.</li>
             <li><strong>Clear commit messages</strong>: Encourage team members to provide concise, clear commit messages describing the purpose and content of changes.</li>
             <li><strong>Reasonable branch strategy</strong>: Choose appropriate branch strategies based on team size and project characteristics.</li>
             <li><strong>Regular backups</strong>: Besides remote repositories, regularly backup important shared space data.</li>
@@ -881,7 +881,7 @@
               <ul>
                 <li>Product manager writes requirement documents based on discussion results.</li>
                 <li>Designer adds design spec links, development engineer evaluates technical feasibility.</li>
-                <li>Use comment function in documents to raise modification suggestions.</li>
+                <li>Raise modification suggestions in the discussion area, then update the public document after the team confirms them.</li>
               </ul>
             </li>
             <li><strong>Review and confirmation</strong>:
@@ -904,14 +904,14 @@
 
           <ul>
             <li><strong>Regular synchronization</strong>: Publish product progress summaries in Discussion Area weekly.</li>
-            <li><strong>Version marking</strong>: Use Git tags to mark important milestones.</li>
+            <li><strong>Version points</strong>: Sync around important milestones and keep clear version history.</li>
             <li><strong>Decision records</strong>: Form records of major decisions in Discussion Area for future traceability.</li>
             <li><strong>Cross-team collaboration</strong>: Share necessary requirement documents with development team but maintain independence of product discussions.</li>
           </ul>
 
           <div class="info-block">
             <strong>Collaboration Effects</strong>
-            <p>Through this collaboration model, the product planning team can maintain real-time updates of requirement documents, reduce communication costs, and improve decision efficiency. New members can quickly understand product background and decision processes through historical documents and discussions.</p>
+            <p>Through this collaboration model, the product planning team keeps requirements discussion and document preservation in one shared space, reducing context loss. New members can understand product background and decision processes through historical documents and discussions.</p>
           </div>
 
           <h3>Scenario 2: Content Creation Studio</h3>
@@ -974,7 +974,7 @@
               <ul>
                 <li>After completion, create "Review Request" topic in Discussion Area.</li>
                 <li>Other members provide modification suggestions and feedback.</li>
-                <li>Use comment function to directly mark issues and improvement points in documents.</li>
+                <li>List issues and improvement points in the discussion area, then have the owner update the document.</li>
               </ul>
             </li>
             <li><strong>Client delivery</strong>:
@@ -1107,7 +1107,7 @@
           <h4>Research Achievement Management</h4>
 
           <ul>
-            <li><strong>Version tracking</strong>: Use Git tags to mark important versions of papers (such as first draft, revised draft, submission version).</li>
+            <li><strong>Version tracking</strong>: Sync at important stages and record version notes such as first draft, revised draft, and submission version.</li>
             <li><strong>Feedback integration</strong>: Discuss peer review opinions one by one in Discussion Area, then integrate into the paper.</li>
             <li><strong>Publication records</strong>: Maintain paper publication list in Public Library, including journals, conferences, and citations.</li>
             <li><strong>Data sharing</strong>: For publicly shareable data and code, maintain in shared space to facilitate research reproduction.</li>

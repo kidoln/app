@@ -436,9 +436,8 @@ flowchart TD
           <p>When the number of documents increases, use the search function:</p>
 
           <ul>
-            <li><strong>Global search</strong>: Use <code>Command+Shift+F</code> to open the search panel and search all documents.</li>
-            <li><strong>Current document search</strong>: Use <code>Command+F</code> to search within the current document.</li>
-            <li><strong>Path filtering</strong>: Use the filter box in the sidebar to quickly locate specific directories or documents.</li>
+            <li><strong>Workbench search</strong>: Use <code>Command+F</code> to focus the left search field and search private libraries, shared-space documents, and discussion content.</li>
+            <li><strong>Open results</strong>: Click a result to open the corresponding document or discussion and reveal it in the sidebar.</li>
           </ul>
 
           <div class="info-block">
@@ -457,26 +456,6 @@ flowchart TD
             <p>Note: Pinyin search is based on Pinyin indexes established by the system for documents. For polyphonic characters or rare characters, search results may need to be filtered in combination with context.</p>
           </div>
 
-          <h3>Using Tags</h3>
-
-          <p>Using tags provides another way to organize documents:</p>
-
-          <ol>
-            <li>Click the tag area in the document editor (usually at the top of the document).</li>
-            <li>Enter a tag name and press Enter to add.</li>
-            <li>You can add multiple tags.</li>
-            <li>Clicking a tag filters to display all documents with that tag.</li>
-          </ol>
-
-          <p>Common tag examples:</p>
-
-          <ul>
-            <li><code>#Todo</code>: Mark documents that need further processing</li>
-            <li><code>#Important</code>: Mark important documents</li>
-            <li><code>#Reference</code>: Mark reference materials</li>
-            <li><code>#Archive</code>: Mark completed or outdated documents</li>
-          </ul>
-
           <h2 id="2-5">2.5 Git Sharing for Private Library</h2>
 
           <h3>Enabling/Disabling Git</h3>
@@ -484,13 +463,13 @@ flowchart TD
           <p>Git functionality for the private library is optional:</p>
 
           <ul>
-            <li><strong>Don't enable Git</strong>: Use completely locally without version control.</li>
-            <li><strong>Enable Git</strong>: Can have local commit history and can configure remote repositories.</li>
+            <li><strong>No remote bound</strong>: Use it locally and create manual versions when needed.</li>
+            <li><strong>Remote bound</strong>: Select a remote repository from Settings → Git and assign a branch to this private library. Sync commits pending local changes and exchanges data with the remote.</li>
           </ul>
 
           <div class="tip-block">
             <strong>Recommendation</strong>
-            <p>Even if you don't need team sharing, it's recommended to enable Git. Git can provide version history and recovery capabilities, preventing accidental modifications or data loss.</p>
+            <p>You can start fully local and bind a remote later when you need multi-device backup or remote recovery.</p>
           </div>
 
           <h3>Binding Remote Repository</h3>
@@ -498,22 +477,16 @@ flowchart TD
           <p>To bind a remote repository for the private library:</p>
 
           <ol>
-            <li>Open the private library's settings page.</li>
-            <li>Find the "Git" or "Remote Repository" configuration section.</li>
-            <li>Enter the remote repository address (SSH or HTTPS format).</li>
-            <li>If using SSH, ensure SSH key configuration is complete (see section 1.5).</li>
-            <li>If using HTTPS, you need to use Personal Access Token as the password.</li>
-            <li>Click "Connect" or "Save" to complete the binding.</li>
+            <li>First add a remote repository entry in Settings → Git and configure SSH Key or HTTPS Token authentication.</li>
+            <li>Open the private library settings page.</li>
+            <li>Select the remote repository in the Git settings section.</li>
+            <li>Enter a branch name, or leave it blank to use the generated <code>meshwork/private/...</code> branch.</li>
+            <li>Click OK to save the binding.</li>
           </ol>
 
-          <h3>Pushing and Pulling</h3>
+          <h3>Sync</h3>
 
-          <p>After binding a remote repository, you can:</p>
-
-          <ul>
-            <li><strong>Push</strong>: Upload local modifications to the remote repository. Usually executed after completing a batch of edits.</li>
-            <li><strong>Pull</strong>: Get the latest content from the remote repository. If you use multiple devices, you need to pull first before starting to edit.</li>
-          </ul>
+          <p>After binding a remote repository, the document toolbar action becomes Sync. MeshWork saves the current editor content, commits pending local changes for the sync operation, then pulls and pushes with the remote. Current pull behavior is fast-forward only: direct remote updates are applied automatically; diverged local and remote histories are reported as sync issues instead of silently creating merge commits.</p>
 
           <h3>Handling Merge Conflicts</h3>
 
@@ -537,18 +510,13 @@ Remote content
             <li>Complete the merge.</li>
           </ol>
 
-          <div class="info-block">
-            <strong>Automated Version Control</strong>
-            <p>MeshWork completely automates Git pull and push operations, you don't need manual control. Each edit automatically commits, and the system intelligently handles synchronization operations. This design allows you to focus on content creation without worrying about Git technical details.</p>
-          </div>
-
           <h3>Manual Commit Strategy</h3>
 
-          <p>MeshWork automatically commits for each edit, but you can also manually control commits:</p>
+          <p>When no remote repository is bound, private libraries use a manual version strategy:</p>
 
           <ul>
             <li><strong>View history</strong>: Right-click on a document or directory and select "View History".</li>
-            <li><strong>Create commit</strong>: After completing a batch of related modifications, you can create a manual commit with a meaningful commit message.</li>
+            <li><strong>Create version</strong>: After completing a meaningful batch of changes, create a manual version with a clear message.</li>
             <li><strong>Revert version</strong>: If needed, you can revert to a previous version.</li>
           </ul>
 

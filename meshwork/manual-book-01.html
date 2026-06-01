@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="MeshWork 系统设置与初始配置指南：首次启动、工作台管理、应用设置、Git 配置和 GitHub 仓库管理。">
+    <meta name="description" content="MeshWork 系统设置与初始配置指南：首次启动、工作台管理、应用设置、Git 仓库、网络代理和 AI 配置。">
     <title>系统设置与初始配置 - MeshWork 操作手册</title>
     <link rel="icon" type="image/png" href="images/favicon.png">
     <link rel="apple-touch-icon" href="images/favicon.png">
@@ -23,63 +23,6 @@
         <a href="manual-book-01-en.html" class="lang-button">EN</a>
       </div>
       <a class="manual-book-home" href="manual.html">返回目录</a>
-    </header>
-
-    <style>
-      .language-switch {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-right: 16px;
-      }
-      .lang-button {
-        padding: 4px 12px;
-        font-size: 13px;
-        border-radius: 4px;
-        border: 1px solid #d2d2d7;
-        background: #f5f5f7;
-        color: #6e6e73;
-        cursor: pointer;
-        text-decoration: none;
-        transition: all 0.2s;
-      }
-      .lang-button:hover {
-        background: #e5e5ea;
-      }
-      .lang-button.is-active {
-        background: #007aff;
-        color: white;
-        border-color: #007aff;
-      }
-    </style>
-
-    <style>
-      .language-switch {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-right: 16px;
-      }
-      .lang-button {
-        padding: 4px 12px;
-        font-size: 13px;
-        border-radius: 4px;
-        border: 1px solid #d2d2d7;
-        background: #f5f5f7;
-        color: #6e6e73;
-        cursor: pointer;
-        text-decoration: none;
-        transition: all 0.2s;
-      }
-      .lang-button:hover {
-        background: #e5e5ea;
-      }
-      .lang-button.is-active {
-        background: #007aff;
-        color: white;
-        border-color: #007aff;
-      }
-    </style>
     </header>
 
     <div class="manual-book-layout">
@@ -115,7 +58,7 @@
       <main class="manual-book-main">
         <article class="manual-book-content">
           <h1>系统设置与初始配置</h1>
-          <p class="subtitle">了解 MeshWork 的核心概念，完成应用初始化配置，为使用私有知识库和共享空间做好准备。</p>
+          <p class="subtitle">完成首次启动配置，了解主界面结构，并为使用私有知识库和共享空间做好准备。</p>
 
           <nav class="manual-book-toc-mini">
             <strong>本章目录</strong>
@@ -128,215 +71,14 @@
                   <li><a href="#1-3-2">文档设置</a></li>
                   <li><a href="#1-3-3">讨论设置</a></li>
                   <li><a href="#1-3-4">网络代理设置</a></li>
-                  <li><a href="#1-3-5">AI 设置</a></li>
-                  <li><a href="#1-3-6">Git 设置</a></li>
+                  <li><a href="#1-3-5">Git 设置</a></li>
+                  <li><a href="#1-3-6">AI 设置</a></li>
                 </ol>
               </a></li>
             </ol>
           </nav>
 
           <h2 id="1-1">1.1 首次启动</h2>
-
-          <h3>核心概念</h3>
-
-          <p>首次打开 MeshWork 时，你需要理解产品的三个核心概念：</p>
-
-          <ul>
-            <li><strong>工作台</strong>：工作台是用户进入产品后看到的主使用环境。它是一个产品和交互层概念，不是固定磁盘目录，也不是 Git 仓库。工作台负责组合一个私有知识库和多个共享空间。</li>
-            <li><strong>私有知识库</strong>：属于当前用户自己的数据边界。适合存放个人长期笔记、研究资料、写作草稿、灵感片段和不应自动进入团队共享的内容。它独立存在，不从属于任何共享空间。</li>
-            <li><strong>共享空间</strong>：团队或项目级的数据边界。每个共享空间包含公共知识库、讨论区、共享附件，并可选拥有自己的 Git 历史。</li>
-          </ul>
-
-          <div class="info-block">
-            <strong>设计原则</strong>
-            <p>MeshWork 的设计原则不是先创建一个大型在线团队空间，而是先建立自己的私有知识库，再按需加入共享空间，与团队和 AI 一起把讨论沉淀为长期知识。</p>
-          </div>
-
-          <div class="product-philosophy-section">
-            <h3>产品架构与知识流转</h3>
-            <p>MeshWork 采用"私有优先、渐进共享"的设计理念，知识从个人创作流向团队协作，最终沉淀为可复用的长期知识。</p>
-
-            <div class="philosophy-diagram">
-              <svg width="840" height="540" viewBox="0 0 840 540" xmlns="http://www.w3.org/2000/svg">
-                <!-- Background -->
-                <defs>
-                  <!-- Gradients -->
-                  <linearGradient id="privateGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
-                  </linearGradient>
-                  <linearGradient id="sharedGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#0066cc;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#0099ff;stop-opacity:1" />
-                  </linearGradient>
-                  <linearGradient id="publicGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#51cf66;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#37b24d;stop-opacity:1" />
-                  </linearGradient>
-                  <linearGradient id="discussionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#ff922b;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#fd7e14;stop-opacity:1" />
-                  </linearGradient>
-                  <linearGradient id="aiGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#fa5252;stop-opacity:1" />
-                  </linearGradient>
-
-                  <!-- Arrow markers -->
-                  <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                    <polygon points="0 0, 10 3, 0 6" fill="#6e6e73" />
-                  </marker>
-                  <marker id="arrowheadWhite" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                    <polygon points="0 0, 10 3, 0 6" fill="white" />
-                  </marker>
-
-                  <!-- Drop shadow -->
-                  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.1" />
-                  </filter>
-                </defs>
-
-                <!-- Title -->
-                <text x="420" y="35" text-anchor="middle" font-size="20" font-weight="600" fill="#1d1d1f">MeshWork 产品架构</text>
-
-                <!-- Workspace container -->
-                <rect x="30" y="60" width="780" height="440" rx="16" fill="none" stroke="#d2d2d7" stroke-width="2" stroke-dasharray="8,8" />
-                <text x="420" y="85" text-anchor="middle" font-size="14" font-weight="600" fill="#6e6e73">工作台（Workspace）</text>
-
-                <!-- Private Library -->
-                <g filter="url(#shadow)">
-                  <rect x="60" y="110" width="240" height="320" rx="12" fill="url(#privateGradient)" />
-                  <text x="180" y="140" text-anchor="middle" font-size="16" font-weight="600" fill="white">私有知识库</text>
-                  <text x="180" y="160" text-anchor="middle" font-size="13" fill="white" opacity="0.9">Private Library</text>
-
-                  <!-- Private Library content icons - row 1 -->
-                  <g transform="translate(95, 185)">
-                    <rect width="40" height="40" rx="7" fill="white" opacity="0.2" />
-                    <text x="20" y="27" text-anchor="middle" font-size="19" fill="white">📝</text>
-                    <text x="20" y="60" text-anchor="middle" font-size="11" fill="white" opacity="0.9">个人笔记</text>
-                  </g>
-
-                  <g transform="translate(160, 185)">
-                    <rect width="40" height="40" rx="7" fill="white" opacity="0.2" />
-                    <text x="20" y="27" text-anchor="middle" font-size="19" fill="white">📚</text>
-                    <text x="20" y="60" text-anchor="middle" font-size="11" fill="white" opacity="0.9">研究资料</text>
-                  </g>
-
-                  <g transform="translate(225, 185)">
-                    <rect width="40" height="40" rx="7" fill="white" opacity="0.2" />
-                    <text x="20" y="27" text-anchor="middle" font-size="19" fill="white">📄</text>
-                    <text x="20" y="60" text-anchor="middle" font-size="11" fill="white" opacity="0.9">写作草稿</text>
-                  </g>
-
-                  <!-- Private Library content icons - row 2 -->
-                  <g transform="translate(95, 260)">
-                    <rect width="40" height="40" rx="7" fill="white" opacity="0.2" />
-                    <text x="20" y="27" text-anchor="middle" font-size="19" fill="white">✨</text>
-                    <text x="20" y="60" text-anchor="middle" font-size="11" fill="white" opacity="0.9">灵感片段</text>
-                  </g>
-
-                  <g transform="translate(160, 260)">
-                    <rect width="40" height="40" rx="7" fill="white" opacity="0.2" />
-                    <text x="20" y="27" text-anchor="middle" font-size="19" fill="white">🔒</text>
-                    <text x="20" y="60" text-anchor="middle" font-size="11" fill="white" opacity="0.9">私有内容</text>
-                  </g>
-
-                  <g transform="translate(225, 260)">
-                    <rect width="40" height="40" rx="7" fill="white" opacity="0.2" />
-                    <text x="20" y="27" text-anchor="middle" font-size="19" fill="white">📊</text>
-                    <text x="20" y="60" text-anchor="middle" font-size="11" fill="white" opacity="0.9">项目规划</text>
-                  </g>
-
-                  <text x="180" y="365" text-anchor="middle" font-size="12" fill="white" opacity="0.8">个人创作空间</text>
-                  <text x="180" y="383" text-anchor="middle" font-size="11" fill="white" opacity="0.7">完全本地，随时同步</text>
-
-                  <!-- AI inside Private Library -->
-                  <circle cx="275" cy="130" r="16" fill="url(#aiGradient)" />
-                  <text x="275" y="136" text-anchor="middle" font-size="14" fill="white">🤖</text>
-                </g>
-
-                <!-- Direct flow arrows to Shared Space -->
-                <g>
-                  <!-- Arrow to Public Library -->
-                  <path d="M 310 240 C 360 220, 400 230, 440 250" stroke="#6e6e73" stroke-width="2.5" fill="none" marker-end="url(#arrowhead)" />
-                  <text x="365" y="225" font-size="12" font-weight="500" fill="#6e6e73">内容共享</text>
-
-                  <!-- Arrow to Discussion Area -->
-                  <path d="M 310 270 C 360 290, 400 350, 440 360" stroke="#6e6e73" stroke-width="2.5" fill="none" marker-end="url(#arrowhead)" />
-                  <text x="365" y="335" font-size="12" font-weight="500" fill="#6e6e73">讨论交流</text>
-                </g>
-
-                <!-- Shared Space -->
-                <g filter="url(#shadow)">
-                  <rect x="450" y="110" width="340" height="320" rx="12" fill="url(#sharedGradient)" />
-                  <text x="620" y="140" text-anchor="middle" font-size="16" font-weight="600" fill="white">共享空间</text>
-                  <text x="620" y="160" text-anchor="middle" font-size="13" fill="white" opacity="0.9">Shared Space</text>
-
-                  <!-- Public Library within Shared Space -->
-                  <rect x="475" y="185" width="290" height="90" rx="8" fill="url(#publicGradient)" />
-                  <text x="620" y="212" text-anchor="middle" font-size="14" font-weight="600" fill="white">公共知识库</text>
-                  <text x="620" y="230" text-anchor="middle" font-size="11" fill="white" opacity="0.9">Public Library</text>
-                  <text x="620" y="250" text-anchor="middle" font-size="11" fill="white" opacity="0.85">长期知识沉淀 · 团队协作文档</text>
-                  <text x="620" y="265" text-anchor="middle" font-size="10" fill="white" opacity="0.7">Git 版本控制 · 权限管理</text>
-
-                  <!-- Discussion Area within Shared Space -->
-                  <rect x="475" y="295" width="290" height="90" rx="8" fill="url(#discussionGradient)" />
-                  <text x="620" y="322" text-anchor="middle" font-size="14" font-weight="600" fill="white">讨论区</text>
-                  <text x="620" y="340" text-anchor="middle" font-size="11" fill="white" opacity="0.9">Discussion Area</text>
-                  <text x="620" y="360" text-anchor="middle" font-size="11" fill="white" opacity="0.85">日常对话交流 · Topic 讨论</text>
-                  <text x="620" y="375" text-anchor="middle" font-size="10" fill="white" opacity="0.7">快速沟通 · 头脑风暴</text>
-                </g>
-
-                <!-- Knowledge flow indicator within Shared Space -->
-                <g>
-                  <path d="M 620 295 L 620 280" stroke="white" stroke-width="2" fill="none" marker-end="url(#arrowheadWhite)" opacity="0.9" />
-                  <text x="635" y="290" font-size="11" fill="white" opacity="0.95">↓ 沉淀</text>
-                </g>
-
-                <!-- AI in Shared Space areas -->
-                <g>
-                  <circle cx="745" cy="220" r="16" fill="url(#aiGradient)" />
-                  <text x="745" y="226" text-anchor="middle" font-size="14" fill="white">🤖</text>
-
-                  <circle cx="745" cy="330" r="16" fill="url(#aiGradient)" />
-                  <text x="745" y="336" text-anchor="middle" font-size="14" fill="white">🤖</text>
-                </g>
-
-                <!-- Team members - moved to avoid overlap -->
-                <g transform="translate(680, 400)">
-                  <circle cx="0" cy="0" r="14" fill="white" opacity="0.25" />
-                  <text x="0" y="6" text-anchor="middle" font-size="13" fill="white">👤</text>
-                  <circle cx="30" cy="0" r="14" fill="white" opacity="0.25" />
-                  <text x="30" y="6" text-anchor="middle" font-size="13" fill="white">👤</text>
-                  <circle cx="60" cy="0" r="14" fill="white" opacity="0.25" />
-                  <text x="60" y="6" text-anchor="middle" font-size="13" fill="white">👤</text>
-                  <text x="30" y="30" text-anchor="middle" font-size="11" fill="white" opacity="0.8">团队成员</text>
-                </g>
-
-                <!-- Legend -->
-                <g transform="translate(60, 460)">
-                  <rect width="18" height="18" rx="4" fill="url(#privateGradient)" />
-                  <text x="26" y="14" font-size="12" fill="#6e6e73">私有空间</text>
-
-                  <rect x="100" width="18" height="18" rx="4" fill="url(#sharedGradient)" />
-                  <text x="126" y="14" font-size="12" fill="#6e6e73">团队空间</text>
-
-                  <rect x="200" width="18" height="18" rx="4" fill="url(#publicGradient)" />
-                  <text x="226" y="14" font-size="12" fill="#6e6e73">知识沉淀</text>
-
-                  <rect x="300" width="18" height="18" rx="4" fill="url(#discussionGradient)" />
-                  <text x="326" y="14" font-size="12" fill="#6e6e73">讨论交流</text>
-
-                  <circle cx="410" cy="9" r="9" fill="url(#aiGradient)" />
-                  <text x="426" y="14" font-size="12" fill="#6e6e73">AI 辅助</text>
-                </g>
-              </svg>
-            </div>
-
-            <div class="philosophy-caption">
-              <p><strong>知识流转路径：</strong>在私有知识库中进行个人创作和积累，AI 作为助手提供智能辅助。需要团队协同时，你可以直接将内容共享到共享空间：在讨论区进行快速交流，有价值的内容进一步沉淀到公共知识库成为长期知识。AI 在各个环节提供辅助，但不会自动共享你的私有内容。</p>
-            </div>
-          </div>
 
           <h3>启动流程</h3>
 
@@ -418,7 +160,7 @@
 
           <h2 id="1-3">1.3 应用设置</h2>
 
-          <p>MeshWork 的应用设置页面分为多个部分。你可以通过菜单栏打开设置窗口，左侧导航栏按照以下顺序排列：外观、文档、讨论、网络代理、AI、Git、关于。</p>
+          <p>MeshWork 的应用设置可以通过菜单栏或系统设置入口打开。当前设置窗口包含外观、AI、文档、讨论、Git、网络代理、许可证和关于等页面。</p>
 
           <h3 id="1-3-1">1.3.1 外观设置</h3>
 
@@ -427,8 +169,8 @@
           <ul>
             <li><strong>主题</strong>：选择跟随系统、浅色或深色主题。跟随系统主题会根据 macOS 的外观设置自动切换。</li>
             <li><strong>语言</strong>：选择界面语言（简体中文或英文）。AI 智能体会根据当前应用语言自动调整回复语言。</li>
-            <li><strong>界面密度</strong>：调整界面的紧凑程度。可选择舒适、紧凑或宽松，影响间距和元素尺寸。</li>
-            <li><strong>界面字号</strong>：调整界面文字的显示大小。可选择小、中、大。</li>
+            <li><strong>界面密度</strong>：调整界面的紧凑程度，影响间距、工具栏和控件尺寸。</li>
+            <li><strong>界面字号</strong>：调整界面文字大小。文档编辑器字号和预览缩放也可以在编辑器视图中单独调整。</li>
           </ul>
 
           <h3 id="1-3-2">1.3.2 文档设置</h3>
@@ -437,6 +179,7 @@
 
           <ul>
             <li><strong>提示词自定义</strong>：可以覆盖默认的文档助手提示词，让 AI 按照你的偏好提供帮助。</li>
+            <li><strong>工具调用次数</strong>：限制文档助手单次回复最多可以调用多少次工具。</li>
             <li><strong>自定义命令</strong>：添加你常用的快捷命令，如 <code>/summarize</code>（总结当前文档）、<code>/action</code>（提取待办事项）等。输入 <code>/</code> 时会显示可用的命令列表。</li>
           </ul>
 
@@ -453,7 +196,7 @@
             <li><strong>自动会话时长</strong>：设置讨论区话题默认使用的自动会话窗口时长，默认为 2 分钟，范围为 2-10 分钟。在这段时间内，你继续发送的消息会自动发送给上次回复的智能体，无需重复 @。</li>
             <li><strong>提示词</strong>：设置新话题的默认提示词，定义智能体在讨论中的角色和行为方式。</li>
             <li><strong>分支总结提示词</strong>：自定义话题分支的自动总结提示词，用于生成分支的简要描述。</li>
-            <li><strong>自定义命令</strong>：添加话题级的自定义命令，这些命令只在讨论区中可用。</li>
+            <li><strong>自定义命令</strong>：添加全局讨论命令。共享空间和单个话题还可以继续配置自己的命令；同名时优先使用话题命令，其次是共享空间命令，最后是全局命令。</li>
             <li><strong>单次工具调用次数限制</strong>：设置智能体单次回复中最多可以调用工具的次数，防止意外消耗过多资源。</li>
           </ul>
 
@@ -489,7 +232,7 @@
             </ul>
           </div>
 
-          <h3 id="1-3-6">1.3.6 Git 设置</h3>
+          <h3 id="1-3-5">1.3.5 Git 设置</h3>
 
           <h4>理解 MeshWork 的 Git 模型</h4>
 
@@ -504,26 +247,26 @@
 
           <div class="info-block">
             <strong>设计理念</strong>
-            <p>MeshWork 把 Git 当成隐藏的可靠底座。你不需要在日常使用中理解 commit、branch、merge 等概念。MeshWork 会自动处理版本历史、修改追踪、协作共享和恢复能力。</p>
+            <p>MeshWork 把 Git 当成可选的可靠底座。未绑定远端仓库时，你可以完全本地使用；绑定远端后，编辑器工具栏会把主动作切换为"同步"，在同步前保存当前内容并提交待同步更改，再拉取和推送。</p>
           </div>
 
-          <h4>配置 Git 身份信息</h4>
+          <h4>添加远端仓库条目</h4>
 
-          <p>在使用 Git 之前，需要在"设置 → Git"中配置你的身份信息。这些信息会记录在 Git 提交历史中：</p>
+          <p>在"设置 → Git"中维护可复用的远端仓库条目，然后在私有知识库或共享空间设置中绑定对应仓库。</p>
 
           <ol>
-            <li>输入你的姓名（User Name）。这个姓名会显示在 Git 提交记录中。</li>
-            <li>输入你的邮箱地址（User Email）。这个邮箱应该与你的 GitHub 账号邮箱一致，便于识别贡献者。</li>
-            <li>点击"保存"应用配置。</li>
+            <li>点击"添加"创建仓库条目。</li>
+            <li>选择服务类型：GitHub、Gitee、GitLab 或自定义。</li>
+            <li>填写仓库名称、远端 URL 和默认分支。</li>
+            <li>选择认证方式：SSH Key、HTTPS Token 或不使用认证。</li>
+            <li>如需代理访问，在仓库条目中选择已配置的网络代理。</li>
           </ol>
 
-          <p>配置示例：</p>
-          <pre><code>User Name: 张三
-User Email: zhangsan@example.com</code></pre>
+          <p>MeshWork 当前通过内置 libgit2 后端执行 Git 操作，不依赖系统 <code>/usr/bin/git</code>。SSH 方式不使用 SSH Agent；请选择私钥文件，或粘贴 OpenSSH 私钥内容。私钥口令、HTTPS Token 和粘贴的私钥内容会保存到系统钥匙串。</p>
 
-          <h4>配置 SSH 密钥</h4>
+          <h4>准备 SSH 密钥</h4>
 
-          <p>SSH 密钥用于与 GitHub 等 Git 托管服务进行安全的免密码认证。如果你计划使用 SSH 方式访问远程仓库，需要配置 SSH 密钥。</p>
+          <p>SSH 密钥用于与 GitHub、Gitee、GitLab 或自建 Git 服务进行认证。如果你计划使用 SSH 方式访问远程仓库，需要先在对应托管平台添加公钥。</p>
 
           <h5>检查现有 SSH 密钥</h5>
 
@@ -535,7 +278,7 @@ User Email: zhangsan@example.com</code></pre>
             <li>检查目录列表中是否包含 <code>id_ed25519</code> 或 <code>id_rsa</code> 等文件名。</li>
           </ol>
 
-          <p>如果已有密钥文件，可以跳过生成步骤，直接添加到 GitHub。</p>
+          <p>如果已有密钥文件，可以跳过生成步骤，直接把公钥添加到对应 Git 托管平台。</p>
 
           <h5>生成新的 SSH 密钥</h5>
 
@@ -543,7 +286,7 @@ User Email: zhangsan@example.com</code></pre>
 
           <ol>
             <li>打开终端。</li>
-            <li>运行命令 <code>ssh-keygen -t ed25519 -C "your_email@example.com"</code>，将邮箱替换为你的 GitHub 邮箱。</li>
+            <li>运行命令 <code>ssh-keygen -t ed25519 -C "your_email@example.com"</code>，将邮箱替换为你用于 Git 托管平台的邮箱。</li>
             <li>当提示输入文件位置时，按 Enter 使用默认位置。</li>
             <li>当提示输入密码时，可以输入密码也可以直接按 Enter 跳过（跳过密码更方便，但安全性较低）。</li>
           </ol>
@@ -557,16 +300,16 @@ User Email: zhangsan@example.com</code></pre>
             <li>如果粘贴私钥内容，Meshwork 会将内容保存到系统钥匙串。</li>
           </ol>
 
-          <h5>复制 SSH 公钥</h5>
+          <h5>复制 SSH 公钥并添加到托管平台</h5>
 
-          <p>复制公钥内容，准备添加到 GitHub：</p>
+          <p>复制公钥内容，准备添加到 GitHub、Gitee、GitLab 或自建 Git 服务：</p>
 
           <ol>
             <li>运行命令 <code>cat ~/.ssh/id_ed25519.pub</code>。</li>
             <li>复制输出的全部内容，以 <code>ssh-ed25519</code> 开头，以你的邮箱结尾。</li>
           </ol>
 
-          <h4>GitHub 账号与仓库配置</h4>
+          <h4>GitHub 账号与仓库配置参考</h4>
 
           <div class="info-block">
             <strong>说明</strong>
@@ -660,11 +403,11 @@ User Email: zhangsan@example.com</code></pre>
           <p>在 MeshWork 中将私有知识库或共享空间绑定到 GitHub 仓库：</p>
 
           <ol>
+            <li>先在"设置 → Git"添加远端仓库条目。</li>
             <li>打开私有知识库或共享空间的设置页面。</li>
-            <li>找到"Git"或"远程仓库"配置部分。</li>
-            <li>输入你复制的仓库地址。</li>
+            <li>选择要绑定的远端仓库。</li>
             <li>如果需要，指定分支名称。留空时 MeshWork 会根据资源类型、名称和 ID 自动生成分支名。</li>
-            <li>点击"连接"或"保存"完成绑定。</li>
+            <li>点击"确定"保存绑定。</li>
           </ol>
 
           <div class="info-block">
@@ -691,32 +434,79 @@ User Email: zhangsan@example.com</code></pre>
             <li>在 MeshWork 中配置远程仓库时，使用 Token 作为密码。</li>
           </ol>
 
-          <h3 id="1-3-5">1.3.5 AI 设置</h3>
+          <h3 id="1-3-6">1.3.6 AI 设置</h3>
 
-          <p>在"设置 → AI"中配置 AI 智能体的行为。MeshWork 支持多种 AI 服务提供商和搜索服务，你可以根据需要添加和配置。</p>
+          <p>在"设置 → AI"中配置 AI 智能体的行为。MeshWork 支持通过兼容协议接入多种 AI 服务和搜索服务，你可以根据需要添加和配置。</p>
 
-          <h4>AI 服务提供商</h4>
+          <h4>AI 服务协议与兼容提供商</h4>
 
-          <p>MeshWork 支持以下 AI 服务提供商。点击链接访问官网并申请 API Key：</p>
+          <p>MeshWork 当前内置两种 AI 接入协议：OpenAI Compatible 和 Anthropic Compatible。设置中的"OpenAI"和"Anthropic"表示请求格式与协议类型，不代表只能使用这两家公司。只要第三方服务商提供兼容接口，就可以通过 API Key、Base URL 和模型名称接入。</p>
+
+          <p>以下是常见的兼容服务商示例。不同服务商的模型名称、工具调用、流式输出、思维模式等能力可能不同，请以对应服务商文档为准：</p>
 
           <table>
             <thead>
               <tr>
-                <th>提供商</th>
-                <th>官网</th>
-                <th>API Key 申请</th>
+                <th>服务商</th>
+                <th>兼容协议</th>
+                <th>文档 / 平台</th>
+                <th>常见 Base URL</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td><strong>OpenAI</strong></td>
-                <td><a href="https://openai.com" target="_blank">https://openai.com</a></td>
-                <td><a href="https://platform.openai.com/api-keys" target="_blank">https://platform.openai.com/api-keys</a></td>
+                <td>OpenAI Compatible</td>
+                <td><a href="https://platform.openai.com/docs" target="_blank">platform.openai.com/docs</a></td>
+                <td><code>https://api.openai.com/v1</code></td>
               </tr>
               <tr>
                 <td><strong>Anthropic Claude</strong></td>
-                <td><a href="https://www.anthropic.com" target="_blank">https://www.anthropic.com</a></td>
-                <td><a href="https://console.anthropic.com/settings/keys" target="_blank">https://console.anthropic.com/settings/keys</a></td>
+                <td>Anthropic Compatible</td>
+                <td><a href="https://docs.anthropic.com/" target="_blank">docs.anthropic.com</a></td>
+                <td><code>https://api.anthropic.com/v1</code></td>
+              </tr>
+              <tr>
+                <td><strong>OpenRouter</strong></td>
+                <td>OpenAI Compatible</td>
+                <td><a href="https://openrouter.ai/docs" target="_blank">openrouter.ai/docs</a></td>
+                <td><code>https://openrouter.ai/api/v1</code></td>
+              </tr>
+              <tr>
+                <td><strong>DeepSeek</strong></td>
+                <td>OpenAI Compatible / Anthropic Compatible</td>
+                <td><a href="https://api-docs.deepseek.com/" target="_blank">api-docs.deepseek.com</a></td>
+                <td><code>https://api.deepseek.com</code>；Anthropic 格式为 <code>https://api.deepseek.com/anthropic</code></td>
+              </tr>
+              <tr>
+                <td><strong>阿里云百炼 / DashScope</strong></td>
+                <td>OpenAI Compatible / Anthropic Compatible</td>
+                <td><a href="https://help.aliyun.com/zh/model-studio/" target="_blank">help.aliyun.com/zh/model-studio</a></td>
+                <td>按地域选择，例如 <code>https://dashscope.aliyuncs.com/compatible-mode/v1</code></td>
+              </tr>
+              <tr>
+                <td><strong>智谱 AI / BigModel</strong></td>
+                <td>OpenAI Compatible</td>
+                <td><a href="https://docs.bigmodel.cn/" target="_blank">docs.bigmodel.cn</a></td>
+                <td><code>https://open.bigmodel.cn/api/paas/v4</code></td>
+              </tr>
+              <tr>
+                <td><strong>Moonshot AI / Kimi</strong></td>
+                <td>OpenAI Compatible</td>
+                <td><a href="https://platform.kimi.com/docs/api/overview" target="_blank">platform.kimi.com/docs</a></td>
+                <td><code>https://api.moonshot.cn/v1</code></td>
+              </tr>
+              <tr>
+                <td><strong>SiliconFlow</strong></td>
+                <td>OpenAI Compatible</td>
+                <td><a href="https://docs.siliconflow.cn/" target="_blank">docs.siliconflow.cn</a></td>
+                <td><code>https://api.siliconflow.cn/v1</code></td>
+              </tr>
+              <tr>
+                <td><strong>Mistral AI</strong></td>
+                <td>OpenAI Compatible</td>
+                <td><a href="https://docs.mistral.ai/" target="_blank">docs.mistral.ai</a></td>
+                <td><code>https://api.mistral.ai/v1</code></td>
               </tr>
             </tbody>
           </table>
@@ -724,10 +514,10 @@ User Email: zhangsan@example.com</code></pre>
           <p>配置选项：</p>
 
           <ul>
-            <li><strong>提供商</strong>：选择 OpenAI 或 Anthropic Claude。</li>
+            <li><strong>提供商 / 协议</strong>：根据目标服务商的接口格式选择 OpenAI Compatible 或 Anthropic Compatible。</li>
             <li><strong>API Key</strong>：输入从对应平台申请的 API 密钥。</li>
-            <li><strong>Base URL</strong>：默认使用官方 API 地址，如有需要可自定义。</li>
-            <li><strong>模型</strong>：选择默认使用的模型版本。OpenAI 默认为 <code>gpt-4o</code>，Anthropic 默认为 <code>claude-3-5-sonnet-20241022</code>。</li>
+            <li><strong>Base URL</strong>：填写服务商提供的兼容 API 根地址，通常不要包含 <code>/chat/completions</code> 或具体模型路径。</li>
+            <li><strong>模型</strong>：填写或选择服务商文档中的模型名称。默认示例为 <code>gpt-4o</code> 和 <code>claude-3-5-sonnet-20241022</code>，接入第三方服务时应改为对应模型 ID。</li>
             <li><strong>上下文窗口大小</strong>：设置最大上下文窗口（单位 KB），默认为 200KB，范围为 32KB-2048KB。</li>
             <li><strong>代理设置</strong>：如需通过代理访问，可选择对应的代理配置。</li>
             <li><strong>设为默认</strong>：标记为默认提供商，AI 助手会优先使用。</li>

@@ -122,7 +122,7 @@
           <p>When using MeshWork on multiple devices, please note the following:</p>
           <ul>
             <li><strong>Data synchronization</strong>: MeshWork itself doesn't provide inter-device data synchronization services. You need to synchronize data through Git remote repositories or other synchronization mechanisms (such as iCloud Drive, Dropbox).</li>
-            <li><strong>Git configuration</strong>: Each device needs to configure Git identity information. It's recommended to use the same name and email for easy contributor identification.</li>
+            <li><strong>Git configuration</strong>: Each device needs authentication that can access the remote repository. SSH uses a selected private key file or pasted private key content; HTTPS uses an access token.</li>
             <li><strong>SSH keys</strong>: If using SSH to access remote repositories, each device needs to generate and add its own SSH key to GitHub.</li>
             <li><strong>API Keys</strong>: AI service API Keys need to be configured separately on each device. Please be safe and don't transmit API Keys insecurely between devices.</li>
             <li><strong>Workspace configuration</strong>: Workspace configuration (such as added shared space list) is stored locally and needs to be manually configured on each device.</li>

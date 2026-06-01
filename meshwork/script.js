@@ -1,6 +1,6 @@
 const content = {
   zh: {
-    metaTitle: "MeshWork｜让 AI 参与讨论",
+    metaTitle: "MeshWork｜本地优先的 AI 创作工作台",
     metaDescription:
       "MeshWork 是一个本地优先的创作工作台，让笔记、讨论、AI 参与和 Git 原生共享形成同一个思考系统。",
     nav: {
@@ -10,17 +10,17 @@ const content = {
       flow: "工作流",
       gallery: "知识沉淀",
       comparison: "产品对比",
-      roadmap: "发展计划",
-      pricing: "版本价格",
+      roadmap: "产品 Next",
+      pricing: "版本边界",
       manual: "操作手册",
     },
     hero: {
       eyebrow: "为 Apple 生态而生",
-      title: "让 AI 参与讨论\n让共识沉淀为知识",
+      title: "把笔记、讨论和 AI\n收进同一个工作台",
       subtitle:
-        "MeshWork 把笔记、异步讨论、AI 参与者与 Git 原生共享放进同一个创作工作台。AI 不只是旁边的助手，而是可以进入人类讨论，补充视角、追问分歧、推动共识，但知识边界和最终判断始终由你掌握。",
-      primary: "了解产品理念",
-      secondary: "打开操作手册",
+        "MeshWork 面向 Apple 生态，把本地 Markdown 文档、异步讨论、AI 参与者和可选 Git 共享连接起来。你先保有自己的材料边界，再把值得协作的内容带入共享空间，让讨论结论沉淀为可追溯的知识。",
+      primary: "看核心能力",
+      secondary: "阅读操作手册",
       pointOne: "Local-first",
       pointTwo: "AI as participant",
       pointThree: "Git-native sharing",
@@ -38,8 +38,8 @@ const content = {
     },
     intro: {
       kicker: "Product Philosophy",
-      title: "不是另一个在线文档，\n而是人与 AI 的思考空间。",
-      body: "MeshWork 的核心不是把所有人推向实时协同，而是让个人、小团队和 AI 在同一个材料上下文里讨论：人提出问题和判断方向，AI 参与分析、追问和总结，最后把共识回流成可长期保存的 Markdown 知识。",
+      title: "先保有自己的材料，\n再把讨论变成知识。",
+      body: "MeshWork 不是把所有内容放进一个在线团队空间，而是先让个人知识库长期独立，再按项目创建共享空间。AI 可以在文档右侧或讨论区参与分析、追问和总结，但写入、共享和同步都围绕清晰的数据边界展开。",
     },
     principles: {
       kicker: "Principles",
@@ -58,13 +58,13 @@ const content = {
       },
       apple: {
         title: "Apple 原生体验",
-        body: "MeshWork 服务 macOS、iPadOS 与 iOS。交互应该像系统应用一样自然，同时保留开放格式、可迁移和可扩展的底层结构。",
+        body: "当前应用以 macOS 原生体验为主线，使用系统窗口、控件和交互习惯，同时保留开放格式、可迁移和可扩展的底层结构。",
       },
     },
     highlights: {
       kicker: "Feature Highlights",
-      title: "从文档编辑到讨论协作，\n每一步都可沉淀。",
-      body: "MeshWork 的功能围绕开放文档、可追溯讨论和本地数据边界展开。文档可以被编辑、引用、渲染和讨论；讨论结论可以回到知识库；同步与共享交给 Git 完成。",
+      title: "当前最重要的能力，\n都围绕知识创作展开。",
+      body: "MeshWork 的重点不是堆叠聊天功能，而是让文档、讨论、AI 工具和 Git 同步围绕同一份材料工作。每个入口都服务于一个目标：把想法整理成可长期维护的知识。",
       editor: {
         title: "双栏与所见即所得编辑",
         body: "文档编辑同时支持双栏工作区和所见即所得体验，既保留结构化 Markdown 的开放性，也让创作过程接近最终阅读效果。",
@@ -95,12 +95,12 @@ const content = {
         slashExample: "/命令名 — 执行预定义的自定义命令",
       },
       shell: {
-        title: "虚拟 Shell：极致安全，释放 AI 能力",
-        body: "专门为 AI 智能体设计的虚拟 Shell 环境，在 Apple 原生应用安全沙箱内运行。既保留系统级安全边界，又提供大模型熟悉的命令行工具接口，让 AI 能够可靠地读取、整理和操作知识材料，同时确保所有操作都在可控范围内执行。",
+        title: "受控虚拟 Shell",
+        body: "AI 工具运行在 MeshWork 定义的受控命令集合中，可读取目录、搜索文档、查看 Git 状态和分段读取内容。它给模型熟悉的操作入口，同时避免任意 shell 命令越过应用边界。",
       },
       knowledgeTools: {
-        title: "专门为知识库检索设计的 AI 工具集",
-        body: "提供一组专门为知识库文档检索查询访问定制的工具接口，极大提高智能体访问知识库的效率。AI 可以精准定位文档、快速检索内容、智能关联相关知识，让知识检索从模糊匹配升级为精准访问。",
+        title: "面向知识库的 AI 检索工具",
+        body: "AI 可以使用本地 BM25 文档搜索、读取大纲、按标题或行号分段阅读，并结合链接关系理解材料。需要证据时，先定位文档，再读取相关片段，减少凭空回答。",
         tools: [
           { name: "search_documents", desc: "BM25 本地搜索" },
           { name: "read_document_section", desc: "按章节读取" },
@@ -122,7 +122,7 @@ const content = {
       },
       git: {
         title: "Git 同步与隐私边界",
-        body: "所有内容通过 Git 同步和共享。数据首先保存在本地，私有知识库和共享空间保持清晰边界，隐私保护建立在开放文件和可控同步之上。",
+        body: "Git 只绑定真实数据边界：私有知识库或某个共享空间。未绑定远端时可以本地使用；绑定远端后再通过同步按钮提交、拉取和推送。",
       },
       proxy: {
         title: "中国大陆用户友好",
@@ -158,7 +158,7 @@ const content = {
     sharing: {
       kicker: "Git-native Sharing",
       title: "通过 Git 共享，\n但数据仍由你掌控。",
-      body: "私有知识库和共享空间都有清晰的数据边界。需要协作时，把对应资源绑定到远端仓库；同类资源可以通过不同分支隔离，既方便共享，也避免混入不该公开的材料。",
+      body: "私有知识库和共享空间都有清晰的数据边界。需要协作时，把对应资源绑定到标准 Git 远端；同类资源可以通过不同分支隔离，避免把私人材料混入团队空间。",
       caption: "通过 GitHub、Gitee、GitLab 或自建 Git 服务共享知识库。",
     },
     knowledge: {
@@ -170,7 +170,7 @@ const content = {
     comparison: {
       kicker: "Product Comparison",
       title: "与同类产品的差异",
-      body: "MeshWork 结合了聊天软件的协作能力和笔记软件的知识沉淀能力，但核心差异在于：通过 GitHub 进行多人协作，隐私和数据始终由你掌控。",
+      body: "MeshWork 结合了聊天软件的讨论能力和笔记软件的知识沉淀能力，但核心差异在于：协作建立在本地文件和标准 Git 远端之上，数据边界始终清晰。",
       chatTitle: "通用聊天软件",
       chatDesc:
         "钉钉、飞书等通用聊天软件通过在群聊中添加智能机器人来实现 AI 辅助功能。机器人可以参与讨论、总结内容并生成文档。但所有数据都存储在平台服务器上，依赖外部服务，隐私由平台掌控。",
@@ -205,24 +205,26 @@ const content = {
     },
     roadmap: {
       kicker: "Product Roadmap",
-      title: "未来发展规划",
-      body: "我们计划开发 Obsidian 插件版本，让 Windows 和 Linux 用户也能使用 MeshWork。但 Apple 原生应用将始终提供最完整、最流畅的体验——深度融合系统特性、更优的性能和更自然的交互。",
+      title: "下一步：用 Obsidian 插件补齐跨平台。",
+      body: "MeshWork 的原生应用优先服务 Apple 生态；为了让 Windows 和 Linux 用户也能进入同一套开放 Markdown、AI 讨论和 Git 同步工作流，产品 next 是开发 Obsidian 插件版本。",
       pluginTitle: "Obsidian 插件",
       pluginBody:
-        "为 Windows 和 Linux 用户提供完整的 MeshWork 核心功能，包括 AI 讨论参与、知识库检索和 Git 同步。",
+        "面向 Windows 和 Linux 用户，计划提供 AI 讨论参与、知识库检索、文档引用和 Git 同步等 MeshWork 核心能力。",
       nativeTitle: "Apple 原生优先",
       nativeBody:
-        "macOS、iPadOS 和 iOS 版本将始终优先获得新功能，并保持最佳的系统集成和用户体验。",
+        "macOS 原生应用仍是体验基准，继续优先打磨系统窗口、原生控件、键盘交互、字体缩放、密度设置和沙箱边界。",
     },
     pricing: {
-      kicker: "Pricing Plans",
-      title: "选择适合你的版本",
-      body: "MeshWork 采用一次性购买模式，无需订阅。从个人笔记创作到团队协作，总有一个版本适合你的需求。",
+      kicker: "Editions",
+      title: "版本边界先清楚，价格以后再确定。",
+      body: "当前项目保留 Free、Creator、Studio 三个功能边界：Free 面向本地知识库，Creator 增加文档 AI，Studio 增加共享空间和协作能力。正式价格以未来发布版本为准。",
       table: {
         feature: "功能",
         free: "Free 免费版",
         creator: "Creator 创作者",
         studio: "Studio 工作室",
+        creatorPrice: "待定",
+        studioPrice: "待定",
       },
       features: {
         privateKnowledgeBase: {
@@ -263,7 +265,7 @@ const content = {
     },
   },
   en: {
-    metaTitle: "MeshWork | Turn discussion into knowledge",
+    metaTitle: "MeshWork | Local-first AI creative workspace",
     metaDescription:
       "MeshWork is a local-first creative workspace where notes, discussions, AI participation, and Git-native sharing become one thinking system.",
     nav: {
@@ -273,17 +275,17 @@ const content = {
       flow: "Workflow",
       gallery: "Knowledge",
       comparison: "Compare",
-      roadmap: "Roadmap",
-      pricing: "Pricing",
+      roadmap: "Next",
+      pricing: "Editions",
       manual: "Manual",
     },
     hero: {
       eyebrow: "Built for the Apple ecosystem",
-      title: "Turn discussion into knowledge",
+      title: "Bring notes, discussion,\nand AI into one workspace",
       subtitle:
-        "MeshWork brings notes, asynchronous discussion, AI participants, and Git-native sharing into one creative workspace. AI can join human discussion to add perspectives, surface disagreements, and shape alignment while ownership and final judgment stay with you.",
-      primary: "Explore the idea",
-      secondary: "Open manual",
+        "MeshWork is built for the Apple ecosystem. It connects local Markdown documents, asynchronous discussion, AI participants, and optional Git sharing so your private materials stay yours while confirmed ideas can move into shared spaces.",
+      primary: "See core features",
+      secondary: "Read manual",
       pointOne: "Local-first",
       pointTwo: "AI as participant",
       pointThree: "Git-native sharing",
@@ -302,8 +304,8 @@ const content = {
     intro: {
       kicker: "Product Philosophy",
       title:
-        "Not another online document tool. A thinking infrastructure for creators.",
-      body: "MeshWork is not designed to push everyone into real-time co-editing. It gives individuals, small teams, and AI a shared material context: develop thoughts in a private library, let AI analyze, question, and summarize inside shared spaces, then preserve decisions as durable Markdown knowledge.",
+        "Keep your own materials first. Turn discussion into knowledge when ready.",
+      body: "MeshWork does not start by putting every document into a single online team space. Your private library stays independent, and shared spaces are added per project. AI can help in the document sidebar or discussion area, but writing, sharing, and syncing follow explicit data boundaries.",
     },
     principles: {
       kicker: "Principles",
@@ -322,13 +324,13 @@ const content = {
       },
       apple: {
         title: "Native Apple experience",
-        body: "MeshWork serves macOS, iPadOS, and iOS. It should feel like a first-party app while keeping the underlying structure open, portable, and extensible.",
+        body: "The current app focuses on a native macOS experience with system windows, controls, and interaction patterns while keeping the underlying structure open, portable, and extensible.",
       },
     },
     highlights: {
       kicker: "Feature Highlights",
-      title: "Documents, discussions, and sync stay connected.",
-      body: "MeshWork features are built around open documents, traceable discussion, and local data boundaries. Documents can be edited, referenced, rendered, and discussed; conclusions return to the knowledge base; Git handles sync and sharing.",
+      title: "The important features are built around knowledge creation.",
+      body: "MeshWork is not trying to add chat for its own sake. Documents, discussions, AI tools, and Git sync all work around the same materials so ideas can become durable knowledge.",
       editor: {
         title: "Two-pane and WYSIWYG editing",
         body: "The editor supports both a two-pane workspace and WYSIWYG writing, keeping Markdown open while making the writing flow close to the final reading experience.",
@@ -361,12 +363,12 @@ const content = {
         slashExample: "/command — Execute predefined custom commands",
       },
       shell: {
-        title: "Virtual Shell: Ultimate security, unleashed AI capabilities",
-        body: "A purpose-built virtual Shell environment designed specifically for AI agents, running within Apple's native app security sandbox. It maintains system-level security boundaries while providing the familiar command-line tool interface that language models understand, enabling AI to reliably read, organize, and manipulate knowledge materials while ensuring all operations remain within controllable limits.",
+        title: "Controlled virtual Shell",
+        body: "AI tools run through a MeshWork-defined command set for browsing folders, searching documents, checking Git state, and reading content in sections. Models get familiar operations without arbitrary shell access.",
       },
       knowledgeTools: {
-        title: "AI tools purpose-built for knowledge base retrieval",
-        body: "Provides a specialized set of tool interfaces designed specifically for knowledge base document retrieval and access, dramatically improving agent efficiency in accessing knowledge bases. AI can precisely locate documents, rapidly retrieve content, and intelligently correlate related knowledge, upgrading knowledge retrieval from fuzzy matching to precision access.",
+        title: "AI retrieval tools for knowledge bases",
+        body: "Agents can use local BM25 document search, read outlines, inspect sections by heading or line range, and follow links. When an answer needs evidence, the workflow starts from local materials instead of guesswork.",
         tools: [
           { name: "search_documents", desc: "BM25 local search" },
           { name: "read_document_section", desc: "read by section" },
@@ -388,7 +390,7 @@ const content = {
       },
       git: {
         title: "Git sync with privacy boundaries",
-        body: "All content syncs and shares through Git. Data starts local, private libraries and shared spaces keep clear boundaries, and privacy protection is built on open files plus controlled synchronization.",
+        body: "Git binds only to real data boundaries: a private library or one shared space. You can stay local, then bind a remote and use the sync button to commit, pull, and push when sharing is needed.",
       },
       proxy: {
         title: "Friendly for users in mainland China",
@@ -425,7 +427,7 @@ const content = {
     sharing: {
       kicker: "Git-native Sharing",
       title: "Share through Git while keeping ownership of your data.",
-      body: "Private libraries and shared spaces keep clear data boundaries. When collaboration is needed, bind the resource to a remote repository; resources of the same type can stay isolated through separate branches.",
+      body: "Private libraries and shared spaces keep clear data boundaries. When collaboration is needed, bind the resource to a standard Git remote; resources of the same type can stay isolated through separate branches.",
       caption:
         "Share knowledge through GitHub, Gitee, GitLab, or a self-hosted Git service.",
     },
@@ -438,7 +440,7 @@ const content = {
     comparison: {
       kicker: "Product Comparison",
       title: "How MeshWork is different",
-      body: "MeshWork combines the collaboration features of chat apps with the knowledge preservation of note-taking tools, but with a key difference: multi-person collaboration through GitHub with privacy and data always under your control.",
+      body: "MeshWork combines discussion from chat apps with knowledge preservation from note-taking tools, but collaboration is built on local files and standard Git remotes with explicit data boundaries.",
       chatTitle: "General Chat Apps",
       chatDesc:
         "General chat apps like DingTalk and Feishu implement AI features through smart bots in group chats. Bots can participate in discussions, summarize content, and generate documents. However, all data is stored on platform servers, relies on external services, and privacy is controlled by the platform.",
@@ -473,24 +475,26 @@ const content = {
     },
     roadmap: {
       kicker: "Product Roadmap",
-      title: "What's coming next",
-      body: "We plan to develop an Obsidian plugin to bring MeshWork to Windows and Linux users. However, the native Apple app will always deliver the most complete and fluid experience—with deeper system integration, better performance, and more natural interactions.",
+      title: "Next: an Obsidian plugin for cross-platform reach.",
+      body: "The native MeshWork app prioritizes the Apple ecosystem. To support Windows and Linux users with the same open Markdown, AI discussion, and Git sync workflow, the product next step is an Obsidian plugin.",
       pluginTitle: "Obsidian Plugin",
       pluginBody:
-        "Brings core MeshWork features to Windows and Linux users, including AI discussion participation, knowledge base retrieval, and Git sync.",
-      nativeTitle: "Apple-First",
+        "Planned for Windows and Linux users, bringing core MeshWork capabilities such as AI discussion participation, knowledge-base retrieval, document references, and Git sync.",
+      nativeTitle: "Apple-first native app",
       nativeBody:
-        "macOS, iPadOS, and iOS versions will always receive new features first and maintain the best system integration and user experience.",
+        "The macOS native app remains the experience baseline, with continued work on system windows, native controls, keyboard interactions, font scaling, density settings, and sandbox boundaries.",
     },
     pricing: {
-      kicker: "Pricing Plans",
-      title: "Choose your edition",
-      body: "MeshWork uses a one-time purchase model—no subscriptions. From personal note-taking to team collaboration, there's a version that fits your needs.",
+      kicker: "Editions",
+      title: "Clear edition boundaries first. Final pricing later.",
+      body: "The project currently keeps three edition boundaries: Free for local private libraries, Creator for document AI, and Studio for shared spaces and collaboration. Final pricing depends on a future release.",
       table: {
         feature: "Features",
         free: "Free",
         creator: "Creator",
         studio: "Studio",
+        creatorPrice: "TBD",
+        studioPrice: "TBD",
       },
       features: {
         privateKnowledgeBase: {
