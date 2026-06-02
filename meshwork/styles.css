@@ -278,21 +278,19 @@ button {
 }
 
 .hero h1 {
-  max-width: 12ch;
+  max-width: 720px;
   margin: 0;
-  font-size: clamp(52px, 8vw, 116px);
+  font-size: clamp(28px, 4.2vw, 64px);
   font-weight: 900;
-  letter-spacing: 0;
-  line-height: 0.96;
-  white-space: pre-line;
-  text-wrap: balance;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
   text-shadow: 0 24px 70px rgba(0, 0, 0, 0.58);
 }
 
 html[lang="zh-CN"] .hero h1 {
-  max-width: 11ch;
-  font-size: clamp(44px, 6.3vw, 78px);
-  line-height: 1.08;
+  max-width: 680px;
+  font-size: clamp(26px, 4vw, 48px);
+  line-height: 1.2;
   overflow-wrap: normal;
   word-break: keep-all;
 }
@@ -599,10 +597,10 @@ html[lang="zh-CN"] .hero h1 {
 .section-heading h2,
 .feature-copy h2 {
   margin: 0;
-  font-size: clamp(36px, 5.4vw, 72px);
+  font-size: clamp(30px, 4.2vw, 56px);
   font-weight: 900;
   letter-spacing: 0;
-  line-height: 1.04;
+  line-height: 1.08;
   white-space: pre-line;
   text-wrap: balance;
 }
@@ -610,8 +608,8 @@ html[lang="zh-CN"] .hero h1 {
 html[lang="zh-CN"] .intro-grid h2,
 html[lang="zh-CN"] .section-heading h2,
 html[lang="zh-CN"] .feature-copy h2 {
-  font-size: clamp(31px, 4.1vw, 52px);
-  line-height: 1.14;
+  font-size: clamp(26px, 3.5vw, 46px);
+  line-height: 1.18;
   overflow-wrap: normal;
   word-break: keep-all;
 }
@@ -2089,5 +2087,176 @@ html[lang="zh-CN"] .feature-copy h2 {
   .tier-badge {
     font-size: 10px;
     padding: 3px 10px;
+  }
+}
+
+/* Story Section */
+.story-section {
+  padding: 92px 0 72px;
+}
+
+.story-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.story-card {
+  position: relative;
+  display: grid;
+  gap: 20px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.08),
+      rgba(255, 255, 255, 0.025)
+    ),
+    rgba(21, 14, 42, 0.56);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(22px);
+  overflow: hidden;
+  transition:
+    transform 280ms ease,
+    box-shadow 280ms ease;
+}
+
+.story-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 32px 100px rgba(0, 0, 0, 0.48);
+}
+
+.story-card::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  background:
+    radial-gradient(
+      circle at 12% 12%,
+      rgba(125, 232, 255, 0.12),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 88% 88%,
+      rgba(255, 117, 202, 0.1),
+      transparent 38%
+    );
+  opacity: 0.8;
+}
+
+.story-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+}
+
+.story-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 600ms ease;
+}
+
+.story-card:hover .story-image {
+  transform: scale(1.05);
+}
+
+.story-overlay {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 2;
+}
+
+.story-category {
+  display: inline-block;
+  padding: 7px 13px;
+  border: 1px solid rgba(125, 232, 255, 0.3);
+  border-radius: 999px;
+  color: #7de8ff;
+  background: rgba(125, 232, 255, 0.15);
+  font-size: 12px;
+  font-weight: 800;
+  backdrop-filter: blur(12px);
+}
+
+.story-content {
+  padding: 24px 28px 28px;
+}
+
+.story-content h3 {
+  margin: 0 0 12px;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.story-content p {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.72;
+}
+
+.story-quote {
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  position: relative;
+}
+
+.story-quote::before {
+  position: absolute;
+  top: -8px;
+  left: 16px;
+  content: "\"";
+  font-size: 32px;
+  color: var(--pink);
+  line-height: 1;
+}
+
+.story-quote span {
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 246, 255, 0.85);
+}
+
+@media (max-width: 900px) {
+  .story-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .story-section {
+    padding: 66px 0 52px;
+  }
+
+  .story-grid {
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .story-content {
+    padding: 20px 24px 24px;
+  }
+
+  .story-content h3 {
+    font-size: 18px;
+  }
+
+  .story-content p {
+    font-size: 14px;
+  }
+
+  .story-quote span {
+    font-size: 13px;
   }
 }

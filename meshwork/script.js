@@ -12,11 +12,12 @@ const content = {
       comparison: "产品对比",
       roadmap: "产品 Next",
       pricing: "版本边界",
+      story: "真实场景",
       manual: "操作手册",
     },
     hero: {
       eyebrow: "面向 macOS 与 iOS",
-      title: "把笔记、讨论和 AI\n放进一个本地工作台",
+      title: "把笔记、讨论和 AI 放进一个本地工作台",
       subtitle:
         "MeshWork 用本地 Markdown 保存资料，用讨论区整理问题，用 AI 助手参与分析；需要协作时，再通过 Git 把指定知识库或共享空间同步出去。",
       primary: "看核心能力",
@@ -251,6 +252,23 @@ const content = {
       note: "Local-first creative workspace for notes, discussions, AI participation, and Git-native sharing.",
       privacy: "隐私政策",
     },
+    story: {
+      kicker: "Real Stories",
+      title: "来自真实用户的使用场景",
+      body: "MeshWork 正在被创造者和小型团队用来构建知识体系。以下是两个真实使用场景，展示产品如何融入日常工作流。",
+      sceneOne: {
+        category: "面对面协作",
+        title: "会议室里的即时讨论",
+        description: "一个小团队在会议室里围绕项目进行面对面讨论。成员将想法和问题直接输入 MeshWork 讨论区，AI 助手实时参与分析，帮助整理思路、捕捉共识。讨论结束后，结论自动保存为可引用的文档。",
+        quote: "「讨论不再是说完就忘，AI 帮我们即时整理，让每个想法都有迹可循。」",
+      },
+      sceneTwo: {
+        category: "远程协作",
+        title: "分布式团队的异步沟通",
+        description: "分布在不同地点的团队成员通过共享空间异步协作。成员在各自的时间工作，在讨论区留下问题和观点。AI 智能体帮助汇总讨论进展，确保团队成员能够快速了解最新状态。",
+        quote: "「时差不再是障碍，讨论始终在线，AI 让异步协作更高效。」",
+      },
+    },
     images: {
       heroPoster: "images/poster_2_zh.png",
       workspacePoster: "images/poster_zh.png",
@@ -277,11 +295,12 @@ const content = {
       comparison: "Compare",
       roadmap: "Next",
       pricing: "Editions",
+      story: "Stories",
       manual: "Manual",
     },
     hero: {
       eyebrow: "Built for the Apple ecosystem",
-      title: "Bring notes, discussion,\nand AI into a local workspace",
+      title: "Bring notes, discussion, and AI into a local workspace",
       subtitle:
         "Built for macOS and iOS, MeshWork keeps Markdown files local, gives discussions a place to develop, brings AI into analysis, and syncs selected libraries or shared spaces through Git when collaboration is needed.",
       primary: "See core features",
@@ -519,6 +538,23 @@ const content = {
     footer: {
       note: "Local-first creative workspace for notes, discussions, AI participation, and Git-native sharing.",
       privacy: "Privacy Policy",
+    },
+    story: {
+      kicker: "Real Stories",
+      title: "Usage scenarios from real users",
+      body: "MeshWork is being used by creators and small teams to build knowledge systems. Here are two real scenarios showing how the product fits into daily workflows.",
+      sceneOne: {
+        category: "In-person Collaboration",
+        title: "Real-time discussions in the meeting room",
+        description: "A small team gathers in a meeting room to discuss a project face-to-face. Members input ideas and questions directly into MeshWork's discussion area. The AI assistant participates in real-time analysis, helping organize thoughts and capture consensus. After the discussion, conclusions are automatically saved as referenceable documents.",
+        quote: "\"Discussions are no longer forgotten. AI helps us organize in real-time, making every idea traceable.\"",
+      },
+      sceneTwo: {
+        category: "Remote Collaboration",
+        title: "Async communication for distributed teams",
+        description: "Team members in different locations collaborate asynchronously through shared spaces. Members work on their own schedules, leaving questions and viewpoints in the discussion area. AI agents help summarize discussion progress, ensuring team members can quickly catch up on the latest status.",
+        quote: "\"Time zones are no longer a barrier. Discussions stay online, and AI makes async collaboration more efficient.\"",
+      },
     },
     images: {
       heroPoster: "images/poster_2_en.png",
