@@ -15,50 +15,22 @@
         <span>∞</span>
         <strong>MeshWork</strong>
       </a>
+      <nav class="manual-book-nav">
+        <span>操作手册：附录</span>
+      </nav>
       <div class="language-switch">
         <span class="lang-button is-active">中文</span>
         <a href="manual-book-appendix-en.html" class="lang-button">EN</a>
       </div>
-      <nav class="manual-book-nav">
-        <span>操作手册：附录</span>
-      </nav>
       <a class="manual-book-home" href="manual.html">返回目录</a>
     </header>
-
-    <style>
-      .language-switch {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-right: 16px;
-      }
-      .lang-button {
-        padding: 4px 12px;
-        font-size: 13px;
-        border-radius: 4px;
-        border: 1px solid #d2d2d7;
-        background: #f5f5f7;
-        color: #6e6e73;
-        cursor: pointer;
-        text-decoration: none;
-        transition: all 0.2s;
-      }
-      .lang-button:hover {
-        background: #e5e5ea;
-      }
-      .lang-button.is-active {
-        background: #007aff;
-        color: white;
-        border-color: #007aff;
-      }
-    </style>
 
     <div class="manual-book-layout">
       <aside class="manual-book-sidebar">
         <nav class="manual-book-toc">
           <div class="toc-section">
             <span class="toc-part">第一部分</span>
-            <a href="manual-book-01.html" class="toc-title">系统设置与初始配置</a><div style="margin-top: 8px; padding-left: 20px;"><a href="manual-book-01-en.html" style="font-size: 12px; color: #6e6e73;">🇬🇧 English</a></div>
+            <a href="manual-book-01.html" class="toc-title">系统设置与初始配置</a>
           </div>
 
           <div class="toc-section">
@@ -396,83 +368,5 @@
     </footer>
 
     <script src="manual-lang-redirect.js"></script>
-
-    <style>
-      /* Additional styles for appendix */
-      .manual-book-content table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px 0;
-        font-size: 15px;
-      }
-
-      .manual-book-content thead {
-        border-bottom: 2px solid var(--border-light);
-      }
-
-      .manual-book-content th {
-        text-align: left;
-        padding: 12px 16px;
-        font-weight: 600;
-        color: var(--ink);
-        background: var(--panel);
-      }
-
-      .manual-book-content td {
-        padding: 10px 16px;
-        border-bottom: 1px solid var(--border-light);
-        color: var(--muted);
-      }
-
-      .manual-book-content tr:last-child td {
-        border-bottom: none;
-      }
-
-      .manual-book-content td:first-child {
-        font-family: "SF Mono", "Monaco", "Inconsolata", monospace;
-        font-size: 14px;
-        white-space: nowrap;
-      }
-
-      .manual-book-content .glossary {
-        display: grid;
-        gap: 24px;
-        margin-top: 20px;
-      }
-
-      .manual-book-content .glossary dt {
-        font-size: 17px;
-        font-weight: 600;
-        color: var(--ink);
-        margin-bottom: 6px;
-      }
-
-      .manual-book-content .glossary dd {
-        font-size: 15px;
-        line-height: 1.75;
-        color: var(--muted);
-        margin-left: 0;
-        margin-bottom: 16px;
-      }
-
-      .manual-book-content .glossary dd:last-child {
-        margin-bottom: 0;
-      }
-
-      @media (max-width: 620px) {
-        .manual-book-content table {
-          font-size: 14px;
-        }
-
-        .manual-book-content th,
-        .manual-book-content td {
-          padding: 8px 12px;
-        }
-
-        .manual-book-content td:first-child {
-          font-size: 13px;
-        }
-      }
-    </style>
   </body>
 </html>
