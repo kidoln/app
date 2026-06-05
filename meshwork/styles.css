@@ -586,6 +586,384 @@ html[lang="zh-CN"] .hero h1 {
   padding: 104px 0 40px;
 }
 
+.knowledge-paradigm {
+  padding: 108px 0 54px;
+}
+
+.paradigm-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
+  gap: 56px;
+  align-items: end;
+  margin-bottom: 34px;
+}
+
+.paradigm-heading h2 {
+  margin: 0;
+  font-size: clamp(30px, 4.2vw, 56px);
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1.08;
+  white-space: pre-line;
+  text-wrap: balance;
+}
+
+html[lang="zh-CN"] .paradigm-heading h2 {
+  font-size: clamp(26px, 3.5vw, 46px);
+  line-height: 1.18;
+  overflow-wrap: normal;
+  word-break: keep-all;
+}
+
+.paradigm-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: clamp(17px, 1.6vw, 21px);
+  line-height: 1.8;
+}
+
+.paradigm-stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(380px, 1.12fr) minmax(300px, 0.88fr);
+  gap: 34px;
+  align-items: stretch;
+  min-height: 620px;
+  overflow: hidden;
+  padding: 34px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 24% 22%, rgba(125, 232, 255, 0.15), transparent 32%),
+    radial-gradient(circle at 78% 72%, rgba(255, 177, 93, 0.16), transparent 34%),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.105),
+      rgba(255, 255, 255, 0.035)
+    ),
+    rgba(21, 14, 42, 0.56);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(22px);
+}
+
+.cube-diagram {
+  position: relative;
+  min-height: 550px;
+  border-radius: 8px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 42px 42px;
+  isolation: isolate;
+}
+
+.cube-diagram::before,
+.cube-diagram::after {
+  position: absolute;
+  content: "";
+  pointer-events: none;
+}
+
+.cube-diagram::before {
+  left: 18%;
+  top: 18%;
+  width: 52%;
+  height: 52%;
+  border: 1px solid rgba(125, 232, 255, 0.24);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(125, 232, 255, 0.11), transparent 48%),
+    linear-gradient(315deg, rgba(255, 117, 202, 0.14), transparent 50%);
+  box-shadow:
+    64px 64px 0 rgba(255, 177, 93, 0.055),
+    64px 64px 0 1px rgba(255, 177, 93, 0.18),
+    0 0 72px rgba(125, 232, 255, 0.12);
+  transform: skewY(-7deg) rotate(-1deg);
+}
+
+.cube-diagram::after {
+  left: calc(18% + 64px);
+  top: calc(18% + 64px);
+  width: 52%;
+  height: 52%;
+  border-right: 1px solid rgba(255, 177, 93, 0.2);
+  border-bottom: 1px solid rgba(255, 177, 93, 0.2);
+  border-radius: 8px;
+}
+
+.cube-grid {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.13) 0 2px, transparent 3px);
+  background-size: 38px 38px;
+  opacity: 0.46;
+  mask-image: radial-gradient(circle, black 0%, transparent 72%);
+}
+
+.cube-axis {
+  position: absolute;
+  z-index: 2;
+  color: rgba(255, 246, 255, 0.9);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.cube-axis::before {
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin-bottom: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), currentColor);
+  content: "";
+}
+
+.axis-flow {
+  left: 7%;
+  bottom: 18%;
+  width: 46%;
+  color: var(--cyan);
+  transform: rotate(-26deg);
+}
+
+.axis-graph {
+  left: 50%;
+  right: auto;
+  top: 48%;
+  width: 40%;
+  height: 30px;
+  color: var(--pink);
+}
+
+.axis-graph::before {
+  position: absolute;
+  left: 0;
+  top: 15px;
+  width: 100%;
+  margin: 0;
+}
+
+.axis-graph span {
+  position: absolute;
+  right: 0;
+  top: -2px;
+  text-shadow: 0 0 12px rgba(8, 6, 20, 0.9);
+}
+
+.axis-time {
+  z-index: 8;
+  left: 50%;
+  top: 7%;
+  width: 28px;
+  height: 31%;
+  color: var(--amber);
+  text-shadow: 0 0 12px rgba(8, 6, 20, 0.92);
+  transform: none;
+}
+
+.axis-time::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  margin: 0;
+  box-shadow:
+    0 0 0 1px rgba(8, 6, 20, 0.58),
+    0 0 18px rgba(255, 177, 93, 0.44);
+}
+
+.axis-time span {
+  position: absolute;
+  left: 8px;
+  top: 0;
+  writing-mode: vertical-rl;
+}
+
+.cube-card,
+.cube-core {
+  position: absolute;
+  z-index: 4;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.13),
+      rgba(255, 255, 255, 0.045)
+    ),
+    rgba(8, 6, 20, 0.7);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(18px);
+}
+
+.cube-card {
+  display: grid;
+  gap: 6px;
+  width: min(210px, 42%);
+  padding: 15px 16px;
+  border-radius: 8px;
+}
+
+.cube-card strong {
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.cube-card span {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.cube-card-flow {
+  left: 3%;
+  top: 58%;
+  border-color: rgba(125, 232, 255, 0.26);
+}
+
+.cube-card-graph {
+  right: 1%;
+  top: 20%;
+  border-color: rgba(255, 117, 202, 0.28);
+}
+
+.cube-card-time {
+  left: 4%;
+  top: 3%;
+  border-color: rgba(255, 177, 93, 0.3);
+}
+
+.cube-core {
+  display: grid;
+  left: 50%;
+  top: 51%;
+  width: min(210px, 44%);
+  min-height: 148px;
+  place-items: center;
+  padding: 18px;
+  border-radius: 50%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  background:
+    radial-gradient(circle at 34% 22%, rgba(255, 255, 255, 0.95), transparent 18%),
+    radial-gradient(circle at center, #ffb3e2 0%, #a962ff 52%, #21136a 100%);
+  box-shadow:
+    0 0 56px rgba(255, 117, 202, 0.45),
+    0 0 96px rgba(125, 232, 255, 0.18);
+}
+
+.cube-core span {
+  color: rgba(24, 8, 32, 0.62);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cube-core strong {
+  max-width: 150px;
+  color: #19091c;
+  font-size: 22px;
+  line-height: 1.08;
+}
+
+.cube-trace {
+  position: absolute;
+  z-index: 3;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.trace-one {
+  inset: 25% 23%;
+  border-color: rgba(125, 232, 255, 0.18);
+}
+
+.trace-two {
+  inset: 19% 28% 31% 18%;
+  border-color: rgba(255, 117, 202, 0.18);
+  transform: rotate(-24deg);
+}
+
+.trace-three {
+  inset: 31% 17% 18% 28%;
+  border-color: rgba(255, 177, 93, 0.18);
+  transform: rotate(28deg);
+}
+
+.paradigm-copy {
+  display: grid;
+  gap: 14px;
+  align-content: center;
+}
+
+.paradigm-copy article {
+  display: grid;
+  gap: 8px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.paradigm-copy article span {
+  color: rgba(255, 255, 255, 0.34);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+}
+
+.paradigm-copy h3 {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.25;
+}
+
+.paradigm-copy p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.paradigm-result {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  gap: 12px 18px;
+  align-items: center;
+  margin-top: 18px;
+  padding: 18px 20px;
+  border: 1px solid rgba(125, 232, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(125, 232, 255, 0.065);
+}
+
+.paradigm-result span {
+  color: var(--faint);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.paradigm-result strong {
+  color: #fff6ff;
+  font-size: 18px;
+}
+
+.paradigm-result p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
 .intro-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
@@ -1236,10 +1614,25 @@ html[lang="zh-CN"] .feature-copy h2 {
   }
 
   .intro-grid,
+  .paradigm-heading,
   .section-heading,
   .feature-section,
   .flow-stage {
     grid-template-columns: 1fr;
+  }
+
+  .knowledge-paradigm {
+    padding-top: 88px;
+  }
+
+  .paradigm-stage {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding: 28px;
+  }
+
+  .cube-diagram {
+    min-height: 520px;
   }
 
   .feature-section-reverse .feature-copy,
@@ -1353,6 +1746,7 @@ html[lang="zh-CN"] .feature-copy h2 {
   }
 
   .intro-grid h2,
+  .paradigm-heading h2,
   .section-heading h2,
   .feature-copy h2 {
     font-size: 29px;
@@ -1361,6 +1755,7 @@ html[lang="zh-CN"] .feature-copy h2 {
   }
 
   html[lang="zh-CN"] .intro-grid h2,
+  html[lang="zh-CN"] .paradigm-heading h2,
   html[lang="zh-CN"] .section-heading h2,
   html[lang="zh-CN"] .feature-copy h2 {
     font-size: 27px;
@@ -1368,10 +1763,102 @@ html[lang="zh-CN"] .feature-copy h2 {
   }
 
   .principles,
+  .knowledge-paradigm,
   .highlights,
   .flow,
   .feature-section {
     padding: 66px 0;
+  }
+
+  .paradigm-stage {
+    padding: 18px;
+  }
+
+  .cube-diagram {
+    min-height: 430px;
+  }
+
+  .cube-diagram::before {
+    left: 15%;
+    top: 20%;
+    width: 54%;
+    height: 48%;
+    box-shadow:
+      38px 48px 0 rgba(255, 177, 93, 0.055),
+      38px 48px 0 1px rgba(255, 177, 93, 0.18),
+      0 0 56px rgba(125, 232, 255, 0.12);
+  }
+
+  .cube-diagram::after {
+    left: calc(15% + 38px);
+    top: calc(20% + 48px);
+    width: 54%;
+    height: 48%;
+  }
+
+  .cube-card {
+    width: min(170px, 46%);
+    padding: 12px;
+  }
+
+  .cube-card strong {
+    font-size: 13px;
+  }
+
+  .cube-card span {
+    font-size: 11px;
+  }
+
+  .cube-core {
+    width: 150px;
+    min-height: 150px;
+  }
+
+  .cube-core strong {
+    font-size: 17px;
+  }
+
+  .cube-card-flow {
+    left: 1%;
+    top: 60%;
+  }
+
+  .cube-card-graph {
+    right: 0;
+    top: 74%;
+  }
+
+  .cube-card-time {
+    left: 2%;
+    top: 2%;
+  }
+
+  .cube-axis {
+    font-size: 10px;
+  }
+
+  .axis-time {
+    top: 8%;
+    height: 30%;
+  }
+
+  .axis-graph {
+    left: 50%;
+    top: 49%;
+    width: 42%;
+  }
+
+  .axis-graph span {
+    right: 0;
+    top: -15px;
+    max-width: 110px;
+    overflow-wrap: normal;
+    white-space: normal;
+    text-align: right;
+  }
+
+  .paradigm-result {
+    grid-template-columns: 1fr;
   }
 
   .principle-grid {

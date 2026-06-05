@@ -576,6 +576,59 @@
             <p>The AI assistant is particularly suitable for processing summaries and organization of long topics. When a topic has dozens of replies, you can ask AI to generate a structured summary, helping newly participating members quickly understand background and current status.</p>
           </div>
 
+          <h3>Topic Knowledge Card: settle discussion into current understanding</h3>
+
+          <p>As a topic grows, the message flow alone stops being a good answer to questions like "What have we actually agreed on?" or "What is still unresolved?" The Topic Knowledge Card exists for that gap. It does not replace the original discussion. Instead, it keeps the full message history while maintaining one structured card that represents the topic's current state of understanding.</p>
+
+          <div class="highlight-block">
+            <p><strong>Why the Knowledge Card matters</strong></p>
+            <p>In MeshWork, the message flow keeps the discussion process, the Knowledge Card keeps the current summary, and Git history keeps how that summary changed. This lets the team enter the current conclusion quickly without losing the path that produced it.</p>
+          </div>
+
+          <h4>Where to open it</h4>
+
+          <ol>
+            <li>Open a topic inside a shared space.</li>
+            <li>By default, the right side of the topic detail view shows the Knowledge Card sidebar. If you hid it earlier, use the discussion toolbar action "Show Knowledge Card" to bring it back.</li>
+            <li>The sidebar header shows the "Knowledge Card" title and provides a button to hide the sidebar again.</li>
+          </ol>
+
+          <h4>What's in the sidebar</h4>
+
+          <ul>
+            <li><strong>Version history</strong>: The upper section shows a timeline of this card's past versions. Each row shows time, author, and version note, and can expand to compare with the current version.</li>
+            <li><strong>Current card</strong>: The lower section shows the full current body and a coverage hint such as "summarized through message X / Y".</li>
+            <li><strong>Edit entry</strong>: Click "Edit" to manually revise the current card.</li>
+            <li><strong>AI update entry</strong>: Click "Update from current discussion" to let AI generate a new draft from the discussion.</li>
+          </ul>
+
+          <h4>How to update the card</h4>
+
+          <ol>
+            <li><strong>Click "Update from current discussion"</strong>: MeshWork opens the update sheet.</li>
+            <li><strong>Choose the message range</strong>:
+              <ul>
+                <li><strong>Since last review</strong>: Only process new messages after the last confirmed coverage point. This is the normal mode for maintaining a long-running topic.</li>
+                <li><strong>Whole discussion</strong>: Rebuild the card from the entire topic. Use this when the earlier card is weak or the discussion has changed direction.</li>
+              </ul>
+            </li>
+            <li><strong>Review the generated result</strong>: The sheet shows a comparison between the current body and the new draft so you can inspect what was added, revised, or removed.</li>
+            <li><strong>Confirm write</strong>: The new content is written only after you click "Apply".</li>
+          </ol>
+
+          <div class="info-block">
+            <strong>Current boundaries</strong>
+            <p>The Knowledge Card is never rewritten silently in the background. AI output must be confirmed by a user before it is saved. The current version also does not support one-click restore of old versions; instead, the history timeline and "Compare with Current" help you judge the card's evolution.</p>
+          </div>
+
+          <h4>Typical interaction scenarios</h4>
+
+          <ul>
+            <li><strong>Keeping a long topic up to date</strong>: After a week of requirement discussion, the owner clicks "Update from current discussion" and chooses "Since last review" so AI only summarizes newly added messages. The card stays current without rebuilding everything each time.</li>
+            <li><strong>Helping a new member catch up</strong>: A newly joined member can read the current card first to understand the present state, then expand history or return to the original message flow only when deeper traceability is needed.</li>
+            <li><strong>Manually correcting a critical decision</strong>: The AI draft is mostly right, but one conclusion is phrased too strongly. The owner can generate the draft, then use "Edit" to adjust the wording before saving a new version.</li>
+          </ul>
+
           <h3>Topic Branches: Possibilities for Infinite Dialogue</h3>
 
           <p>MeshWork's Discussion Area supports a unique feature: <strong>Topic Branches</strong>. This feature allows you to create a new topic starting from any discussion message, achieving infinite extension and subdivision of dialogue.</p>
@@ -691,6 +744,7 @@
                 <li>Topic titles and status</li>
                 <li>Participants and tags</li>
                 <li>Message body text</li>
+                <li>The topic knowledge card at <code>discussions/&lt;topic-id&gt;/knowledge-card.md</code> and its version history</li>
                 <li>Sharable render structures directly related to messages</li>
               </ul>
             </li>

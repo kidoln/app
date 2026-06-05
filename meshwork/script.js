@@ -20,7 +20,7 @@ const content = {
       title: "把笔记、讨论和 AI 放进一个本地工作台",
       subtitle:
         "MeshWork 用本地 Markdown 保存资料，用讨论区整理问题，用 AI 助手参与分析；需要协作时，再通过 Git 把指定知识库或共享空间同步出去。",
-      primary: "看核心能力",
+      primary: "理解知识范式",
       secondary: "阅读操作手册",
       pointOne: "Local-first",
       pointTwo: "AI in discussion",
@@ -41,6 +41,45 @@ const content = {
       kicker: "Product Philosophy",
       title: "先整理自己的材料，\n需要时再共享。",
       body: "MeshWork 从个人知识库开始：文档、附件和讨论都保存在本地。项目需要协作时，再创建共享空间，把公共文档、讨论和 Git 同步放到明确的资源边界里。AI 可以在文档右侧或讨论区帮你分析、追问和总结；写入、共享、同步都需要人的确认。",
+    },
+    paradigm: {
+      kicker: "Knowledge Paradigm",
+      title: "从讨论流到知识图谱，\n再到可追溯的 Knowledge Cube。",
+      body: "新一代知识管理不只是保存文档，也不只是连接节点。MeshWork 把讨论形成过程、知识关联关系和版本演化历史叠在一起，让知识从静态快照变成可以追问来源、关系和变化原因的认知轨迹。",
+      axis: {
+        flow: "Flow 形成过程",
+        graph: "Graph 关联关系",
+        time: "Time 演化历史",
+      },
+      visual: {
+        flowTitle: "讨论消息",
+        flowBody: "问题、观点、证据、反驳与结论",
+        graphTitle: "文档与话题关系",
+        graphBody: "WikiLink、反链、引用、话题分支",
+        timeTitle: "卡片版本历史",
+        timeBody: "Knowledge Card 与 Git 文件历史",
+        coreEyebrow: "Current State",
+        coreTitle: "Topic Knowledge Card",
+      },
+      steps: {
+        flow: {
+          title: "Flow：保留知识如何产生",
+          body: "每个话题保存讨论过程，AI 和成员的观点、证据与修正都不会沉没在一次性聊天里。",
+        },
+        graph: {
+          title: "Graph：看见知识影响什么",
+          body: "文档链接、反链、引用和话题分支把结论放回关系网络，帮助发现上下文和跨领域连接。",
+        },
+        cube: {
+          title: "Cube：追踪认知为什么变化",
+          body: "Topic Knowledge Card 表达当前认知状态，Git 历史记录它如何演化，形成可回看、可对比的知识轨迹。",
+        },
+      },
+      result: {
+        from: "从 Knowledge Snapshot",
+        to: "走向 Knowledge Trajectory",
+        body: "MeshWork 的目标不是替你保存更多信息，而是保存团队和创作者真正有价值的思考过程。",
+      },
     },
     principles: {
       kicker: "Principles",
@@ -303,7 +342,7 @@ const content = {
       title: "Bring notes, discussion, and AI into a local workspace",
       subtitle:
         "Built for macOS and iOS, MeshWork keeps Markdown files local, gives discussions a place to develop, brings AI into analysis, and syncs selected libraries or shared spaces through Git when collaboration is needed.",
-      primary: "See core features",
+      primary: "See knowledge model",
       secondary: "Read manual",
       pointOne: "Local-first",
       pointTwo: "AI in discussion",
@@ -324,6 +363,45 @@ const content = {
       kicker: "Product Philosophy",
       title: "Start with your own materials. Share when the project needs it.",
       body: "MeshWork starts with a private library. Documents, assets, and discussions stay local by default. When a project needs collaboration, create a shared space with its own public library, discussions, and Git sync. AI can help in the document sidebar or discussion area; writing, sharing, and syncing still require human confirmation.",
+    },
+    paradigm: {
+      kicker: "Knowledge Paradigm",
+      title: "From discussion flow to knowledge graph, then to a traceable Knowledge Cube.",
+      body: "The next generation of knowledge management is not just about storing documents or connecting nodes. MeshWork layers the process of formation, the network of relationships, and the history of change so knowledge becomes a trajectory you can trace, question, and evolve.",
+      axis: {
+        flow: "Flow: formation",
+        graph: "Graph: relationships",
+        time: "Time: evolution",
+      },
+      visual: {
+        flowTitle: "Discussion events",
+        flowBody: "Questions, claims, evidence, objections, conclusions",
+        graphTitle: "Docs and topic links",
+        graphBody: "WikiLinks, backlinks, references, topic branches",
+        timeTitle: "Card history",
+        timeBody: "Knowledge Card and Git file history",
+        coreEyebrow: "Current State",
+        coreTitle: "Topic Knowledge Card",
+      },
+      steps: {
+        flow: {
+          title: "Flow: preserve how knowledge forms",
+          body: "Each topic keeps the discussion process, so ideas, evidence, and revisions from people and AI do not disappear into one-off chat history.",
+        },
+        graph: {
+          title: "Graph: reveal what knowledge affects",
+          body: "Links, backlinks, references, and topic branches return conclusions to the relationship network and make context easier to discover.",
+        },
+        cube: {
+          title: "Cube: track why understanding changes",
+          body: "A Topic Knowledge Card represents the current state, while Git history records how it evolved into a reviewable knowledge trajectory.",
+        },
+      },
+      result: {
+        from: "From Knowledge Snapshot",
+        to: "to Knowledge Trajectory",
+        body: "MeshWork is not trying to store more information for you. It is designed to preserve the thinking process that creators and teams actually rely on.",
+      },
     },
     principles: {
       kicker: "Principles",
