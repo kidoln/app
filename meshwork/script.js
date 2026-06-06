@@ -256,15 +256,15 @@ const content = {
     },
     pricing: {
       kicker: "Editions",
-      title: "版本边界先清楚，价格以后再确定。",
-      body: "当前项目保留 Free、Creator、Studio 三个功能边界：Free 面向本地知识库，Creator 增加文档 AI，Studio 增加共享空间和协作能力。正式价格以未来发布版本为准。",
+      title: "清晰的版本边界，明确的付费选择。",
+      body: "当前项目保留 Free、Creator、Studio 三个功能边界：Free 面向本地知识库，Creator 增加文档 AI，Studio 增加共享空间和协作能力。",
       table: {
         feature: "功能",
         free: "Free 免费版",
         creator: "Creator 创作者",
         studio: "Studio 工作室",
-        creatorPrice: "待定",
-        studioPrice: "待定",
+        creatorPrice: "$3.99",
+        studioPrice: "$9.99",
       },
       features: {
         privateKnowledgeBase: {
@@ -582,15 +582,15 @@ const content = {
     },
     pricing: {
       kicker: "Editions",
-      title: "Clear edition boundaries first. Final pricing later.",
-      body: "The project currently keeps three edition boundaries: Free for local private libraries, Creator for document AI, and Studio for shared spaces and collaboration. Final pricing depends on a future release.",
+      title: "Clear edition boundaries, clear paid choices.",
+      body: "The project currently keeps three edition boundaries: Free for local private libraries, Creator for document AI, and Studio for shared spaces and collaboration.",
       table: {
         feature: "Features",
         free: "Free",
         creator: "Creator",
         studio: "Studio",
-        creatorPrice: "TBD",
-        studioPrice: "TBD",
+        creatorPrice: "$3.99",
+        studioPrice: "$9.99",
       },
       features: {
         privateKnowledgeBase: {
