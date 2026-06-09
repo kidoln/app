@@ -390,7 +390,7 @@
 
           <h3>公共知识库概述</h3>
 
-          <p>公共知识库是共享空间中存放团队共享文档的核心区域。与私有知识库类似，它支持文档编辑、文件夹组织、AI 辅助等功能，但内容对所有团队成员可见和可编辑。</p>
+          <p>公共知识库是共享空间中存放团队共享文档的核心区域。与私有知识库类似，它支持文档编辑、文件夹组织、AI 辅助等功能，但内容对所有团队成员可见，并按文档类型提供编辑或只读查看能力。</p>
 
           <div class="info-block">
             <strong>协作原则</strong>
@@ -420,6 +420,17 @@
             </li>
             <li><strong>保存更改</strong>：编辑会自动保存，也可以手动按 <code>Command+S</code> 保存。</li>
           </ol>
+
+          <h3>共享 PDF 与 Word 资料</h3>
+
+          <p>公共知识库同样可以保存 PDF、<code>.docx</code> 和 <code>.doc</code> 资料。它们会作为共享空间的数据边界参与 Git 同步，适合放置团队共同阅读的论文、合同、产品手册、调研报告和外部资料。</p>
+
+          <ul>
+            <li><strong>只读查看</strong>：PDF 使用 PDFKit 原生查看，Word 使用 macOS 文本系统或 Quick Look 预览；原始文件不会在 MeshWork 中直接编辑。</li>
+            <li><strong>本地 OCR</strong>：扫描型 PDF 在文本不足时会通过 Apple Vision 在本机识别正文，便于搜索和 AI 阅读。</li>
+            <li><strong>转换沉淀</strong>：需要共同编辑或整理时，可以使用"转换为 Markdown"生成同目录 Markdown，再在新文档中协作修改。</li>
+            <li><strong>讨论引用</strong>：在讨论区消息中引用这些文件，AI 可以按需读取可提取正文，把外部资料纳入团队讨论上下文。</li>
+          </ul>
 
           <h3>文档树排序</h3>
 

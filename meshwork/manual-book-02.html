@@ -242,12 +242,28 @@ flowchart TD
             <li>文档中会插入一个文件链接。</li>
           </ol>
 
+          <h4>使用 PDF 与 Word 知识文档</h4>
+
+          <p>PDF、<code>.docx</code> 和 <code>.doc</code> 可以直接作为知识文档放在私有知识库目录中，不需要先转换成附件。它们会出现在侧边栏文档树中，点击后在主内容区以只读方式打开。</p>
+
+          <ul>
+            <li><strong>PDF 查看</strong>：使用 Apple PDFKit 原生查看器，适合阅读论文、报告、合同和产品手册。</li>
+            <li><strong>Word 查看</strong>：使用 macOS 文本系统读取正文并只读显示；复杂版式、批注、修订和分页会尽力展示，但不作为可编辑 Word 处理。</li>
+            <li><strong>扫描 PDF OCR</strong>：当 PDFKit 提取到的文本过少，或第一页 OCR 明显更完整时，MeshWork 会使用 Apple Vision 在本机进行文字识别，不上传文档。</li>
+            <li><strong>知识索引与 AI 引用</strong>：可提取正文会进入搜索和 AI 可读上下文。PDF 通常按页定位，Word 通常按段落或文本片段定位。</li>
+          </ul>
+
+          <div class="info-block">
+            <strong>只读与转换</strong>
+            <p>PDF 和 Word 在 MeshWork 中是只读知识文档。如需修改正文，可以在文件节点右键菜单或查看器工具栏中选择"转换为 Markdown"。转换会在同目录生成新的 Markdown 文件，原始 PDF 或 Word 文件保持不变。</p>
+          </div>
+
           <h4>插入文档链接</h4>
 
           <ol>
             <li>在侧边栏中右键点击要链接的文档。</li>
             <li>选择"复制文档链接"。</li>
-            <li>在编辑器中粘贴，会自动插入 <code>[文档标题](文档路径)</code> 格式的链接。</li>
+            <li>在编辑器中粘贴，会自动插入文档链接。Markdown、PDF 和 Word 文档都可以作为链接目标。</li>
           </ol>
 
           <h3>文档保存与版本历史</h3>
@@ -308,7 +324,7 @@ flowchart TD
 
           <h3>使用 # 引用文档内容</h3>
 
-          <p>你可以使用 <code>#</code> 符号引用私有知识库中的文档，让 AI 基于具体内容进行分析：</p>
+          <p>你可以使用 <code>#</code> 符号引用私有知识库中的文档，让 AI 基于具体内容进行分析。引用对象可以是 Markdown，也可以是可提取正文的 PDF 或 Word 知识文档：</p>
 
           <ol>
             <li>在输入框中输入 <code>#</code> 符号。</li>
@@ -323,7 +339,7 @@ flowchart TD
 
           <div class="tip-block">
             <strong>提示</strong>
-            <p>你可以同时引用多个文档，AI 会综合所有引用的内容进行回答。这对于需要对比多个文档的场景非常有用。</p>
+            <p>你可以同时引用多个文档，AI 会综合所有引用的内容进行回答。这对于对比多个 Markdown 笔记、PDF 资料或 Word 文档的场景非常有用。扫描 PDF 会在需要时使用本地 OCR 结果作为可读文本来源。</p>
           </div>
 
           <h3>使用 / 执行自定义命令</h3>

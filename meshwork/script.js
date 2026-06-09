@@ -119,6 +119,13 @@ const content = {
         tagThree: "Graphviz",
         tagFour: "深色图表匹配",
       },
+      knowledgeDocuments: {
+        title: "PDF 与 Word 成为知识文档",
+        body: "PDF 和 Word 可以直接放进知识库目录，像 Markdown 一样出现在文档树中。PDF 使用 PDFKit 原生查看，Word 使用 macOS 文本系统只读查看；扫描型 PDF 在文本不足时可通过 Apple Vision 本地 OCR 提取正文，供搜索、AI 引用和转换 Markdown 使用。",
+        tagOne: "PDFKit 原生查看",
+        tagTwo: "Word 只读预览",
+        tagThree: "Apple Vision OCR",
+      },
       links: {
         title: "WikiLink 文件引用",
         body: "文档内可以通过 WikiLink 引用其他文件并快速跳转，让笔记从孤立页面变成可导航、可回溯的知识网络。",
@@ -440,6 +447,13 @@ const content = {
         tagTwo: "Mermaid",
         tagThree: "Graphviz",
         tagFour: "Dark diagram matching",
+      },
+      knowledgeDocuments: {
+        title: "PDF and Word as knowledge documents",
+        body: "PDF and Word files can live directly in the knowledge tree alongside Markdown. PDFs open through native PDFKit, Word files use the macOS text system in read-only mode, and scanned PDFs can fall back to local Apple Vision OCR when embedded text is insufficient, making their content available to search, AI references, and Markdown conversion.",
+        tagOne: "Native PDFKit",
+        tagTwo: "Read-only Word preview",
+        tagThree: "Apple Vision OCR",
       },
       links: {
         title: "WikiLink file references",

@@ -398,7 +398,7 @@
 
           <h3>Public Library Overview</h3>
 
-          <p>The Public Library is the core area for storing team-shared documents in a shared space. Similar to the private library, it supports document editing, folder organization, AI assistance, and other functions, but content is visible and editable to all team members.</p>
+          <p>The Public Library is the core area for storing team-shared documents in a shared space. Similar to the private library, it supports document editing, folder organization, AI assistance, and other functions, while each document type provides either editing or read-only viewing for team members.</p>
 
           <div class="info-block">
             <strong>Collaboration Principles</strong>
@@ -428,6 +428,17 @@
             </li>
             <li><strong>Save changes</strong>: Edits are automatically saved, or you can manually press <code>Command+S</code> to save.</li>
           </ol>
+
+          <h3>Sharing PDF and Word Materials</h3>
+
+          <p>The Public Library can also store PDF, <code>.docx</code>, and <code>.doc</code> materials. They participate in Git sync within the shared space boundary and are useful for papers, contracts, product manuals, research reports, and external references that the team reads together.</p>
+
+          <ul>
+            <li><strong>Read-only viewing</strong>: PDFs use native PDFKit viewing, while Word files use the macOS text system or Quick Look preview. The original files are not edited directly in MeshWork.</li>
+            <li><strong>Local OCR</strong>: Scanned PDFs can use Apple Vision on-device OCR when embedded text is insufficient, making the content available to search and AI reading.</li>
+            <li><strong>Convert for editing</strong>: When the team needs to revise or distill the content, use "Convert to Markdown" to create a Markdown file in the same folder and collaborate there.</li>
+            <li><strong>Discussion references</strong>: Reference these files in Discussion Area messages so AI can read extractable text on demand and include source material in team discussion context.</li>
+          </ul>
 
           <h3>Sorting the Document Tree</h3>
 

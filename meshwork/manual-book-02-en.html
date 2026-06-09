@@ -242,12 +242,28 @@ flowchart TD
             <li>A file link will be inserted in the document.</li>
           </ol>
 
+          <h4>Using PDF and Word Knowledge Documents</h4>
+
+          <p>PDF, <code>.docx</code>, and <code>.doc</code> files can live directly in the private library as knowledge documents without being converted into attachments first. They appear in the sidebar document tree and open in the main content area as read-only documents.</p>
+
+          <ul>
+            <li><strong>PDF viewing</strong>: Uses Apple's native PDFKit viewer, suitable for papers, reports, contracts, and product manuals.</li>
+            <li><strong>Word viewing</strong>: Uses the macOS text system to read and display document text in read-only mode. Complex layout, comments, tracked changes, and pagination are best-effort, not editable Word behavior.</li>
+            <li><strong>Scanned PDF OCR</strong>: When PDFKit extracts too little text, or first-page OCR is clearly more complete, MeshWork uses Apple Vision for on-device text recognition without uploading the document.</li>
+            <li><strong>Search and AI references</strong>: Extractable text becomes available to search and AI-readable context. PDFs are usually addressed by page, while Word files are addressed by paragraph or text chunk.</li>
+          </ul>
+
+          <div class="info-block">
+            <strong>Read-only and conversion</strong>
+            <p>PDF and Word files are read-only knowledge documents in MeshWork. To edit their text, choose "Convert to Markdown" from the file node context menu or the document viewer toolbar. Conversion creates a new Markdown file in the same folder and keeps the original PDF or Word file unchanged.</p>
+          </div>
+
           <h4>Inserting Document Links</h4>
 
           <ol>
             <li>Right-click the document you want to link in the sidebar.</li>
             <li>Select "Copy Document Link".</li>
-            <li>Paste in the editor, and it will automatically insert a link in the format <code>[Document Title](Document Path)</code>.</li>
+            <li>Paste in the editor to insert a document link. Markdown, PDF, and Word documents can all be link targets.</li>
           </ol>
 
           <h3>Document Saving and Version History</h3>
@@ -307,7 +323,7 @@ flowchart TD
 
           <h3>Using # to Reference Document Content</h3>
 
-          <p>You can use the <code>#</code> symbol to reference documents in the private library, allowing AI to analyze based on specific content:</p>
+          <p>You can use the <code>#</code> symbol to reference documents in the private library, allowing AI to analyze based on specific content. References can point to Markdown documents, or to PDF and Word knowledge documents with extractable text:</p>
 
           <ol>
             <li>Type the <code>#</code> symbol in the input box.</li>
@@ -322,7 +338,7 @@ flowchart TD
 
           <div class="tip-block">
             <strong>Tip</strong>
-            <p>You can reference multiple documents at the same time. AI will synthesize all referenced content to answer. This is very useful for scenarios that require comparing multiple documents.</p>
+            <p>You can reference multiple documents at the same time. AI will synthesize all referenced content to answer. This is useful when comparing Markdown notes, PDF source material, or Word documents. Scanned PDFs use local OCR results as readable text when needed.</p>
           </div>
 
           <h3>Using / to Execute Custom Commands</h3>
