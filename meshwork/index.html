@@ -3,35 +3,29 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="color-scheme" content="light" />
     <meta
       name="description"
-      content="MeshWork brings local Markdown, discussions, AI assistance, and Git sharing into one Apple-native workspace."
+      content="MeshWork brings local Markdown, AI discussion, and Git sharing into one Apple-native knowledge workspace."
     />
     <title>MeshWork</title>
     <link rel="icon" type="image/png" href="images/favicon.png" />
     <link rel="apple-touch-icon" href="images/favicon.png" />
-    <link rel="preload" as="image" href="images/poster_2_zh.png" />
+    <link rel="preload" as="image" href="images/poster_zh.png" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <canvas class="starfield" aria-hidden="true"></canvas>
-
     <header class="site-header">
       <a class="brand" href="#top" aria-label="MeshWork">
-        <span class="brand-mark">∞</span>
+        <img src="images/favicon.png" alt="" />
         <span>MeshWork</span>
       </a>
       <nav class="nav-links" aria-label="Primary navigation">
         <a href="../" data-i18n="nav.studio"></a>
-        <a href="#principles" data-i18n="nav.principles"></a>
-        <a href="#highlights" data-i18n="nav.highlights"></a>
-        <a href="#flow" data-i18n="nav.flow"></a>
-        <a href="#gallery" data-i18n="nav.gallery"></a>
-        <a href="#comparison" data-i18n="nav.comparison"></a>
-        <a href="#roadmap" data-i18n="nav.roadmap"></a>
-        <a href="#pricing" data-i18n="nav.pricing"></a>
-        <a href="#story" data-i18n="nav.story"></a>
+        <a href="#features" data-i18n="nav.features"></a>
+        <a href="#workflow" data-i18n="nav.workflow"></a>
+        <a href="#ai" data-i18n="nav.ai"></a>
+        <a href="#sharing" data-i18n="nav.sharing"></a>
         <a href="manual.html" data-i18n="nav.manual"></a>
       </nav>
       <div class="language-switch" aria-label="Language switch">
@@ -43,23 +37,14 @@
     </header>
 
     <main id="top">
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-glow" aria-hidden="true"></div>
-        <div class="hero-content" data-reveal>
+      <section class="hero">
+        <div class="hero-copy" data-reveal>
           <p class="eyebrow" data-i18n="hero.eyebrow"></p>
-          <h1 id="hero-title" data-i18n="hero.title"></h1>
+          <h1 data-i18n="hero.title"></h1>
           <p class="hero-subtitle" data-i18n="hero.subtitle"></p>
           <div class="hero-actions">
-            <a
-              class="primary-action"
-              href="#paradigm"
-              data-i18n="hero.primary"
-            ></a>
-            <a
-              class="secondary-action"
-              href="manual.html"
-              data-i18n="hero.secondary"
-            ></a>
+            <a class="primary-action" href="manual.html" data-i18n="hero.primary"></a>
+            <a class="secondary-action" href="#workflow" data-i18n="hero.secondary"></a>
           </div>
           <div class="hero-points" aria-label="Product highlights">
             <span data-i18n="hero.pointOne"></span>
@@ -67,346 +52,7 @@
             <span data-i18n="hero.pointThree"></span>
           </div>
         </div>
-        <div class="hero-visual" aria-hidden="true" data-reveal>
-          <div class="graph-shell">
-            <div class="graph-aura"></div>
-            <svg
-              class="graph-lines"
-              viewBox="0 0 640 640"
-              role="img"
-              aria-hidden="true"
-            >
-              <defs>
-                <linearGradient id="line-gradient" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stop-color="#7de8ff" />
-                  <stop offset="46%" stop-color="#ff75ca" />
-                  <stop offset="100%" stop-color="#ffb15d" />
-                </linearGradient>
-                <filter id="line-glow">
-                  <feGaussianBlur stdDeviation="4" result="blur" />
-                  <feMerge>
-                    <feMergeNode in="blur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
-              </defs>
-              <path
-                class="graph-path path-one"
-                d="M320 320 C220 220 150 188 82 235 C145 314 205 360 320 320 C430 286 480 210 560 146"
-              />
-              <path
-                class="graph-path path-two"
-                d="M320 320 C410 382 485 400 562 486 C438 520 360 460 320 320 C262 438 178 500 86 468"
-              />
-              <path
-                class="graph-path path-three"
-                d="M320 320 C334 212 278 130 205 88 C260 178 382 186 320 320 C228 310 154 374 104 548"
-              />
-              <path
-                class="graph-path path-four"
-                d="M320 320 C398 254 474 298 560 318 C452 350 392 424 320 320"
-              />
-            </svg>
-            <span class="graph-node core-node">MeshWork</span>
-            <span class="graph-node node-one" data-i18n="graph.private"></span>
-            <span
-              class="graph-node node-two"
-              data-i18n="graph.discussion"
-            ></span>
-            <span class="graph-node node-three" data-i18n="graph.ai"></span>
-            <span class="graph-node node-four" data-i18n="graph.git"></span>
-            <span
-              class="graph-node node-five"
-              data-i18n="graph.markdown"
-            ></span>
-            <span class="pulse-dot dot-one"></span>
-            <span class="pulse-dot dot-two"></span>
-            <span class="pulse-dot dot-three"></span>
-          </div>
-          <div class="floating-note note-one">
-            <span data-i18n="graph.noteOneTitle"></span>
-            <strong data-i18n="graph.noteOne"></strong>
-          </div>
-          <div class="floating-note note-two">
-            <span data-i18n="graph.noteTwoTitle"></span>
-            <strong data-i18n="graph.noteTwo"></strong>
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="paradigm"
-        class="knowledge-paradigm section-wrap"
-        aria-labelledby="paradigm-title"
-      >
-        <div class="paradigm-heading" data-reveal>
-          <span class="section-kicker" data-i18n="paradigm.kicker"></span>
-          <h2 id="paradigm-title" data-i18n="paradigm.title"></h2>
-          <p data-i18n="paradigm.body"></p>
-        </div>
-
-        <div class="paradigm-stage" data-reveal>
-          <div class="cube-diagram" aria-hidden="true">
-            <div class="cube-grid"></div>
-            <div class="cube-axis axis-flow">
-              <span data-i18n="paradigm.axis.flow"></span>
-            </div>
-            <div class="cube-axis axis-graph">
-              <span data-i18n="paradigm.axis.graph"></span>
-            </div>
-            <div class="cube-axis axis-time">
-              <span data-i18n="paradigm.axis.time"></span>
-            </div>
-            <div class="cube-card cube-card-flow">
-              <strong data-i18n="paradigm.visual.flowTitle"></strong>
-              <span data-i18n="paradigm.visual.flowBody"></span>
-            </div>
-            <div class="cube-card cube-card-graph">
-              <strong data-i18n="paradigm.visual.graphTitle"></strong>
-              <span data-i18n="paradigm.visual.graphBody"></span>
-            </div>
-            <div class="cube-card cube-card-time">
-              <strong data-i18n="paradigm.visual.timeTitle"></strong>
-              <span data-i18n="paradigm.visual.timeBody"></span>
-            </div>
-            <div class="cube-core">
-              <span data-i18n="paradigm.visual.coreEyebrow"></span>
-              <strong data-i18n="paradigm.visual.coreTitle"></strong>
-            </div>
-            <div class="cube-trace trace-one"></div>
-            <div class="cube-trace trace-two"></div>
-            <div class="cube-trace trace-three"></div>
-          </div>
-
-          <div class="paradigm-copy">
-            <article>
-              <span>01</span>
-              <h3 data-i18n="paradigm.steps.flow.title"></h3>
-              <p data-i18n="paradigm.steps.flow.body"></p>
-            </article>
-            <article>
-              <span>02</span>
-              <h3 data-i18n="paradigm.steps.graph.title"></h3>
-              <p data-i18n="paradigm.steps.graph.body"></p>
-            </article>
-            <article>
-              <span>03</span>
-              <h3 data-i18n="paradigm.steps.cube.title"></h3>
-              <p data-i18n="paradigm.steps.cube.body"></p>
-            </article>
-          </div>
-        </div>
-
-        <div class="paradigm-result" data-reveal>
-          <span data-i18n="paradigm.result.from"></span>
-          <strong data-i18n="paradigm.result.to"></strong>
-          <p data-i18n="paradigm.result.body"></p>
-        </div>
-      </section>
-
-      <section class="intro-section section-wrap" data-reveal>
-        <div class="section-kicker" data-i18n="intro.kicker"></div>
-        <div class="intro-grid">
-          <h2 data-i18n="intro.title"></h2>
-          <p data-i18n="intro.body"></p>
-        </div>
-      </section>
-
-      <section
-        id="principles"
-        class="principles section-wrap"
-        aria-labelledby="principles-title"
-      >
-        <div class="section-heading" data-reveal>
-          <span class="section-kicker" data-i18n="principles.kicker"></span>
-          <h2 id="principles-title" data-i18n="principles.title"></h2>
-        </div>
-        <div class="principle-grid">
-          <article class="principle-card" data-reveal>
-            <span class="card-index">01</span>
-            <h3 data-i18n="principles.local.title"></h3>
-            <p data-i18n="principles.local.body"></p>
-          </article>
-          <article class="principle-card" data-reveal>
-            <span class="card-index">02</span>
-            <h3 data-i18n="principles.git.title"></h3>
-            <p data-i18n="principles.git.body"></p>
-          </article>
-          <article class="principle-card" data-reveal>
-            <span class="card-index">03</span>
-            <h3 data-i18n="principles.ai.title"></h3>
-            <p data-i18n="principles.ai.body"></p>
-          </article>
-          <article class="principle-card" data-reveal>
-            <span class="card-index">04</span>
-            <h3 data-i18n="principles.apple.title"></h3>
-            <p data-i18n="principles.apple.body"></p>
-          </article>
-        </div>
-      </section>
-
-      <section
-        id="highlights"
-        class="highlights section-wrap"
-        aria-labelledby="highlights-title"
-      >
-        <div class="section-heading" data-reveal>
-          <span class="section-kicker" data-i18n="highlights.kicker"></span>
-          <h2 id="highlights-title" data-i18n="highlights.title"></h2>
-          <p data-i18n="highlights.body"></p>
-        </div>
-        <div class="highlight-list">
-          <article class="highlight-card" data-reveal>
-            <span class="card-index">01</span>
-            <h3 data-i18n="highlights.editor.title"></h3>
-            <p data-i18n="highlights.editor.body"></p>
-            <div class="highlight-tags" aria-label="Editor capabilities">
-              <span data-i18n="highlights.editor.tagOne"></span>
-              <span data-i18n="highlights.editor.tagTwo"></span>
-            </div>
-          </article>
-          <article class="highlight-card" data-reveal>
-            <span class="card-index">02</span>
-            <h3 data-i18n="highlights.rendering.title"></h3>
-            <p data-i18n="highlights.rendering.body"></p>
-            <div
-              class="highlight-tags"
-              aria-label="Diagram rendering capabilities"
-            >
-              <span data-i18n="highlights.rendering.tagOne"></span>
-              <span data-i18n="highlights.rendering.tagTwo"></span>
-              <span data-i18n="highlights.rendering.tagThree"></span>
-              <span data-i18n="highlights.rendering.tagFour"></span>
-            </div>
-          </article>
-          <article class="highlight-card" data-reveal>
-            <span class="card-index">03</span>
-            <h3 data-i18n="highlights.knowledgeDocuments.title"></h3>
-            <p data-i18n="highlights.knowledgeDocuments.body"></p>
-            <div
-              class="highlight-tags"
-              aria-label="PDF and Word knowledge document capabilities"
-            >
-              <span data-i18n="highlights.knowledgeDocuments.tagOne"></span>
-              <span data-i18n="highlights.knowledgeDocuments.tagTwo"></span>
-              <span data-i18n="highlights.knowledgeDocuments.tagThree"></span>
-            </div>
-          </article>
-          <article class="highlight-card" data-reveal>
-            <span class="card-index">04</span>
-            <h3 data-i18n="highlights.links.title"></h3>
-            <p data-i18n="highlights.links.body"></p>
-          </article>
-          <article class="highlight-card" data-reveal>
-            <span class="card-index">05</span>
-            <h3 data-i18n="highlights.discussion.title"></h3>
-            <p data-i18n="highlights.discussion.body"></p>
-          </article>
-          <article class="highlight-card feature-commands" data-reveal>
-            <span class="card-index">06</span>
-            <h3 data-i18n="highlights.commands.title"></h3>
-            <p data-i18n="highlights.commands.body"></p>
-            <div class="command-examples" aria-label="Command examples">
-              <div class="command-item">
-                <code>@</code>
-                <span data-i18n="highlights.commands.atExample"></span>
-              </div>
-              <div class="command-item">
-                <code>#</code>
-                <span data-i18n="highlights.commands.hashExample"></span>
-              </div>
-              <div class="command-item">
-                <code>/</code>
-                <span data-i18n="highlights.commands.slashExample"></span>
-              </div>
-            </div>
-          </article>
-          <article class="highlight-card" data-reveal>
-            <span class="card-index">07</span>
-            <h3 data-i18n="highlights.shell.title"></h3>
-            <p data-i18n="highlights.shell.body"></p>
-          </article>
-          <article class="highlight-card" data-reveal>
-            <span class="card-index">08</span>
-            <h3 data-i18n="highlights.knowledgeTools.title"></h3>
-            <p data-i18n="highlights.knowledgeTools.body"></p>
-            <div class="highlight-tools-grid" aria-label="Knowledge tools">
-              <!-- 工具列表将通过 JavaScript 动态生成 -->
-            </div>
-          </article>
-          <article class="highlight-card" data-reveal>
-            <span class="card-index">09</span>
-            <h3 data-i18n="highlights.search.title"></h3>
-            <p data-i18n="highlights.search.body"></p>
-          </article>
-          <article class="highlight-card" data-reveal>
-            <span class="card-index">10</span>
-            <h3 data-i18n="highlights.git.title"></h3>
-            <p data-i18n="highlights.git.body"></p>
-          </article>
-          <article class="highlight-card china-feature" data-reveal>
-            <span class="card-index">11</span>
-            <h3 data-i18n="highlights.proxy.title"></h3>
-            <p data-i18n="highlights.proxy.body"></p>
-            <div class="highlight-tags" aria-label="Proxy capabilities">
-              <span data-i18n="highlights.proxy.tagOne"></span>
-              <span data-i18n="highlights.proxy.tagTwo"></span>
-              <span data-i18n="highlights.proxy.tagThree"></span>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section id="flow" class="flow section-wrap" aria-labelledby="flow-title">
-        <div class="section-heading centered" data-reveal>
-          <span class="section-kicker" data-i18n="flow.kicker"></span>
-          <h2 id="flow-title" data-i18n="flow.title"></h2>
-          <p data-i18n="flow.body"></p>
-        </div>
-        <div class="flow-stage" data-reveal>
-          <div class="orbit" aria-hidden="true">
-            <span class="orbit-ring ring-one"></span>
-            <span class="orbit-ring ring-two"></span>
-            <span
-              class="orbit-node node-private"
-              data-i18n="flow.private"
-            ></span>
-            <span class="orbit-node node-shared" data-i18n="flow.shared"></span>
-            <span
-              class="orbit-node node-discussion"
-              data-i18n="flow.discussion"
-            ></span>
-            <span class="orbit-node node-git" data-i18n="flow.git"></span>
-            <span class="orbit-core">MeshWork</span>
-          </div>
-          <div class="flow-copy">
-            <div class="flow-item">
-              <strong data-i18n="flow.privateTitle"></strong>
-              <span data-i18n="flow.privateBody"></span>
-            </div>
-            <div class="flow-item">
-              <strong data-i18n="flow.sharedTitle"></strong>
-              <span data-i18n="flow.sharedBody"></span>
-            </div>
-            <div class="flow-item">
-              <strong data-i18n="flow.discussionTitle"></strong>
-              <span data-i18n="flow.discussionBody"></span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="experience"
-        class="feature-section section-wrap"
-        aria-labelledby="experience-title"
-      >
-        <div class="feature-copy" data-reveal>
-          <span class="section-kicker" data-i18n="experience.kicker"></span>
-          <h2 id="experience-title" data-i18n="experience.title"></h2>
-          <p data-i18n="experience.body"></p>
-        </div>
-        <figure class="poster-frame" data-reveal>
+        <figure class="hero-shot" data-reveal>
           <picture>
             <source
               srcset="images/poster_zh.png"
@@ -416,50 +62,112 @@
             <img
               src="images/poster_zh.png"
               alt=""
-              data-image-key="workspacePoster"
+              data-image-key="heroPoster"
             />
           </picture>
-          <figcaption data-i18n="experience.caption"></figcaption>
         </figure>
       </section>
 
-      <section
-        class="feature-section feature-section-reverse section-wrap"
-        aria-labelledby="sharing-title"
-      >
-        <div class="feature-copy" data-reveal>
-          <span class="section-kicker" data-i18n="sharing.kicker"></span>
-          <h2 id="sharing-title" data-i18n="sharing.title"></h2>
-          <p data-i18n="sharing.body"></p>
+      <section class="intro section-wrap" data-reveal>
+        <p class="section-kicker" data-i18n="intro.kicker"></p>
+        <div class="split-heading">
+          <h2 data-i18n="intro.title"></h2>
+          <p data-i18n="intro.body"></p>
         </div>
-        <figure class="poster-frame" data-reveal>
-          <picture>
-            <source
-              srcset="images/poster_3_zh.png"
-              data-src-zh="images/poster_3_zh.png"
-              data-src-en="images/poster_3_en.png"
-            />
-            <img
-              src="images/poster_3_zh.png"
-              alt=""
-              data-image-key="githubPoster"
-            />
-          </picture>
-          <figcaption data-i18n="sharing.caption"></figcaption>
-        </figure>
       </section>
 
       <section
-        id="gallery"
-        class="feature-section section-wrap"
-        aria-labelledby="knowledge-title"
+        id="features"
+        class="features section-wrap"
+        aria-labelledby="features-title"
       >
-        <div class="feature-copy" data-reveal>
-          <span class="section-kicker" data-i18n="knowledge.kicker"></span>
-          <h2 id="knowledge-title" data-i18n="knowledge.title"></h2>
-          <p data-i18n="knowledge.body"></p>
+        <div class="section-heading" data-reveal>
+          <p class="section-kicker" data-i18n="features.kicker"></p>
+          <h2 id="features-title" data-i18n="features.title"></h2>
+          <p data-i18n="features.body"></p>
         </div>
-        <figure class="poster-frame" data-reveal>
+
+        <div class="feature-grid">
+          <article class="feature-card feature-card-large" data-reveal>
+            <span class="feature-icon">⌘</span>
+            <h3 data-i18n="features.native.title"></h3>
+            <p data-i18n="features.native.body"></p>
+            <ul>
+              <li data-i18n="features.native.pointOne"></li>
+              <li data-i18n="features.native.pointTwo"></li>
+              <li data-i18n="features.native.pointThree"></li>
+            </ul>
+          </article>
+          <article class="feature-card" data-reveal>
+            <span class="feature-icon">MD</span>
+            <h3 data-i18n="features.files.title"></h3>
+            <p data-i18n="features.files.body"></p>
+          </article>
+          <article class="feature-card" data-reveal>
+            <span class="feature-icon">¶</span>
+            <h3 data-i18n="features.editor.title"></h3>
+            <p data-i18n="features.editor.body"></p>
+          </article>
+          <article class="feature-card" data-reveal>
+            <span class="feature-icon">↔</span>
+            <h3 data-i18n="features.links.title"></h3>
+            <p data-i18n="features.links.body"></p>
+          </article>
+          <article class="feature-card" data-reveal>
+            <span class="feature-icon">⌕</span>
+            <h3 data-i18n="features.search.title"></h3>
+            <p data-i18n="features.search.body"></p>
+          </article>
+        </div>
+      </section>
+
+      <section
+        id="workflow"
+        class="workflow section-wrap"
+        aria-labelledby="workflow-title"
+      >
+        <div class="section-heading compact" data-reveal>
+          <p class="section-kicker" data-i18n="workflow.kicker"></p>
+          <h2 id="workflow-title" data-i18n="workflow.title"></h2>
+          <p data-i18n="workflow.body"></p>
+        </div>
+        <div class="workflow-steps" data-reveal>
+          <article>
+            <span>1</span>
+            <h3 data-i18n="workflow.private.title"></h3>
+            <p data-i18n="workflow.private.body"></p>
+          </article>
+          <article>
+            <span>2</span>
+            <h3 data-i18n="workflow.discuss.title"></h3>
+            <p data-i18n="workflow.discuss.body"></p>
+          </article>
+          <article>
+            <span>3</span>
+            <h3 data-i18n="workflow.write.title"></h3>
+            <p data-i18n="workflow.write.body"></p>
+          </article>
+          <article>
+            <span>4</span>
+            <h3 data-i18n="workflow.share.title"></h3>
+            <p data-i18n="workflow.share.body"></p>
+          </article>
+        </div>
+      </section>
+
+      <section id="ai" class="showcase section-wrap" aria-labelledby="ai-title">
+        <div class="showcase-copy" data-reveal>
+          <p class="section-kicker" data-i18n="ai.kicker"></p>
+          <h2 id="ai-title" data-i18n="ai.title"></h2>
+          <p data-i18n="ai.body"></p>
+          <div class="tool-list" aria-label="AI tools">
+            <span data-i18n="ai.toolOne"></span>
+            <span data-i18n="ai.toolTwo"></span>
+            <span data-i18n="ai.toolThree"></span>
+            <span data-i18n="ai.toolFour"></span>
+          </div>
+        </div>
+        <figure class="showcase-image" data-reveal>
           <picture>
             <source
               srcset="images/poster_2_zh.png"
@@ -469,371 +177,84 @@
             <img
               src="images/poster_2_zh.png"
               alt=""
-              data-image-key="graphPoster"
+              data-image-key="knowledgePoster"
             />
           </picture>
-          <figcaption data-i18n="knowledge.caption"></figcaption>
         </figure>
       </section>
 
       <section
-        id="comparison"
-        class="comparison-section section-wrap"
-        aria-labelledby="comparison-title"
+        id="sharing"
+        class="showcase showcase-reverse section-wrap"
+        aria-labelledby="sharing-title"
       >
-        <div class="section-heading centered" data-reveal>
-          <span class="section-kicker" data-i18n="comparison.kicker"></span>
-          <h2 id="comparison-title" data-i18n="comparison.title"></h2>
-          <p data-i18n="comparison.body"></p>
-        </div>
-
-        <div class="comparison-descriptions" data-reveal>
-          <div class="competitor-desc">
-            <div class="competitor-icon chat-icon">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M8 12h8M8 8h8M8 16h5"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-                <path
-                  d="M4 6c0-1.1.9-2 2-2h12c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H8l-4 4v-4"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </div>
-            <h3 data-i18n="comparison.chatTitle"></h3>
-            <p data-i18n="comparison.chatDesc"></p>
-          </div>
-
-          <div class="competitor-desc">
-            <div class="competitor-icon notes-icon">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 4h16v16H4z"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M8 8h8M8 12h8M8 16h5"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </div>
-            <h3 data-i18n="comparison.notesTitle"></h3>
-            <p data-i18n="comparison.notesDesc"></p>
+        <div class="showcase-copy" data-reveal>
+          <p class="section-kicker" data-i18n="sharing.kicker"></p>
+          <h2 id="sharing-title" data-i18n="sharing.title"></h2>
+          <p data-i18n="sharing.body"></p>
+          <div class="boundary-list">
+            <span data-i18n="sharing.boundaryOne"></span>
+            <span data-i18n="sharing.boundaryTwo"></span>
+            <span data-i18n="sharing.boundaryThree"></span>
           </div>
         </div>
+        <figure class="showcase-image" data-reveal>
+          <picture>
+            <source
+              srcset="images/poster_3_zh.png"
+              data-src-zh="images/poster_3_zh.png"
+              data-src-en="images/poster_3_en.png"
+            />
+            <img
+              src="images/poster_3_zh.png"
+              alt=""
+              data-image-key="sharingPoster"
+            />
+          </picture>
+        </figure>
+      </section>
 
-        <div class="comparison-table-wrapper" data-reveal>
-          <table class="comparison-table">
-            <thead>
-              <tr>
-                <th data-i18n="comparison.table.feature"></th>
-                <th>MeshWork</th>
-                <th data-i18n="comparison.table.chatApps"></th>
-                <th data-i18n="comparison.table.noteApps"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td data-i18n="comparison.table.privacy"></td>
-                <td
-                  class="cell-positive"
-                  data-i18n="comparison.table.localFirst"
-                ></td>
-                <td
-                  class="cell-negative"
-                  data-i18n="comparison.table.cloudBased"
-                ></td>
-                <td
-                  class="cell-positive"
-                  data-i18n="comparison.table.localFirst"
-                ></td>
-              </tr>
-              <tr>
-                <td data-i18n="comparison.table.collaboration"></td>
-                <td
-                  class="cell-positive"
-                  data-i18n="comparison.table.gitNative"
-                ></td>
-                <td
-                  class="cell-positive"
-                  data-i18n="comparison.table.realtime"
-                ></td>
-                <td
-                  class="cell-negative"
-                  data-i18n="comparison.table.limited"
-                ></td>
-              </tr>
-              <tr>
-                <td data-i18n="comparison.table.aiDiscussion"></td>
-                <td
-                  class="cell-positive"
-                  data-i18n="comparison.table.multiAgent"
-                ></td>
-                <td
-                  class="cell-partial"
-                  data-i18n="comparison.table.botBased"
-                ></td>
-                <td
-                  class="cell-negative"
-                  data-i18n="comparison.table.singleUser"
-                ></td>
-              </tr>
-              <tr>
-                <td data-i18n="comparison.table.dataControl"></td>
-                <td
-                  class="cell-positive"
-                  data-i18n="comparison.table.fullControl"
-                ></td>
-                <td
-                  class="cell-negative"
-                  data-i18n="comparison.table.platformControl"
-                ></td>
-                <td
-                  class="cell-positive"
-                  data-i18n="comparison.table.fullControl"
-                ></td>
-              </tr>
-              <tr>
-                <td data-i18n="comparison.table.openSource"></td>
-                <td
-                  class="cell-positive"
-                  data-i18n="comparison.table.openFormat"
-                ></td>
-                <td
-                  class="cell-negative"
-                  data-i18n="comparison.table.closedFormat"
-                ></td>
-                <td
-                  class="cell-positive"
-                  data-i18n="comparison.table.openFormat"
-                ></td>
-              </tr>
-              <tr>
-                <td data-i18n="comparison.table.platform"></td>
-                <td
-                  class="cell-neutral"
-                  data-i18n="comparison.table.appleOnly"
-                ></td>
-                <td
-                  class="cell-neutral"
-                  data-i18n="comparison.table.crossPlatform"
-                ></td>
-                <td
-                  class="cell-neutral"
-                  data-i18n="comparison.table.crossPlatform"
-                ></td>
-              </tr>
-            </tbody>
-          </table>
+      <section class="documents section-wrap" aria-labelledby="documents-title">
+        <div class="section-heading compact" data-reveal>
+          <p class="section-kicker" data-i18n="documents.kicker"></p>
+          <h2 id="documents-title" data-i18n="documents.title"></h2>
+          <p data-i18n="documents.body"></p>
+        </div>
+        <div class="document-grid" data-reveal>
+          <article>
+            <strong data-i18n="documents.markdown.title"></strong>
+            <span data-i18n="documents.markdown.body"></span>
+          </article>
+          <article>
+            <strong data-i18n="documents.diagram.title"></strong>
+            <span data-i18n="documents.diagram.body"></span>
+          </article>
+          <article>
+            <strong data-i18n="documents.office.title"></strong>
+            <span data-i18n="documents.office.body"></span>
+          </article>
+          <article>
+            <strong data-i18n="documents.proxy.title"></strong>
+            <span data-i18n="documents.proxy.body"></span>
+          </article>
         </div>
       </section>
 
-      <section
-        id="pricing"
-        class="pricing-section section-wrap"
-        aria-labelledby="pricing-title"
-      >
-        <div class="section-heading centered" data-reveal>
-          <span class="section-kicker" data-i18n="pricing.kicker"></span>
-          <h2 id="pricing-title" data-i18n="pricing.title"></h2>
-          <p class="section-body" data-i18n="pricing.body"></p>
-        </div>
-
-        <div class="pricing-table-wrapper" data-reveal>
-          <table class="pricing-table">
-            <thead>
-              <tr>
-                <th data-i18n="pricing.table.feature"></th>
-                <th class="tier-free">
-                  <span class="tier-name" data-i18n="pricing.table.free"></span>
-                  <span class="tier-price">$0</span>
-                </th>
-                <th class="tier-creator">
-                  <span
-                    class="tier-name"
-                    data-i18n="pricing.table.creator"
-                  ></span>
-                  <span class="tier-price" data-i18n="pricing.table.creatorPrice"></span>
-                </th>
-                <th class="tier-studio">
-                  <span
-                    class="tier-name"
-                    data-i18n="pricing.table.studio"
-                  ></span>
-                  <span class="tier-price" data-i18n="pricing.table.studioPrice"></span>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td data-i18n="pricing.features.privateKnowledgeBase.name"></td>
-                <td
-                  class="feature-included"
-                  data-i18n="pricing.features.privateKnowledgeBase.free"
-                ></td>
-                <td
-                  class="feature-included"
-                  data-i18n="pricing.features.privateKnowledgeBase.creator"
-                ></td>
-                <td
-                  class="feature-included"
-                  data-i18n="pricing.features.privateKnowledgeBase.studio"
-                ></td>
-              </tr>
-              <tr>
-                <td data-i18n="pricing.features.documentAssistant.name"></td>
-                <td class="feature-excluded">—</td>
-                <td
-                  class="feature-included"
-                  data-i18n="pricing.features.documentAssistant.creator"
-                ></td>
-                <td
-                  class="feature-included"
-                  data-i18n="pricing.features.documentAssistant.studio"
-                ></td>
-              </tr>
-              <tr>
-                <td data-i18n="pricing.features.sharedSpace.name"></td>
-                <td class="feature-excluded">—</td>
-                <td class="feature-excluded">—</td>
-                <td
-                  class="feature-included"
-                  data-i18n="pricing.features.sharedSpace.studio"
-                ></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section
-        id="story"
-        class="story-section section-wrap"
-        aria-labelledby="story-title"
-      >
-        <div class="section-heading centered" data-reveal>
-          <span class="section-kicker" data-i18n="story.kicker"></span>
+      <section class="story section-wrap" aria-labelledby="story-title">
+        <div class="section-heading compact" data-reveal>
+          <p class="section-kicker" data-i18n="story.kicker"></p>
           <h2 id="story-title" data-i18n="story.title"></h2>
-          <p class="section-body" data-i18n="story.body"></p>
+          <p data-i18n="story.body"></p>
         </div>
-
         <div class="story-grid" data-reveal>
-          <article class="story-card">
-            <div class="story-image-wrapper">
-              <img
-                src="images/real_scene.png"
-                alt=""
-                class="story-image"
-              />
-              <div class="story-overlay">
-                <span class="story-category" data-i18n="story.sceneOne.category"></span>
-              </div>
-            </div>
-            <div class="story-content">
-              <h3 data-i18n="story.sceneOne.title"></h3>
-              <p data-i18n="story.sceneOne.description"></p>
-              <div class="story-quote">
-                <span data-i18n="story.sceneOne.quote"></span>
-              </div>
-            </div>
-          </article>
-
-          <article class="story-card">
-            <div class="story-image-wrapper">
-              <img
-                src="images/real_scene_2.png"
-                alt=""
-                class="story-image"
-              />
-              <div class="story-overlay">
-                <span class="story-category" data-i18n="story.sceneTwo.category"></span>
-              </div>
-            </div>
-            <div class="story-content">
-              <h3 data-i18n="story.sceneTwo.title"></h3>
-              <p data-i18n="story.sceneTwo.description"></p>
-              <div class="story-quote">
-                <span data-i18n="story.sceneTwo.quote"></span>
-              </div>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section
-        id="roadmap"
-        class="roadmap-section section-wrap"
-        aria-labelledby="roadmap-title"
-      >
-        <div class="section-heading centered" data-reveal>
-          <span class="section-kicker" data-i18n="roadmap.kicker"></span>
-          <h2 id="roadmap-title" data-i18n="roadmap.title"></h2>
-          <p class="section-body" data-i18n="roadmap.body"></p>
-        </div>
-
-        <div class="roadmap-grid" data-reveal>
-          <article class="roadmap-card">
-            <div class="roadmap-icon plugin-icon">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </div>
-            <h3 data-i18n="roadmap.pluginTitle"></h3>
-            <p data-i18n="roadmap.pluginBody"></p>
-          </article>
-
-          <article class="roadmap-card">
-            <div class="roadmap-icon apple-icon">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"
-                  stroke="currentColor"
-                  stroke-width="2"
-                />
-                <path
-                  d="M12 6v6l4 2"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </div>
-            <h3 data-i18n="roadmap.nativeTitle"></h3>
-            <p data-i18n="roadmap.nativeBody"></p>
-          </article>
+          <figure>
+            <img src="images/real_scene.png" alt="" />
+            <figcaption data-i18n="story.sceneOne"></figcaption>
+          </figure>
+          <figure>
+            <img src="images/real_scene_2.png" alt="" />
+            <figcaption data-i18n="story.sceneTwo"></figcaption>
+          </figure>
         </div>
       </section>
     </main>
@@ -841,7 +262,7 @@
     <footer class="site-footer">
       <span>MeshWork</span>
       <span data-i18n="footer.note"></span>
-      <a href="privacy.html" data-i18n="footer.privacy">隐私政策</a>
+      <a href="privacy.html" data-i18n="footer.privacy"></a>
     </footer>
 
     <script src="script.js"></script>
