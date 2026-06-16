@@ -1,1 +1,4 @@
 .DS_Store
+
+# Local-only symlink; GitHub Pages cannot build it.
+remotedock/website
