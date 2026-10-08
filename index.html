@@ -24,6 +24,8 @@
         --meshwork-glow: rgba(0, 212, 255, 0.3);
         --remotedock-accent: #ff6b35;
         --remotedock-glow: rgba(255, 107, 53, 0.3);
+        --omnisearch-accent: #8b7bff;
+        --omnisearch-glow: rgba(139, 123, 255, 0.3);
       }
 
       body {
@@ -343,9 +345,9 @@
       /* 应用卡片网格 */
       .apps-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 32px;
-        max-width: 900px;
+        max-width: 1040px;
         margin: 0 auto;
       }
 
@@ -372,6 +374,10 @@
 
       .app-card:nth-child(2) {
         animation-delay: 0.5s;
+      }
+
+      .app-card:nth-child(3) {
+        animation-delay: 0.7s;
       }
 
       @keyframes card-appear {
@@ -413,6 +419,11 @@
       .app-card.remotedock {
         --card-accent: var(--remotedock-accent);
         --card-glow: var(--remotedock-glow);
+      }
+
+      .app-card.omnisearch {
+        --card-accent: var(--omnisearch-accent);
+        --card-glow: var(--omnisearch-glow);
       }
 
       .app-card::after {
@@ -627,6 +638,28 @@
             <span class="app-tag">
               <span data-lang="en">Productivity Tool</span>
               <span data-lang="zh">效率工具</span>
+            </span>
+          </a>
+
+          <!-- OmniSearch 卡片 -->
+          <a href="omnisearch/index.html" class="app-card omnisearch">
+            <div class="app-icon">
+              <img src="omnisearch/images/favicon.png" alt="OmniSearch" />
+            </div>
+            <h2 class="app-name">OmniSearch</h2>
+            <p class="app-desc">
+              <span data-lang="en"
+                >Instant filename search for Mac — Chinese-first, pinyin-ready,
+                any-substring matching. Fully local, fully free.</span
+              >
+              <span data-lang="zh"
+                >macOS 文件名即时搜索：中文优先、拼音直达、任意子串命中，
+                完全本地运行，完全免费。</span
+              >
+            </p>
+            <span class="app-tag">
+              <span data-lang="en">Utility</span>
+              <span data-lang="zh">实用工具</span>
             </span>
           </a>
         </div>

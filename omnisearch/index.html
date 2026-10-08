@@ -1,0 +1,2552 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="OmniSearch — macOS 文件名即时搜索工具。中文优先、拼音直达、任意子串命中，永不读取文件内容，完全本地运行，完全免费。"
+    />
+    <title>OmniSearch - macOS 文件名即时搜索，中文与拼音优先</title>
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg-primary: #14141f;
+        --bg-secondary: #1c1c2b;
+        --bg-card: #222233;
+        --text-primary: #ffffff;
+        --text-secondary: #b0b0c8;
+        --accent-violet: #8b7bff;
+        --accent-blue: #4facfe;
+        --gradient-accent: linear-gradient(
+          135deg,
+          #8b7bff 0%,
+          #6c8cff 50%,
+          #4facfe 100%
+        );
+        --gradient-glow: radial-gradient(
+          ellipse at center,
+          rgba(139, 123, 255, 0.25) 0%,
+          transparent 70%
+        );
+        --border-color: rgba(139, 123, 255, 0.3);
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+          "Hiragino Sans GB", sans-serif;
+        line-height: 1.6;
+        color: var(--text-primary);
+        background: var(--bg-primary);
+        overflow-x: hidden;
+      }
+
+      /* 提示框样式 */
+      .toast-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        pointer-events: none;
+      }
+
+      .toast {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 24px 32px;
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.5),
+          0 0 100px rgba(139, 123, 255, 0.2);
+        text-align: center;
+        min-width: 300px;
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(0.9);
+        transition: all 0.3s ease;
+        pointer-events: none;
+      }
+
+      .toast.show {
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1);
+        pointer-events: auto;
+      }
+
+      .toast-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+      }
+
+      .toast-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        background: var(--gradient-accent);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .toast-message {
+        color: var(--text-secondary);
+        font-size: 15px;
+        margin-bottom: 20px;
+      }
+
+      .toast-close {
+        background: var(--gradient-accent);
+        color: var(--bg-primary);
+        border: none;
+        border-radius: 8px;
+        padding: 10px 24px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .toast-close:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(139, 123, 255, 0.4);
+      }
+
+      .toast-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 999;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s;
+      }
+
+      .toast-overlay.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      /* 流光背景动画 */
+      .bg-animation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+
+      .bg-animation::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          ellipse at 30% 20%,
+          rgba(139, 123, 255, 0.15) 0%,
+          transparent 50%
+        );
+        animation: float 20s ease-in-out infinite;
+      }
+
+      .bg-animation::after {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          ellipse at 70% 80%,
+          rgba(79, 172, 254, 0.12) 0%,
+          transparent 50%
+        );
+        animation: float 25s ease-in-out infinite reverse;
+      }
+
+      /* 额外的流光层 */
+      .bg-animation-extra {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+
+      .bg-animation-extra::before {
+        content: "";
+        position: absolute;
+        top: -30%;
+        left: 20%;
+        width: 60%;
+        height: 60%;
+        background: radial-gradient(
+          circle,
+          rgba(108, 140, 255, 0.1) 0%,
+          transparent 60%
+        );
+        animation: float-diagonal 30s ease-in-out infinite;
+      }
+
+      .bg-animation-extra::after {
+        content: "";
+        position: absolute;
+        bottom: -20%;
+        right: 10%;
+        width: 50%;
+        height: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(167, 139, 250, 0.08) 0%,
+          transparent 60%
+        );
+        animation: float-diagonal 35s ease-in-out infinite reverse;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        33% {
+          transform: translate(30px, -30px) rotate(5deg);
+        }
+        66% {
+          transform: translate(-20px, 20px) rotate(-5deg);
+        }
+      }
+
+      @keyframes float-diagonal {
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        25% {
+          transform: translate(40px, -40px) scale(1.1);
+        }
+        50% {
+          transform: translate(-20px, 20px) scale(0.9);
+        }
+        75% {
+          transform: translate(30px, 30px) scale(1.05);
+        }
+      }
+
+      /* 流光线条效果 */
+      .light-beams {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+      }
+
+      .light-beam {
+        position: absolute;
+        width: 2px;
+        height: 100%;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(139, 123, 255, 0.3) 50%,
+          transparent
+        );
+        animation: beam-sweep 8s ease-in-out infinite;
+      }
+
+      @keyframes beam-sweep {
+        0%,
+        100% {
+          opacity: 0;
+          transform: translateX(-100%) rotate(15deg);
+        }
+        50% {
+          opacity: 0.5;
+          transform: translateX(100vw) rotate(15deg);
+        }
+      }
+
+      /* 粒子效果 */
+      .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .particle {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        background: var(--accent-violet);
+        border-radius: 50%;
+        opacity: 0;
+        animation: particle-float 15s infinite;
+        box-shadow:
+          0 0 6px var(--accent-violet),
+          0 0 12px var(--accent-blue);
+      }
+
+      .particle.blue {
+        background: var(--accent-blue);
+        box-shadow:
+          0 0 6px var(--accent-blue),
+          0 0 12px var(--accent-violet);
+      }
+
+      @keyframes particle-float {
+        0% {
+          opacity: 0;
+          transform: translateY(100vh) scale(0);
+        }
+        10% {
+          opacity: 0.8;
+        }
+        90% {
+          opacity: 0.8;
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-10vh) scale(1);
+        }
+      }
+
+      /* 光斑效果 */
+      .light-spots {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .light-spot {
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(139, 123, 255, 0.15) 0%,
+          rgba(79, 172, 254, 0.05) 50%,
+          transparent 70%
+        );
+        animation: spot-pulse 4s ease-in-out infinite;
+      }
+
+      @keyframes spot-pulse {
+        0%,
+        100% {
+          opacity: 0.3;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.7;
+          transform: scale(1.2);
+        }
+      }
+
+      /* 主容器 */
+      .main-container {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* 导航栏 */
+      .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: rgba(20, 20, 31, 0.85);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(139, 123, 255, 0.15);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .nav-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 16px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 24px;
+        font-weight: 700;
+        background: var(--gradient-accent);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 10px rgba(139, 123, 255, 0.3));
+      }
+
+      .nav-logo img {
+        width: 32px;
+        height: 32px;
+        -webkit-text-fill-color: initial;
+        filter: drop-shadow(0 0 8px rgba(139, 123, 255, 0.4));
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        align-items: center;
+      }
+
+      .nav-link {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 15px;
+        transition: color 0.3s;
+      }
+
+      .nav-link:hover {
+        color: var(--text-primary);
+      }
+
+      .language-switch {
+        display: flex;
+        gap: 8px;
+      }
+
+      .lang-btn {
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s;
+        border: 1px solid var(--border-color);
+      }
+
+      .lang-btn.active {
+        background: var(--gradient-accent);
+        color: var(--bg-primary);
+        border-color: transparent;
+      }
+
+      .lang-btn:not(.active) {
+        background: transparent;
+        color: var(--text-secondary);
+      }
+
+      .lang-btn:not(.active):hover {
+        color: var(--text-primary);
+        border-color: var(--accent-violet);
+      }
+
+      /* Hero 区域 */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 120px 24px 80px;
+        position: relative;
+      }
+
+      .hero-glow {
+        position: absolute;
+        width: 700px;
+        height: 700px;
+        background: var(--gradient-glow);
+        border-radius: 50%;
+        filter: blur(100px);
+        animation: pulse-glow 4s ease-in-out infinite;
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .hero-glow::before {
+        content: "";
+        position: absolute;
+        top: 20%;
+        left: 20%;
+        width: 60%;
+        height: 60%;
+        background: radial-gradient(
+          circle,
+          rgba(79, 172, 254, 0.3) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        animation: inner-glow 3s ease-in-out infinite;
+        pointer-events: none;
+      }
+
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          opacity: 0.7;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.15);
+        }
+      }
+
+      @keyframes inner-glow {
+        0%,
+        100% {
+          opacity: 0.5;
+          transform: scale(0.8);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.2);
+        }
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 20px;
+        background: rgba(139, 123, 255, 0.15);
+        border: 1px solid var(--border-color);
+        border-radius: 30px;
+        font-size: 14px;
+        color: var(--accent-violet);
+        margin-bottom: 32px;
+        animation:
+          fade-in-up 0.8s ease-out,
+          badge-glow 2s ease-in-out infinite 0.8s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-badge::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        animation: badge-shine 3s infinite;
+      }
+
+      @keyframes badge-shine {
+        0% {
+          left: -100%;
+        }
+        50%,
+        100% {
+          left: 100%;
+        }
+      }
+
+      @keyframes badge-glow {
+        0%,
+        100% {
+          box-shadow: 0 0 20px rgba(139, 123, 255, 0.2);
+        }
+        50% {
+          box-shadow: 0 0 30px rgba(139, 123, 255, 0.4);
+        }
+      }
+
+      @keyframes fade-in-up {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .hero h1 {
+        font-size: clamp(48px, 8vw, 80px);
+        font-weight: 800;
+        margin-bottom: 24px;
+        background: var(--gradient-accent);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: fade-in-up 0.8s ease-out 0.2s backwards;
+        filter: drop-shadow(0 0 30px rgba(139, 123, 255, 0.3));
+        position: relative;
+      }
+
+      .hero h1::after {
+        content: "OmniSearch";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: var(--gradient-accent);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: blur(20px);
+        opacity: 0.4;
+        z-index: -1;
+        animation: title-glow 3s ease-in-out infinite;
+      }
+
+      @keyframes title-glow {
+        0%,
+        100% {
+          opacity: 0.3;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.5;
+          transform: scale(1.02);
+        }
+      }
+
+      .hero-tagline {
+        font-size: clamp(16px, 2.5vw, 22px);
+        color: var(--text-secondary);
+        max-width: 640px;
+        margin: 0 auto 40px;
+        line-height: 1.8;
+        animation: fade-in-up 0.8s ease-out 0.4s backwards;
+        text-align: left;
+      }
+
+      .hero-tagline .feature-highlight {
+        display: flex;
+        align-items: center;
+        margin: 12px 0;
+        padding: 10px 20px;
+        background: rgba(139, 123, 255, 0.05);
+        border-radius: 12px;
+        border: 1px solid rgba(139, 123, 255, 0.1);
+        transition: all 0.3s;
+      }
+
+      .hero-tagline .feature-highlight:hover {
+        background: rgba(139, 123, 255, 0.1);
+        border-color: rgba(139, 123, 255, 0.2);
+        transform: translateX(4px);
+      }
+
+      .hero-tagline .feature-highlight::before {
+        content: "✦";
+        color: var(--accent-violet);
+        margin-right: 12px;
+        font-size: 18px;
+        flex-shrink: 0;
+      }
+
+      .hero-buttons {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 60px;
+        animation: fade-in-up 0.8s ease-out 0.6s backwards;
+        position: relative;
+        z-index: 10;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 32px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s;
+        pointer-events: none;
+      }
+
+      .btn:hover::before {
+        left: 100%;
+      }
+
+      .btn-primary {
+        background: var(--gradient-accent);
+        color: var(--bg-primary);
+        box-shadow:
+          0 4px 20px rgba(139, 123, 255, 0.4),
+          0 0 40px rgba(139, 123, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn-primary::after {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+          45deg,
+          transparent 30%,
+          rgba(255, 255, 255, 0.3) 50%,
+          transparent 70%
+        );
+        transform: rotate(45deg) translateX(-100%);
+        transition: transform 0.6s;
+        pointer-events: none;
+      }
+
+      .btn-primary:hover::after {
+        transform: rotate(45deg) translateX(100%);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow:
+          0 8px 30px rgba(139, 123, 255, 0.5),
+          0 0 60px rgba(139, 123, 255, 0.3);
+      }
+
+      .btn-secondary {
+        background: rgba(139, 123, 255, 0.1);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(139, 123, 255, 0.2);
+        border-color: var(--accent-violet);
+      }
+
+      /* Hero 演示录屏 */
+      .hero-video {
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow:
+          0 20px 60px rgba(139, 123, 255, 0.3),
+          0 0 100px rgba(139, 123, 255, 0.1);
+        animation:
+          fade-in-up 1s ease-out 0.8s backwards,
+          poster-float 6s ease-in-out infinite 1.8s;
+        position: relative;
+        border: 1px solid rgba(139, 123, 255, 0.2);
+      }
+
+      .hero-video::before {
+        content: "";
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--gradient-accent);
+        border-radius: 24px;
+        opacity: 0;
+        z-index: -1;
+        animation: poster-glow 3s ease-in-out infinite 1.8s;
+      }
+
+      @keyframes poster-float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      @keyframes poster-glow {
+        0%,
+        100% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+
+      .hero-video video {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      /* 内容区域 */
+      .content {
+        display: none;
+      }
+
+      .content.active {
+        display: block;
+      }
+
+      /* Section */
+      .section {
+        padding: 100px 0;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .section-badge {
+        display: inline-block;
+        padding: 6px 16px;
+        background: rgba(139, 123, 255, 0.15);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        font-size: 13px;
+        color: var(--accent-violet);
+        margin-bottom: 16px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 4px 20px rgba(139, 123, 255, 0.2);
+      }
+
+      .section-title {
+        font-size: clamp(32px, 5vw, 48px);
+        font-weight: 700;
+        margin-bottom: 16px;
+        position: relative;
+        display: block;
+      }
+
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60%;
+        height: 3px;
+        background: var(--gradient-accent);
+        border-radius: 2px;
+      }
+
+      .section-desc {
+        font-size: 18px;
+        color: var(--text-secondary);
+        max-width: 640px;
+        margin: 0 auto;
+      }
+
+      /* 功能卡片 */
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+      }
+
+      .feature-card {
+        background: var(--bg-card);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 32px;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--gradient-accent);
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .feature-card::after {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle at center,
+          rgba(139, 123, 255, 0.1) 0%,
+          transparent 70%
+        );
+        opacity: 0;
+        transition: opacity 0.4s;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--border-color);
+        box-shadow: 0 20px 40px rgba(139, 123, 255, 0.15);
+      }
+
+      .feature-card:hover::before {
+        opacity: 1;
+      }
+
+      .feature-card:hover::after {
+        opacity: 1;
+      }
+
+      .feature-icon {
+        width: 56px;
+        height: 56px;
+        background: var(--gradient-accent);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        margin-bottom: 20px;
+        box-shadow:
+          0 8px 24px rgba(139, 123, 255, 0.3),
+          0 0 40px rgba(139, 123, 255, 0.2);
+        animation: icon-float 3s ease-in-out infinite;
+        position: relative;
+      }
+
+      .feature-icon::after {
+        content: "";
+        position: absolute;
+        top: -4px;
+        left: -4px;
+        right: -4px;
+        bottom: -4px;
+        background: var(--gradient-accent);
+        border-radius: 18px;
+        opacity: 0;
+        z-index: -1;
+        filter: blur(8px);
+        animation: icon-glow 3s ease-in-out infinite;
+      }
+
+      @keyframes icon-float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-4px);
+        }
+      }
+
+      @keyframes icon-glow {
+        0%,
+        100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 0.6;
+        }
+      }
+
+      .feature-title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .feature-desc {
+        color: var(--text-secondary);
+        line-height: 1.7;
+        position: relative;
+        z-index: 1;
+      }
+
+      .feature-desc code {
+        background: rgba(139, 123, 255, 0.12);
+        border: 1px solid rgba(139, 123, 255, 0.2);
+        border-radius: 6px;
+        padding: 1px 8px;
+        font-size: 0.9em;
+        color: var(--accent-blue);
+      }
+
+      /* 搜索示例 */
+      .demo-box {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        padding: 48px;
+        box-shadow: 0 10px 40px rgba(139, 123, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+        max-width: 760px;
+        margin: 0 auto;
+      }
+
+      .demo-box::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(139, 123, 255, 0.1) 0%,
+          transparent 70%
+        );
+        animation: rotate-gradient 20s linear infinite;
+      }
+
+      @keyframes rotate-gradient {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .demo-file {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 20px;
+        background: rgba(139, 123, 255, 0.08);
+        border: 1px solid rgba(139, 123, 255, 0.2);
+        border-radius: 16px;
+        margin-bottom: 32px;
+      }
+
+      .demo-file .file-icon {
+        font-size: 32px;
+      }
+
+      .demo-file .file-name {
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .demo-queries {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+      }
+
+      .demo-query {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        padding: 14px 22px;
+        background: rgba(139, 123, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 14px;
+        transition: all 0.3s;
+        min-width: 130px;
+      }
+
+      .demo-query:hover {
+        transform: translateY(-4px);
+        border-color: var(--border-color);
+        box-shadow: 0 8px 24px rgba(139, 123, 255, 0.2);
+        background: rgba(139, 123, 255, 0.12);
+      }
+
+      .demo-query .query-text {
+        font-family: "SF Mono", Menlo, Consolas, monospace;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--accent-blue);
+      }
+
+      .demo-query .query-label {
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+
+      .demo-note {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 14px;
+        margin-top: 28px;
+      }
+
+      /* 独特功能 */
+      .unique-box {
+        background: linear-gradient(
+          135deg,
+          rgba(139, 123, 255, 0.1) 0%,
+          rgba(79, 172, 254, 0.08) 100%
+        );
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        padding: 48px;
+        box-shadow: 0 10px 40px rgba(139, 123, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .unique-box::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(139, 123, 255, 0.1) 0%,
+          transparent 70%
+        );
+        animation: rotate-gradient 20s linear infinite;
+      }
+
+      .unique-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 32px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .unique-item {
+        display: flex;
+        gap: 16px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .unique-icon {
+        width: 48px;
+        height: 48px;
+        background: var(--gradient-accent);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        flex-shrink: 0;
+        box-shadow: 0 4px 16px rgba(139, 123, 255, 0.3);
+      }
+
+      .unique-content h4 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+
+      .unique-content p {
+        color: var(--text-secondary);
+        font-size: 15px;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* 快速开始 */
+      .steps-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 24px;
+      }
+
+      .step-card {
+        background: var(--bg-card);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 32px 24px;
+        text-align: center;
+        position: relative;
+        transition: all 0.3s;
+        overflow: hidden;
+      }
+
+      .step-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+          circle at center,
+          rgba(139, 123, 255, 0.1) 0%,
+          transparent 70%
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .step-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--border-color);
+      }
+
+      .step-card:hover::before {
+        opacity: 1;
+      }
+
+      .step-number {
+        width: 48px;
+        height: 48px;
+        background: var(--gradient-accent);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0 auto 20px;
+        color: var(--bg-primary);
+        box-shadow: 0 4px 20px rgba(139, 123, 255, 0.4);
+        position: relative;
+        z-index: 1;
+      }
+
+      .step-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .step-desc {
+        color: var(--text-secondary);
+        font-size: 15px;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* 系统要求 */
+      .requirements-box {
+        background: var(--bg-card);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 40px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 32px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      .req-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .req-icon {
+        width: 56px;
+        height: 56px;
+        background: rgba(139, 123, 255, 0.15);
+        border: 1px solid rgba(139, 123, 255, 0.3);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        flex-shrink: 0;
+        box-shadow: 0 4px 16px rgba(139, 123, 255, 0.2);
+      }
+
+      .req-text strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .req-text span {
+        color: var(--text-secondary);
+      }
+
+      /* FAQ */
+      .faq-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 20px;
+      }
+
+      .faq-item {
+        background: var(--bg-card);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 24px;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .faq-item::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: var(--gradient-accent);
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .faq-item:hover {
+        border-color: var(--border-color);
+        transform: translateX(4px);
+      }
+
+      .faq-item:hover::before {
+        opacity: 1;
+      }
+
+      .faq-question {
+        font-size: 17px;
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+
+      .faq-answer {
+        color: var(--text-secondary);
+        font-size: 15px;
+        line-height: 1.7;
+      }
+
+      /* 下载指南 */
+      .download-section {
+        background: linear-gradient(
+          135deg,
+          rgba(139, 123, 255, 0.15) 0%,
+          rgba(79, 172, 254, 0.1) 100%
+        );
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        padding: 48px;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(139, 123, 255, 0.15);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .download-section::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(139, 123, 255, 0.1) 0%,
+          transparent 70%
+        );
+        animation: rotate-gradient 30s linear infinite;
+      }
+
+      .download-section h3 {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .download-section > p {
+        color: var(--text-secondary);
+        margin-bottom: 32px;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        z-index: 1;
+      }
+
+      .download-buttons {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Footer */
+      .footer {
+        padding: 60px 0 40px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        margin-top: 100px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(139, 123, 255, 0.03)
+        );
+      }
+
+      .footer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 32px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .footer-link {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 15px;
+        transition: color 0.3s;
+      }
+
+      .footer-link:hover {
+        color: var(--accent-violet);
+      }
+
+      .contact-box {
+        background: var(--gradient-accent);
+        border-radius: 20px;
+        padding: 32px 48px;
+        text-align: center;
+        margin-top: 40px;
+        box-shadow: 0 20px 60px rgba(139, 123, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .contact-box::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.1) 0%,
+          transparent 70%
+        );
+        animation: contact-shine 4s ease-in-out infinite;
+      }
+
+      @keyframes contact-shine {
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        50% {
+          transform: translate(20px, -20px) scale(1.1);
+        }
+      }
+
+      .contact-box p {
+        margin-bottom: 8px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .contact-box a {
+        color: var(--bg-primary);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .contact-box a:hover {
+        text-decoration: underline;
+      }
+
+      /* 响应式 */
+      @media (max-width: 768px) {
+        .nav-content {
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .nav-links {
+          gap: 16px;
+        }
+
+        .hero {
+          padding: 100px 20px 60px;
+        }
+
+        .hero-buttons {
+          flex-direction: column;
+          width: 100%;
+          max-width: 300px;
+        }
+
+        .btn {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .section {
+          padding: 60px 0;
+        }
+
+        .features-grid,
+        .unique-grid,
+        .steps-container,
+        .requirements-box,
+        .faq-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .unique-box {
+          padding: 32px 24px;
+        }
+
+        .demo-box {
+          padding: 32px 20px;
+        }
+
+        .download-section {
+          padding: 32px 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-animation"></div>
+    <div class="bg-animation-extra"></div>
+    <div class="light-beams" id="lightBeams"></div>
+    <div class="particles" id="particles"></div>
+    <div class="light-spots" id="lightSpots"></div>
+
+    <nav class="nav">
+      <div class="nav-content">
+        <div class="nav-logo">
+          <img src="images/favicon.png" alt="OmniSearch Logo" />
+          <span>OmniSearch</span>
+        </div>
+        <div class="nav-links">
+          <a href="../" class="nav-link">Kido Studio</a>
+          <a href="#features" class="nav-link">功能</a>
+          <a href="#download" class="nav-link">下载</a>
+          <a href="#faq" class="nav-link">FAQ</a>
+          <div class="language-switch">
+            <a href="#chinese" class="lang-btn active" id="btn-cn">中文</a>
+            <a href="#english" class="lang-btn" id="btn-en">EN</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 中文版本 -->
+    <div id="chinese" class="content active">
+      <section class="hero">
+        <div class="hero-glow"></div>
+        <div class="main-container">
+          <div class="hero-badge">⚡ 中文优先 · 完全免费</div>
+          <h1>OmniSearch</h1>
+          <p class="hero-tagline">
+            <span class="feature-highlight"
+              >打字即出结果：任意子串模糊命中，无需完整词</span
+            >
+            <span class="feature-highlight"
+              >中文两字查询可靠命中，全拼 / 首字母拼音直达</span
+            >
+          </p>
+          <div class="hero-buttons">
+            <a
+              href="javascript:void(0)"
+              class="btn btn-primary"
+              onclick="showComingSoon('cn')"
+            >
+              <span>⬇️</span> 下载 Mac 版本
+            </a>
+            <a href="#features" class="btn btn-secondary">
+              <span>🔍</span> 查看功能
+            </a>
+          </div>
+          <div class="hero-video">
+            <video
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              poster="poster.jpg"
+            >
+              <source src="demo.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">核心功能</div>
+            <h2 class="section-title">一个搜索框，做好一件事</h2>
+            <p class="section-desc">
+              专为中文用户打造的本地文件名搜索引擎，专注、安静、即时
+            </p>
+          </div>
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon">⚡</div>
+              <h3 class="feature-title">随打字即时出结果</h3>
+              <p class="feature-desc">
+                本地 SQLite 索引毫秒级响应，不用等 Spotlight
+                转圈。首次扫描进行中也能边扫边搜。
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🀄</div>
+              <h3 class="feature-title">中文优先</h3>
+              <p class="feature-desc">
+                NFC / NFD 归一化处理，两字中文查询可靠命中，变体字符不再搜不到
+                —— 把中文当第一优先级，而不是事后补丁。
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🔤</div>
+              <h3 class="feature-title">拼音直达</h3>
+              <p class="feature-desc">
+                不用切输入法：输入 <code>xiangmu</code> 或 <code>xm</code>
+                都能找到「项目」，全拼与首字母皆可命中。
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🔍</div>
+              <h3 class="feature-title">任意子串匹配</h3>
+              <p class="feature-desc">
+                只记得文件名中的一段？任意位置子串直接命中，无需完整单词，
+                <code>ghos</code> 也能找到 Ghostty。
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🔄</div>
+              <h3 class="feature-title">索引实时更新</h3>
+              <p class="feature-desc">
+                基于 FSEvents 监听文件系统变化，新建、重命名、移动、删除即时同步，
+                结果始终新鲜。
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🛡️</div>
+              <h3 class="feature-title">隐私红线</h3>
+              <p class="feature-desc">
+                永不读取文件内容，不联网、无遥测、无账号。索引只保存名字、路径、
+                大小与时间戳。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">搜索示例</div>
+            <h2 class="section-title">同一个文件，多种搜法</h2>
+            <p class="section-desc">
+              下面这些查询，全部都能命中同一个文件
+            </p>
+          </div>
+          <div class="demo-box">
+            <div class="demo-file">
+              <span class="file-icon">📄</span>
+              <span class="file-name">项目计划.md</span>
+            </div>
+            <div class="demo-queries">
+              <div class="demo-query">
+                <span class="query-text">项目</span>
+                <span class="query-label">中文两字直搜</span>
+              </div>
+              <div class="demo-query">
+                <span class="query-text">目计</span>
+                <span class="query-label">任意子串</span>
+              </div>
+              <div class="demo-query">
+                <span class="query-text">xiangmu</span>
+                <span class="query-label">全拼</span>
+              </div>
+              <div class="demo-query">
+                <span class="query-text">xm</span>
+                <span class="query-label">拼音首字母</span>
+              </div>
+            </div>
+            <p class="demo-note">
+              中文输入法、英文键盘、只记得读音 —— 无论哪种情况，都能一击命中
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">独特优势</div>
+            <h2 class="section-title">为什么选择 OmniSearch</h2>
+          </div>
+          <div class="unique-box">
+            <div class="unique-grid">
+              <div class="unique-item">
+                <div class="unique-icon">🆓</div>
+                <div class="unique-content">
+                  <h4>完全免费</h4>
+                  <p>全部功能开放，无付费墙、无订阅、无内购</p>
+                </div>
+              </div>
+              <div class="unique-item">
+                <div class="unique-icon">🚫</div>
+                <div class="unique-content">
+                  <h4>不依赖 Spotlight</h4>
+                  <p>自建索引独立运行，不接管系统搜索，两者共存互不干扰</p>
+                </div>
+              </div>
+              <div class="unique-item">
+                <div class="unique-icon">🀄</div>
+                <div class="unique-content">
+                  <h4>专为中文优化</h4>
+                  <p>中文文件名搜索在 macOS 上常令人失望，OmniSearch
+                    把它当作第一优先级</p>
+                </div>
+              </div>
+              <div class="unique-item">
+                <div class="unique-icon">📂</div>
+                <div class="unique-content">
+                  <h4>目录自主授权</h4>
+                  <p>桌面、文稿、下载即开即用，任意自定义文件夹一键加入</p>
+                </div>
+              </div>
+              <div class="unique-item">
+                <div class="unique-icon">⌨️</div>
+                <div class="unique-content">
+                  <h4>全局快捷键</h4>
+                  <p>任何时候唤出搜索窗口，搜完即走，不打断心流</p>
+                </div>
+              </div>
+              <div class="unique-item">
+                <div class="unique-icon">👁</div>
+                <div class="unique-content">
+                  <h4>快速预览</h4>
+                  <p>选中结果按空格 QuickLook 预览，回车直接在 Finder 中定位</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">快速开始</div>
+            <h2 class="section-title">简单四步，即刻开始</h2>
+          </div>
+          <div class="steps-container">
+            <div class="step-card">
+              <div class="step-number">1</div>
+              <h3 class="step-title">启动应用</h3>
+              <p class="step-desc">打开 OmniSearch，常驻菜单栏</p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">2</div>
+              <h3 class="step-title">授权文件夹</h3>
+              <p class="step-desc">选择桌面 / 文稿 / 下载，或添加自定义文件夹</p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">3</div>
+              <h3 class="step-title">首次建立索引</h3>
+              <p class="step-desc">后台安静扫描，边扫边可搜索</p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">4</div>
+              <h3 class="step-title">随时唤起搜索</h3>
+              <p class="step-desc">快捷键呼出窗口，打字即出结果</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">系统要求</div>
+            <h2 class="section-title">兼容性</h2>
+          </div>
+          <div class="requirements-box">
+            <div class="req-item">
+              <div class="req-icon">🍎</div>
+              <div class="req-text">
+                <strong>Mac</strong>
+                <span>macOS 14.0 及更高版本</span>
+              </div>
+            </div>
+            <div class="req-item">
+              <div class="req-icon">💻</div>
+              <div class="req-text">
+                <strong>芯片</strong>
+                <span>Apple Silicon 与 Intel 均支持</span>
+              </div>
+            </div>
+            <div class="req-item">
+              <div class="req-icon">🔒</div>
+              <div class="req-text">
+                <strong>网络</strong>
+                <span>无需联网，一切都在本地完成</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="download">
+        <div class="main-container">
+          <div class="download-section">
+            <h3>📥 下载 Mac 版本</h3>
+            <p>OmniSearch 正在上架 Mac App Store，即将与大家见面</p>
+            <div class="download-buttons">
+              <a
+                href="javascript:void(0)"
+                class="btn btn-primary"
+                onclick="showComingSoon('cn')"
+              >
+                ⬇️ 下载 Mac 版本
+              </a>
+              <a
+                href="javascript:void(0)"
+                class="btn btn-secondary"
+                onclick="showComingSoon('cn')"
+              >
+                ⭐ Mac App Store
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="faq">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">FAQ</div>
+            <h2 class="section-title">常见问题</h2>
+          </div>
+          <div class="faq-grid">
+            <div class="faq-item">
+              <h4 class="faq-question">OmniSearch 是免费的吗？</h4>
+              <p class="faq-answer">
+                完全免费。所有功能全部开放，没有付费墙、订阅或内购，可授权的目录全部支持。
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4 class="faq-question">会读取我的文件内容吗？</h4>
+              <p class="faq-answer">
+                永远不会。OmniSearch 只访问文件名、路径、大小、时间戳等元数据，
+                不读取任何文件内容，这是产品的隐私红线。
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4 class="faq-question">和 Spotlight 冲突吗？</h4>
+              <p class="faq-answer">
+                不冲突。OmniSearch 使用自建的本地索引，完全不依赖也不接管
+                Spotlight，两个工具可以同时使用、各司其职。
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4 class="faq-question">支持搜索哪些目录？</h4>
+              <p class="faq-answer">
+                桌面、文稿、下载开箱即用，你也可以授权任意自定义文件夹。
+                授权通过系统标准面板完成，随时可撤回。
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4 class="faq-question">拼音搜索怎么用？</h4>
+              <p class="faq-answer">
+                直接输入即可：全拼（xiangmu）或首字母（xm）都能命中「项目」，
+                无需切换输入法，也无需任何设置。
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4 class="faq-question">支持外置硬盘吗？</h4>
+              <p class="faq-answer">
+                当前版本聚焦内置目录的极速体验，外置盘与更多目录类型已在路线图中，
+                会陆续支持。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="main-container">
+          <div class="footer-content">
+            <div class="footer-links">
+              <a href="../" class="footer-link">Kido Studio</a>
+            </div>
+            <div class="contact-box">
+              <p>需要帮助？联系我们：</p>
+              <p><a href="mailto:kido.ln@gmail.com">kido.ln@gmail.com</a></p>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- 英文版本 -->
+    <div id="english" class="content">
+      <section class="hero">
+        <div class="hero-glow"></div>
+        <div class="main-container">
+          <div class="hero-badge">⚡ Chinese-First · Completely Free</div>
+          <h1>OmniSearch</h1>
+          <p class="hero-tagline">
+            <span class="feature-highlight"
+              >Results as you type — any substring matches, no full words
+              needed</span
+            >
+            <span class="feature-highlight"
+              >Reliable two-character Chinese lookups; full pinyin or initials
+              both work</span
+            >
+          </p>
+          <div class="hero-buttons">
+            <a
+              href="javascript:void(0)"
+              class="btn btn-primary"
+              onclick="showComingSoon('en')"
+            >
+              <span>⬇️</span> Download for Mac
+            </a>
+            <a href="#features" class="btn btn-secondary">
+              <span>🔍</span> Explore Features
+            </a>
+          </div>
+          <div class="hero-video">
+            <video
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              poster="poster.jpg"
+            >
+              <source src="demo.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">Features</div>
+            <h2 class="section-title">One Search Box, Done Properly</h2>
+            <p class="section-desc">
+              A local filename search engine built for Chinese users — focused,
+              quiet, instant
+            </p>
+          </div>
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon">⚡</div>
+              <h3 class="feature-title">Instant Results as You Type</h3>
+              <p class="feature-desc">
+                A local SQLite index responds in milliseconds — no more watching
+                Spotlight spin. Search even while the first scan is still
+                running.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🀄</div>
+              <h3 class="feature-title">Chinese First</h3>
+              <p class="feature-desc">
+                NFC/NFD normalization makes two-character Chinese queries match
+                reliably, with no more missing character variants — Chinese is
+                priority one, not an afterthought.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🔤</div>
+              <h3 class="feature-title">Pinyin Shortcuts</h3>
+              <p class="feature-desc">
+                No input-method switching: type <code>xiangmu</code> or
+                <code>xm</code> to find「项目」— full pinyin and initials both
+                match.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🔍</div>
+              <h3 class="feature-title">Any-Substring Matching</h3>
+              <p class="feature-desc">
+                Remember just a fragment? Any-position substring hits directly —
+                no complete words needed. <code>ghos</code> finds Ghostty.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🔄</div>
+              <h3 class="feature-title">Live Index Updates</h3>
+              <p class="feature-desc">
+                FSEvents watches the file system; creations, renames, moves and
+                deletions sync to the index instantly, so results stay fresh.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🛡️</div>
+              <h3 class="feature-title">Privacy Red Line</h3>
+              <p class="feature-desc">
+                Never reads file contents. No network, no telemetry, no
+                accounts. The index stores only names, paths, sizes and
+                timestamps.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">Examples</div>
+            <h2 class="section-title">One File, Many Ways to Find It</h2>
+            <p class="section-desc">
+              Every query below finds the very same file
+            </p>
+          </div>
+          <div class="demo-box">
+            <div class="demo-file">
+              <span class="file-icon">📄</span>
+              <span class="file-name">项目计划.md</span>
+            </div>
+            <div class="demo-queries">
+              <div class="demo-query">
+                <span class="query-text">项目</span>
+                <span class="query-label">Two Chinese chars</span>
+              </div>
+              <div class="demo-query">
+                <span class="query-text">目计</span>
+                <span class="query-label">Any substring</span>
+              </div>
+              <div class="demo-query">
+                <span class="query-text">xiangmu</span>
+                <span class="query-label">Full pinyin</span>
+              </div>
+              <div class="demo-query">
+                <span class="query-text">xm</span>
+                <span class="query-label">Pinyin initials</span>
+              </div>
+            </div>
+            <p class="demo-note">
+              Chinese IME, English keyboard, or just the sound — however you
+              remember it, one keystroke finds it
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">Why OmniSearch</div>
+            <h2 class="section-title">Why Choose OmniSearch</h2>
+          </div>
+          <div class="unique-box">
+            <div class="unique-grid">
+              <div class="unique-item">
+                <div class="unique-icon">🆓</div>
+                <div class="unique-content">
+                  <h4>Completely Free</h4>
+                  <p>
+                    Every feature unlocked — no paywall, no subscription, no
+                    in-app purchases
+                  </p>
+                </div>
+              </div>
+              <div class="unique-item">
+                <div class="unique-icon">🚫</div>
+                <div class="unique-content">
+                  <h4>Spotlight Independent</h4>
+                  <p>
+                    Own local index, never hijacks system search — both tools
+                    coexist peacefully
+                  </p>
+                </div>
+              </div>
+              <div class="unique-item">
+                <div class="unique-icon">🀄</div>
+                <div class="unique-content">
+                  <h4>Built for Chinese</h4>
+                  <p>
+                    Chinese filename search on macOS is often frustrating;
+                    OmniSearch makes it priority one
+                  </p>
+                </div>
+              </div>
+              <div class="unique-item">
+                <div class="unique-icon">📂</div>
+                <div class="unique-content">
+                  <h4>You Choose the Folders</h4>
+                  <p>
+                    Desktop, Documents, Downloads work out of the box; add any
+                    custom folder in one click
+                  </p>
+                </div>
+              </div>
+              <div class="unique-item">
+                <div class="unique-icon">⌨️</div>
+                <div class="unique-content">
+                  <h4>Global Hotkey</h4>
+                  <p>
+                    Summon the search window anytime — search, find, get back to
+                    work
+                  </p>
+                </div>
+              </div>
+              <div class="unique-item">
+                <div class="unique-icon">👁</div>
+                <div class="unique-content">
+                  <h4>Quick Look</h4>
+                  <p>
+                    Press Space to preview a result, Enter to reveal it in
+                    Finder
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">Quick Start</div>
+            <h2 class="section-title">Get Started in 4 Steps</h2>
+          </div>
+          <div class="steps-container">
+            <div class="step-card">
+              <div class="step-number">1</div>
+              <h3 class="step-title">Launch the App</h3>
+              <p class="step-desc">OmniSearch lives in your menu bar</p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">2</div>
+              <h3 class="step-title">Grant Folders</h3>
+              <p class="step-desc">
+                Pick Desktop / Documents / Downloads, or add custom folders
+              </p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">3</div>
+              <h3 class="step-title">First Index Build</h3>
+              <p class="step-desc">Quiet background scan, searchable while indexing</p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">4</div>
+              <h3 class="step-title">Search Anytime</h3>
+              <p class="step-desc">Hotkey to summon, type to find</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">Requirements</div>
+            <h2 class="section-title">Compatibility</h2>
+          </div>
+          <div class="requirements-box">
+            <div class="req-item">
+              <div class="req-icon">🍎</div>
+              <div class="req-text">
+                <strong>Mac</strong>
+                <span>macOS 14.0 or later</span>
+              </div>
+            </div>
+            <div class="req-item">
+              <div class="req-icon">💻</div>
+              <div class="req-text">
+                <strong>Chip</strong>
+                <span>Apple Silicon and Intel supported</span>
+              </div>
+            </div>
+            <div class="req-item">
+              <div class="req-icon">🔒</div>
+              <div class="req-text">
+                <strong>Network</strong>
+                <span>No internet required — everything stays local</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="download">
+        <div class="main-container">
+          <div class="download-section">
+            <h3>📥 Download for Mac</h3>
+            <p>OmniSearch is coming to the Mac App Store — stay tuned</p>
+            <div class="download-buttons">
+              <a
+                href="javascript:void(0)"
+                class="btn btn-primary"
+                onclick="showComingSoon('en')"
+              >
+                ⬇️ Download for Mac
+              </a>
+              <a
+                href="javascript:void(0)"
+                class="btn btn-secondary"
+                onclick="showComingSoon('en')"
+              >
+                ⭐ Mac App Store
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="faq">
+        <div class="main-container">
+          <div class="section-header">
+            <div class="section-badge">FAQ</div>
+            <h2 class="section-title">Frequently Asked Questions</h2>
+          </div>
+          <div class="faq-grid">
+            <div class="faq-item">
+              <h4 class="faq-question">Is OmniSearch free?</h4>
+              <p class="faq-answer">
+                Completely free. Every feature is unlocked — no paywall, no
+                subscription, no in-app purchases — and every folder you can
+                grant is supported.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4 class="faq-question">Does it read my file contents?</h4>
+              <p class="faq-answer">
+                Never. OmniSearch only accesses metadata — names, paths, sizes
+                and timestamps. Reading file contents is the product's privacy
+                red line.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4 class="faq-question">Does it conflict with Spotlight?</h4>
+              <p class="faq-answer">
+                No. OmniSearch builds its own local index, doesn't depend on or
+                take over Spotlight. Both tools can run side by side, each doing
+                its own job.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4 class="faq-question">Which folders can I search?</h4>
+              <p class="faq-answer">
+                Desktop, Documents and Downloads work out of the box, and you
+                can grant any custom folder. Authorization goes through the
+                system's standard panel and can be revoked anytime.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4 class="faq-question">How does pinyin search work?</h4>
+              <p class="faq-answer">
+                Just type: full pinyin (xiangmu) or initials (xm) both match
+                「项目」— no input-method switching and no setup required.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4 class="faq-question">What about external drives?</h4>
+              <p class="faq-answer">
+                The current version focuses on a blazing-fast experience for
+                built-in folders. External drives and more locations are on the
+                roadmap and will be supported over time.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="main-container">
+          <div class="footer-content">
+            <div class="footer-links">
+              <a href="../" class="footer-link">Kido Studio</a>
+            </div>
+            <div class="contact-box">
+              <p>Need help? Contact us:</p>
+              <p><a href="mailto:kido.ln@gmail.com">kido.ln@gmail.com</a></p>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      // 创建粒子效果
+      function createParticles() {
+        const container = document.getElementById("particles");
+        const particleCount = 40;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement("div");
+          const isBlue = Math.random() > 0.5;
+          particle.className = isBlue ? "particle blue" : "particle";
+          particle.style.left = Math.random() * 100 + "%";
+          particle.style.animationDelay = Math.random() * 15 + "s";
+          particle.style.animationDuration = 10 + Math.random() * 10 + "s";
+          container.appendChild(particle);
+        }
+      }
+
+      // 创建光束效果
+      function createLightBeams() {
+        const container = document.getElementById("lightBeams");
+        const beamCount = 5;
+
+        for (let i = 0; i < beamCount; i++) {
+          const beam = document.createElement("div");
+          beam.className = "light-beam";
+          beam.style.left = i * 20 + "%";
+          beam.style.animationDelay = i * 1.5 + "s";
+          beam.style.animationDuration = 6 + Math.random() * 4 + "s";
+          container.appendChild(beam);
+        }
+      }
+
+      // 创建光斑效果
+      function createLightSpots() {
+        const container = document.getElementById("lightSpots");
+        const spotCount = 8;
+
+        for (let i = 0; i < spotCount; i++) {
+          const spot = document.createElement("div");
+          spot.className = "light-spot";
+          const size = 100 + Math.random() * 200;
+          spot.style.width = size + "px";
+          spot.style.height = size + "px";
+          spot.style.left = Math.random() * 100 + "%";
+          spot.style.top = Math.random() * 100 + "%";
+          spot.style.animationDelay = Math.random() * 4 + "s";
+          spot.style.animationDuration = 3 + Math.random() * 3 + "s";
+          container.appendChild(spot);
+        }
+      }
+
+      // 提示框功能
+      function showComingSoon(lang) {
+        const overlay = document.getElementById("toastOverlay");
+        const toast = document.getElementById("toast");
+        const title = document.getElementById("toastTitle");
+        const message = document.getElementById("toastMessage");
+
+        if (lang === "cn") {
+          title.textContent = "即将上线";
+          message.textContent =
+            "OmniSearch 正在上架 Mac App Store，敬请期待！";
+        } else {
+          title.textContent = "Coming Soon";
+          message.textContent =
+            "OmniSearch is on its way to the Mac App Store. Stay tuned!";
+        }
+
+        overlay.classList.add("show");
+        toast.classList.add("show");
+
+        // 点击遮罩层关闭
+        overlay.onclick = hideToast;
+      }
+
+      function hideToast() {
+        const overlay = document.getElementById("toastOverlay");
+        const toast = document.getElementById("toast");
+
+        overlay.classList.remove("show");
+        toast.classList.remove("show");
+      }
+
+      // 语言切换
+      document.addEventListener("DOMContentLoaded", function () {
+        createParticles();
+        createLightBeams();
+        createLightSpots();
+
+        const btnCn = document.getElementById("btn-cn");
+        const btnEn = document.getElementById("btn-en");
+        const contentCn = document.getElementById("chinese");
+        const contentEn = document.getElementById("english");
+
+        function switchToChinese() {
+          contentCn.classList.add("active");
+          contentEn.classList.remove("active");
+          btnCn.classList.add("active");
+          btnEn.classList.remove("active");
+          window.location.hash = "chinese";
+          document.documentElement.lang = "zh-CN";
+          document.title = "OmniSearch - macOS 文件名即时搜索，中文与拼音优先";
+        }
+
+        function switchToEnglish() {
+          contentEn.classList.add("active");
+          contentCn.classList.remove("active");
+          btnEn.classList.add("active");
+          btnCn.classList.remove("active");
+          window.location.hash = "english";
+          document.documentElement.lang = "en";
+          document.title =
+            "OmniSearch - Instant Filename Search for Mac, Chinese & Pinyin First";
+        }
+
+        btnCn.addEventListener("click", function (e) {
+          e.preventDefault();
+          switchToChinese();
+        });
+
+        btnEn.addEventListener("click", function (e) {
+          e.preventDefault();
+          switchToEnglish();
+        });
+
+        // 根据浏览器语言自动切换
+        const userLang = navigator.language || navigator.userLanguage;
+        const hash = window.location.hash;
+
+        if (hash === "#english") {
+          switchToEnglish();
+        } else if (hash === "#chinese") {
+          switchToChinese();
+        } else if (userLang.startsWith("zh")) {
+          switchToChinese();
+        } else {
+          switchToEnglish();
+        }
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            const href = this.getAttribute("href");
+            if (href !== "#chinese" && href !== "#english") {
+              e.preventDefault();
+              const target = document.querySelector(href);
+              if (target) {
+                target.scrollIntoView({ behavior: "smooth" });
+              }
+            }
+          });
+        });
+
+        // 导航栏滚动效果
+        const nav = document.querySelector(".nav");
+
+        window.addEventListener("scroll", () => {
+          const currentScroll = window.pageYOffset;
+
+          if (currentScroll > 100) {
+            nav.style.background = "rgba(20, 20, 31, 0.95)";
+            nav.style.boxShadow = "0 4px 30px rgba(0, 0, 0, 0.4)";
+          } else {
+            nav.style.background = "rgba(20, 20, 31, 0.85)";
+            nav.style.boxShadow = "0 4px 30px rgba(0, 0, 0, 0.3)";
+          }
+        });
+
+        // 交叉观察器 - 滚动动画
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: "0px 0px -50px 0px",
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = "1";
+              entry.target.style.transform = "translateY(0)";
+            }
+          });
+        }, observerOptions);
+
+        document
+          .querySelectorAll(".feature-card, .step-card, .faq-item")
+          .forEach((el) => {
+            el.style.opacity = "0";
+            el.style.transform = "translateY(20px)";
+            el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+            observer.observe(el);
+          });
+      });
+    </script>
+
+    <!-- 提示框 -->
+    <div class="toast-overlay" id="toastOverlay"></div>
+    <div class="toast-container">
+      <div class="toast" id="toast">
+        <div class="toast-icon">🚀</div>
+        <div class="toast-title" id="toastTitle">即将上线</div>
+        <div class="toast-message" id="toastMessage">
+          OmniSearch 正在上架 Mac App Store，敬请期待！
+        </div>
+        <button class="toast-close" onclick="hideToast()">我知道了</button>
+      </div>
+    </div>
+  </body>
+</html>
